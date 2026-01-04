@@ -88,7 +88,10 @@
                                 "input": "projects/installer-builder/public"
                             }
                         ],
-                        "styles": ["projects/installer-builder/src/styles.css"]
+                        "styles": [
+                            "projects/installer-builder/src/styles.css",
+                            "projects/installer-builder/src/grapesjs.css"
+                        ]
                     },
                     "configurations": {
                         "production": {

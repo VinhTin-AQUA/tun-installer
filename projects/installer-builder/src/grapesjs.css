@@ -1,0 +1,43 @@
+/* Hide all GrapesJS panels & sidebars */
+.gjs-pn-panels,
+.gjs-pn-panel,
+.gjs-pn-views,
+.gjs-pn-views-container,
+.gjs-pn-buttons {
+    display: none !important;
+}
+
+/* Remove sidebar space */
+.gjs-editor-cont {
+    grid-template-columns: 1fr !important;
+}
+
+/* Full canvas */
+.gjs-cv-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+}
+
+/* === FORCE HIDE ALL GRAPESJS UI === */
+
+/* Top panel */
+.gjs-pn-panels {
+    display: none !important;
+}
+
+/* Sidebar (left/right views) */
+.gjs-pn-views {
+    display: none !important;
+}
+
+/* Reset editor grid layout */
+.gjs-editor-cont {
+    grid-template-columns: 1fr !important;
+}
+
+/* Canvas full size */
+.gjs-cv-canvas {
+    width: 100% !important;
+    left: 0 !important;
+}

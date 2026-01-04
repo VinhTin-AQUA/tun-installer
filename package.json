@@ -12,10 +12,8 @@
         "dev:installer:template": "ng s installer-template",
         "build:installer:template": "ng build installer-template",
         "tauri": "tauri",
-        "tauri:template:dev": "tauri dev --config projects/installer-template/src-tauri/tauri.conf.json",
-        "tauri:template:build": "tauri build --config projects/installer-template/src-tauri/tauri.conf.json",
-        "tauri:builder:dev": "tauri dev --config projects/installer-builder/src-tauri/tauri.conf.json",
-        "tauri:builder:build": "tauri build --config projects/installer-builder/src-tauri/tauri.conf.json"
+        "tauri:builder:dev": "ng s installer-builder & cargo run -p installer_builder",
+        "tauri:template:dev": "ng s installer-template & cargo run -p installer_template"
     },
     "prettier": {
         "printWidth": 100,
@@ -38,6 +36,14 @@
         "@angular/forms": "^21.0.0",
         "@angular/platform-browser": "^21.0.0",
         "@angular/router": "^21.0.0",
+        "@tauri-apps/api": "^2.9.1",
+        "grapesjs": "^0.22.14",
+        "grapesjs-blocks-basic": "^1.0.2",
+        "grapesjs-blocks-flexbox": "^1.0.1",
+        "grapesjs-custom-code": "^1.0.2",
+        "grapesjs-navbar": "^1.0.2",
+        "grapesjs-plugin-forms": "^2.0.6",
+        "grapesjs-preset-webpage": "^1.0.3",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0"
     },
@@ -47,6 +53,7 @@
         "@angular/compiler-cli": "^21.0.0",
         "@tailwindcss/postcss": "^4.1.12",
         "@tauri-apps/cli": "^2.9.6",
+        "concurrently": "^9.2.1",
         "jsdom": "^27.1.0",
         "ng-packagr": "^21.0.0",
         "postcss": "^8.5.3",

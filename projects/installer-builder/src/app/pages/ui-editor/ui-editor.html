@@ -1,0 +1,65 @@
+<div class="flex h-full overflow-hidden border">
+    <!-- Sidebar -->
+    <aside class="w-56 bg-white p-3 overflow-y-auto">
+        <h3 class="text-sm font-semibold text-gray-600 mb-2">Actions</h3>
+
+        <button class="w-full text-left px-3 py-2 rounded hover:bg-gray-100" (click)="exportHtml()">
+            Save
+        </button>
+
+        <button
+            class="w-full text-left px-3 py-2 rounded hover:bg-gray-100"
+            (click)="clearCanvas()"
+        >
+            Clear Canvas
+        </button>
+
+        <button
+            class="w-full text-left px-3 py-2 rounded hover:bg-gray-100"
+            (click)="togglePreview()"
+        >
+            {{ isPreview ? 'Unpreview' : 'Preview' }}
+        </button>
+
+        <button class="w-full text-left px-3 py-2 rounded hover:bg-gray-100" (click)="buildExe()">
+            Build Exe
+        </button>
+
+        <hr class="my-3" />
+
+        <h3 class="text-sm font-semibold text-gray-600 mb-2">History</h3>
+
+        <button class="w-full text-left px-3 py-2 rounded hover:bg-gray-100" (click)="undo()">
+            ↩ Undo
+        </button>
+
+        <button class="w-full text-left px-3 py-2 rounded hover:bg-gray-100" (click)="redo()">
+            ↪ Redo
+        </button>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Editor (NO SCROLL) -->
+        <div class="flex-1 overflow-hidden">
+            <div id="gjs" class="h-full w-full"></div>
+        </div>
+
+        <!-- Code Panel -->
+        <div class="w-105 bg-white p-4 overflow-y-auto">
+            <h3 class="text-sm font-semibold text-gray-700 mb-2">HTML</h3>
+            <textarea
+                [(ngModel)]="htmlCode"
+                class="w-full h-48 p-2 border rounded font-mono text-sm"
+                (input)="applyCode()"
+            ></textarea>
+
+            <h3 class="text-sm font-semibold text-gray-700 mt-4 mb-2">CSS</h3>
+            <textarea
+                [(ngModel)]="cssCode"
+                (input)="applyCode()"
+                class="w-full h-48 p-2 border rounded font-mono text-sm"
+            ></textarea>
+        </div>
+    </div>
+</div>

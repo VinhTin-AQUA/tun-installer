@@ -1,0 +1,8 @@
+[workspace]
+resolver = "3"
+members = [
+  "projects/installer-template/src-tauri",
+  "projects/installer-builder/src-tauri", 
+  "tauri-libs/metadata", 
+  "tauri-libs/installer",
+]

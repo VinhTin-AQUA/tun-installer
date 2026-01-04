@@ -1,0 +1,11 @@
+<div class="h-screen">
+    @if (page(); as p) {
+    <div class="ui-page-scope">
+        <app-ui-renderer [node]="p.root" a="hello"></app-ui-renderer>
+    </div>
+    } @else {
+    <div id="not-found">
+        <h1>UI not found</h1>
+    </div>
+    }
+</div>

@@ -1,0 +1,302 @@
+<ng-container>
+    @switch (node.type) { @case ('text') {
+    {{ node.text }}
+    } @case ('header') {
+    <header
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </header>
+    } @case ('a') {
+    <a [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </a>
+    } @case ('b') {
+    <b [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </b>
+    } @case ('body') {
+    <body [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </body>
+    } @case ('br') {
+    <br />
+    } @case ('button') {
+    <button
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </button>
+    } @case ('div') {
+    <div [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </div>
+    } @case ('footer') {
+    <footer
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </footer>
+    } @case ('h1') {
+    <h1 [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </h1>
+    } @case ('h2') {
+    <h2 [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </h2>
+    } @case ('h3') {
+    <h3 [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </h3>
+    } @case ('h4') {
+    <h4 [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </h4>
+    } @case ('h5') {
+    <h5 [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </h5>
+    } @case ('h6') {
+    <h6 [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </h6>
+    } @case ('head') {
+    <head [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </head>
+    } @case ('header') {
+    <header
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </header>
+    } @case ('hr') {
+    <hr />
+    } @case ('i') {
+    <i [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </i>
+    } @case ('img') {
+    <img
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    />
+
+    } @case ('input') {
+    <input
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    />
+    } @case ('label') {
+    <label
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </label>
+    } @case ('li') {
+    <li [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </li>
+    } @case ('main') {
+    <main [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </main>
+    } @case ('nav') {
+    <nav [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </nav>
+    } @case ('ol') {
+    <ol [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </ol>
+    } @case ('p') {
+    <p [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </p>
+    } @case ('section') {
+    <section
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </section>
+    } @case ('small') {
+    <small
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </small>
+    } @case ('span') {
+    <span [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </span>
+    } @case ('strong') {
+    <strong
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </strong>
+    } @case ('svg') {
+    <svg [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </svg>
+    } @case ('table') {
+    <table
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </table>
+    } @case ('tbody') {
+    <tbody
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </tbody>
+    } @case ('td') {
+    <td [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </td>
+    } @case ('textarea') {
+    <textarea
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </textarea>
+    } @case ('th') {
+    <th [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </th>
+    } @case ('thead') {
+    <thead
+        [ngClass]="node.class"
+        rel="noopener noreferrer"
+        [appAttrs]="node.attrs"
+        [context]="this"
+    >
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </thead>
+    } @case ('tr') {
+    <tr [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </tr>
+    } @case ('u') {
+    <u [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </u>
+    } @case ('ul') {
+    <ul [ngClass]="node.class" rel="noopener noreferrer" [appAttrs]="node.attrs" [context]="this">
+        @for (child of node.children; track $index) {
+        <app-ui-renderer [node]="child"></app-ui-renderer>
+        }
+    </ul>
+    } @default {
+    <p style="font-weight: bold; font-size: 3rem">This UI not implement</p>
+    } }
+</ng-container>

@@ -1,0 +1,23 @@
+<div class="h-screen flex flex-col bg-gray-100">
+    <!-- Header -->
+    <header class="h-10 bg-white shadow flex items-center px-6 shrink-0">
+        <h1 class="text-xl font-semibold">My App</h1>
+    </header>
+
+    <!-- Body -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-52 bg-gray-800 text-white shrink-0 overflow-y-auto">
+            <nav class="p-4 space-y-2">
+                <a class="block px-4 py-2 rounded hover:bg-gray-700">Dashboard</a>
+                <a class="block px-4 py-2 rounded hover:bg-gray-700">Users</a>
+                <a class="block px-4 py-2 rounded hover:bg-gray-700">Settings</a>
+            </nav>
+        </aside>
+
+        <!-- Main content (KHÔNG SCROLL) -->
+        <main class="flex-1 min-h-0 h-[calc(100vh-50px)] overflow-hidden p-2 ">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
