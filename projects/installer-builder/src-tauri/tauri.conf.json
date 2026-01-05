@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "identifier": "com.newtun.installerbuilder",
     "build": {
-        "frontendDist": "dist/installer-builder/browser",
+        "frontendDist": "../../../dist/installer-builder/browser",
         "devUrl": "http://localhost:4200",
         "beforeDevCommand": "ng s installer-builder",
         "beforeBuildCommand": "ng build installer-builder"

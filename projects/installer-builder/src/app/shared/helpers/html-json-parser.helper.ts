@@ -70,7 +70,7 @@ const ALLOWED_TAGS = [
     'ul',
 ];
 
-const ALLOWED_ATTRS = ['class', 'href', 'src', 'alt', 'click'];
+const ALLOWED_ATTRS = ['class', 'href', 'src', 'alt', '(click)'];
 
 function elementToNode(el: HTMLElement): UINode {
     const tag = el.tagName.toLowerCase();

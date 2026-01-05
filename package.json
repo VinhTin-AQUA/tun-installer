@@ -12,8 +12,10 @@
         "dev:installer:template": "ng s installer-template",
         "build:installer:template": "ng build installer-template",
         "tauri": "tauri",
-        "tauri:builder:dev": "ng s installer-builder & cargo run -p installer_builder",
-        "tauri:template:dev": "ng s installer-template & cargo run -p installer_template"
+        "tauri:builder:dev": "cd projects/installer-builder/src-tauri && npx tauri dev",
+        "tauri:template:dev": "cd projects/installer-template/src-tauri && npx tauri dev",
+        "tauri:builder:build:win": "cd projects/installer-builder/src-tauri && npx tauri build --no-bundle --target x86_64-pc-windows-msvc",
+        "tauri:template:build:win": "cd projects/installer-template/src-tauri && npx tauri build --no-bundle --target x86_64-pc-windows-msvc"
     },
     "prettier": {
         "printWidth": 100,

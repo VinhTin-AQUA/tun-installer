@@ -16,7 +16,7 @@ export class Attrs {
 
         Object.entries(this.appAttrs).forEach(([key, value]) => {
             // EVENT
-            if (key === 'click') {
+            if (key === '(click)') {
                 element.addEventListener('click', () => {
                     const fn = this.context?.[value];
                     if (typeof fn === 'function') {

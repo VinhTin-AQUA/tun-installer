@@ -2,9 +2,9 @@
     "$schema": "../../../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "Installer Template",
     "version": "0.1.0",
-    "identifier": "com.tauri.dev",
+    "identifier": "com.newtun.installertemplate",
     "build": {
-        "frontendDist": "dist/installer-template/browser",
+        "frontendDist": "../../../dist/installer-template/browser",
         "devUrl": "http://localhost:4201",
         "beforeDevCommand": "ng s installer-template",
         "beforeBuildCommand": "ng build installer-template"
