@@ -58,7 +58,7 @@ jobs:
             - name: Rename exe file
               shell: cmd
               run: |
-                  set "target\x86_64-pc-windows-msvc\release"
+                  set "dir=target\x86_64-pc-windows-msvc\release"
                   ren "%dir%\installer_template.exe" "%EXE_TEMPLATE_FILE_NAME%"
 
             - name: Upload exe_template artifact
@@ -110,7 +110,7 @@ jobs:
             - name: Rename exe file
               shell: cmd
               run: |
-                  set "target\x86_64-pc-windows-msvc\release"
+                  set "dir=target\x86_64-pc-windows-msvc\release"
                   ren "%dir%\installer_builder.exe" "%EXE_TUN_INSTALLER%"
 
             - name: Upload exe_template artifact
