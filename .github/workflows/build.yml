@@ -132,6 +132,11 @@ jobs:
         # if: startsWith(github.ref, 'refs/tags/') # only run if has git tag
 
         steps:
+            - name: Setup GitHub CLI
+              run: |
+                  choco install gh --version=2.83.2 -y
+              shell: powershell
+
             - name: Remove old tag if exists
               shell: powershell
               run: |
