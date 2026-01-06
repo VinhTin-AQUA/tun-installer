@@ -65,8 +65,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: exe-template
-                  path: |
-                      "target\x86_64-pc-windows-msvc\release\%EXE_TEMPLATE_FILE_NAME%"
+                  path: target\x86_64-pc-windows-msvc\release\${{ env.EXE_TEMPLATE_FILE_NAME }}
 
     build-tun-installer:
         runs-on: windows-latest
@@ -113,12 +112,11 @@ jobs:
                   set "dir=target\x86_64-pc-windows-msvc\release"
                   ren "%dir%\installer_builder.exe" "%EXE_TUN_INSTALLER%"
 
-            - name: Upload exe_template artifact
+            - name: Upload tun-installer artifact
               uses: actions/upload-artifact@v4
               with:
                   name: tun-installer
-                  path: |
-                      "target\x86_64-pc-windows-msvc\release\%EXE_TEMPLATE_FILE_NAME%"
+                  path: target\x86_64-pc-windows-msvc\release\${{ env.EXE_TUN_INSTALLER }}
 
     publish-release:
         runs-on: windows-latest
@@ -133,11 +131,12 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            
+
             - name: Setup GitHub CLI
+              shell: powershell
               run: |
                   choco install gh --version=2.83.2 -y
-              shell: powershell
+              
 
             - name: Remove old tag if exists
               shell: powershell
