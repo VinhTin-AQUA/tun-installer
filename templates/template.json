@@ -1,0 +1,17 @@
+{
+    "styles": { "global": { "*": { "boxSizing": "border-box" }, "body": { "margin": "0" } } },
+    "root": {
+        "type": "div",
+        "class": ["welcome-container"],
+        "attrs": { "class": "welcome-container" },
+        "children": [
+            { "type": "h1", "children": [{ "type": "text", "text": "Chào mừng bạn!" }] },
+            { "type": "a", "attrs": { "prop-href": "appDir" } },
+            {
+                "type": "button",
+                "attrs": { "event-click": "print" },
+                "children": [{ "type": "text", "text": "Bắt đầu" }]
+            }
+        ]
+    }
+}

@@ -1,4 +1,5 @@
-import { UINode, UIPage } from '../../core/models/ui-page.model';
+import { UINode, UIPage } from '../models/ui-node.model';
+import { ALLOWED_TAGS, AttrArrayExtension } from '../enums/prop-binding.enum';
 
 export function parseCssToJson(cssText: string): Record<string, Record<string, string>> {
     const styles: Record<string, Record<string, string>> = {};
@@ -27,50 +28,7 @@ export function parseCssToJson(cssText: string): Record<string, Record<string, s
     return styles;
 }
 
-const ALLOWED_TAGS = [
-    'header',
-    'a',
-    'b',
-    'body',
-    'br',
-    'button',
-    'div',
-    'footer',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'head',
-    'header',
-    'hr',
-    'i',
-    'img',
-    'input',
-    'label',
-    'li',
-    'main',
-    'nav',
-    'ol',
-    'p',
-    'section',
-    'small',
-    'span',
-    'strong',
-    'svg',
-    'table',
-    'tbody',
-    'td',
-    'textarea',
-    'th',
-    'thead',
-    'tr',
-    'u',
-    'ul',
-];
-
-const ALLOWED_ATTRS = ['class', 'href', 'src', 'alt', '(click)'];
+const ALLOWED_ATTRS = AttrArrayExtension;
 
 function elementToNode(el: HTMLElement): UINode {
     const tag = el.tagName.toLowerCase();
@@ -144,17 +102,17 @@ export function convertHtmlCssToJson(html: string, css: string): UIPage {
     };
 }
 
-// export function generateGlobalCSS(styles: Record<string, Record<string, string>>): string {
-//     let css = '';
+export function generateGlobalCSS(styles: Record<string, Record<string, string>>): string {
+    let css = '';
 
-//     Object.entries(styles).forEach(([selector, rules]) => {
-//         css += `${selector} {`;
-//         Object.entries(rules).forEach(([prop, value]) => {
-//             const cssProp = prop.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
-//             css += `${cssProp}: ${value};`;
-//         });
-//         css += `}\n`;
-//     });
+    Object.entries(styles).forEach(([selector, rules]) => {
+        css += `${selector} {`;
+        Object.entries(rules).forEach(([prop, value]) => {
+            const cssProp = prop.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+            css += `${cssProp}: ${value};`;
+        });
+        css += `}\n`;
+    });
 
-//     return css;
-// }
+    return css;
+}

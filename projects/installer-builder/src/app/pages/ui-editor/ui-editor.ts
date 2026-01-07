@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { convertHtmlCssToJson } from '../../shared/helpers/html-json-parser.helper';
+import { Component, inject } from '@angular/core';
 import grapesjs from 'grapesjs';
 import { FormsModule } from '@angular/forms';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { Commands } from '../../core/enums/commands';
 import { WriteDataExe } from '../../core/models/write-data-exe';
+import { convertHtmlCssToJson } from 'installer-core';
 
 @Component({
     selector: 'app-ui-editor',
@@ -25,6 +25,8 @@ export class UiEditor {
     background: #f3f4f6;
     text-align: center;
 }`;
+
+  
 
     constructor(private tauriCommandService: TauriCommandService) {}
 
@@ -110,11 +112,13 @@ export class UiEditor {
             data: JSON.stringify(uiPage),
         };
 
-        const check = await this.tauriCommandService.invokeCommand(
-            Commands.WRITE_DATA_TO_EXE_COMMAND,
-            data
-        );
-        console.log(check);
+        console.log(JSON.stringify(uiPage));
+
+        // const check = await this.tauriCommandService.invokeCommand(
+        //     Commands.WRITE_DATA_TO_EXE_COMMAND,
+        //     data
+        // );
+        // console.log(check);
     }
 
     ngOnDestroy(): void {
