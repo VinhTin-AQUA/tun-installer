@@ -9,6 +9,8 @@
     ng generate application app1
     ng generate application app2
     ng generate library shared-lib
+
+    ng s installer-template
     ```
 
 -   create component in lib

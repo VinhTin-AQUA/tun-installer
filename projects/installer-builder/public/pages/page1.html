@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Trang HTML của User</h1>
+
+        <button onclick="App.next()">Trang tiếp</button>
+        <button onclick="save()">Save</button>
+
+        <script>
+            function save() {
+                App.save({
+                    content: 'Hello from user page',
+                    time: Date.now(),
+                });
+            }
+        </script>
+    </body>
+</html>
