@@ -49,11 +49,14 @@ jobs:
             - name: Install Tauri CLI
               run: cargo install tauri-cli
 
+            - name: Install Angular CLI
+              run: npm install -g @angular/cli@21.0.0
+
             - name: Install dependencies
               run: npm install
-            
+
             - name: Build libs
-              run: ng build installer-core 
+              run: ng build installer-core
 
             - name: Build exe template
               run: npm run tauri:template:build:win
@@ -102,7 +105,6 @@ jobs:
               shell: powershell
               run: |
                   choco install gh --version=2.83.2 -y
-              
 
             - name: Remove old tag if exists
               shell: powershell
