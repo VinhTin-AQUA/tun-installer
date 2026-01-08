@@ -16,7 +16,7 @@ env:
     EXE_TUN_INSTALLER: 'tun_installer_v1.0.0.exe'
 
 jobs:
-    build-exe-template:
+    build:
         runs-on: windows-latest
 
         permissions:
@@ -51,11 +51,14 @@ jobs:
 
             - name: Install dependencies
               run: npm install
+            
+            - name: Build libs
+              run: ng build installer-core 
 
             - name: Build exe template
               run: npm run tauri:template:build:win
 
-            - name: Rename exe file
+            - name: Rename exe template file
               shell: cmd
               run: |
                   set "dir=target\x86_64-pc-windows-msvc\release"
@@ -67,46 +70,10 @@ jobs:
                   name: exe-template
                   path: target\x86_64-pc-windows-msvc\release\${{ env.EXE_TEMPLATE_FILE_NAME }}
 
-    build-tun-installer:
-        runs-on: windows-latest
-
-        permissions:
-            contents: write
-        steps:
-            - uses: actions/checkout@v4
-
-            - name: Setup GitHub CLI
-              run: |
-                  choco install gh --version=2.83.2 -y
-              shell: powershell
-
-            - name: setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: lts/*
-                  cache: 'npm'
-
-            - name: install Rust stable
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                  targets: x86_64-pc-windows-msvc
-
-            - name: Install Visual Studio Build Tools
-              uses: microsoft/setup-msbuild@v1
-
-            - name: Install Rust target
-              run: rustup target add x86_64-pc-windows-msvc
-
-            - name: Install Tauri CLI
-              run: cargo install tauri-cli
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Build tun installer
+            - name: Build tun-installer
               run: npm run tauri:builder:build:win
 
-            - name: Rename exe file
+            - name: Rename exe tun-installer file
               shell: cmd
               run: |
                   set "dir=target\x86_64-pc-windows-msvc\release"
