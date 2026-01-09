@@ -54,9 +54,6 @@
 
 ### Add prop binding in template
 
--   add attr or event in projects/installer-template/src/app/shared/directives/attrs.ts
--   add condition in projects/installer-template/src/app/shared/directives/attrs.ts
--   add properties in component projects/installer-template/src/app/pages/ui-renderer/ui-renderer.ts
 
 ### properties
 
@@ -75,40 +72,11 @@
 
 ### methods
 
--   event-click
+-   next
+-   prev
+-   save
 
-    -   example
+### Pages folder
 
-        ```html
-        <button event-click="print">Bắt đầu</button>
-        ```
-
-        ```ts
-        print() {
-            console.log("hello world");
-        }
-        ```
-
-### Attributes
-
--   with specical value
-
-    -   alt
-    -   class
-    -   href
-    -   src
-
-    -   example
-        ```html
-        <a href="https://google.com"></a>
-        ```
-
--   binding from property
-
-    -   href
-    -   src
-    -   example with **appDir** property
-
-        ```html
-        <a prop-href="appDir"></a>
-        ```
+-   page1.html
+-   page2.html

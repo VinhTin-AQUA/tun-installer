@@ -1,5 +1,6 @@
 mod commands;
-
+mod models;
+mod services;
 use commands::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -15,7 +16,10 @@ pub fn run() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![write_data_to_exe_command])
+        .invoke_handler(tauri::generate_handler![
+            write_data_to_exe_command,
+            load_html_pages_command
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
