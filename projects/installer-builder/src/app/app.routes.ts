@@ -5,31 +5,37 @@ import { HtmlEngine } from './pages/html-engine/html-engine';
 import { ProductDetails } from './pages/product-details/product-details';
 import { FilesAndFolders } from './pages/files-and-folders/files-and-folders';
 import { Registry } from './pages/registry/registry';
+import { MainRoutes } from './core/enums/routes.enum';
+import { Settings } from './pages/settings/settings';
 
 export const routes: Routes = [
     {
-        path: '',
+        path: MainRoutes.Main,
         component: MainLayout,
         children: [
             {
-                path: 'home',
+                path: MainRoutes.UiEditor,
                 component: UiEditor,
             },
             {
-                path: 'html-engine',
+                path: MainRoutes.HtmlEngine,
                 component: HtmlEngine,
             },
             {
-                path: 'product-details',
+                path: MainRoutes.ProductDetails,
                 component: ProductDetails,
             },
             {
-                path: 'files-and-folders',
+                path: MainRoutes.FilesAndFolders,
                 component: FilesAndFolders,
             },
             {
-                path: 'registry',
+                path: MainRoutes.Registry,
                 component: Registry,
+            },
+            {
+                path: MainRoutes.Settings,
+                component: Settings,
             },
             { path: '', redirectTo: 'registry', pathMatch: 'full' },
         ],

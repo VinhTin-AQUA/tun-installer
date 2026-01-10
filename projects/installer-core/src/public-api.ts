@@ -2,13 +2,7 @@
  * Public API Surface of installer-core
  */
 
-export * from './lib/enums/prop-binding.enum';
-
-export * from './lib/helpers/html-json-parser.helper';
-
-export * from './lib/models/installer-properties';
-export * from './lib/models/ui-node.model';
-
-export * from './lib/stores/installer-state.store';
-
-export * from './lib/installer-core';
+export * from './lib/enums';
+export * from './lib/helpers';
+export * from './lib/models';
+export * from './lib/stores';

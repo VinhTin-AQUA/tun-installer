@@ -1,4 +1,4 @@
-export interface InstallerProperties {
+export interface InstallerPropertyData {
     projectDir: string;
     pageDir: string;
     installationLocation: string; // install location
@@ -13,18 +13,18 @@ export interface InstallerProperties {
     launchFile: string; // exe file
     runAsAdmin: boolean; // run as administrator
     launchApp: boolean; // run app after install
-    shortcutInDesktop: ShortcutInDesktop,
-    shortcutInApplicationShortcut: ShortcutInApplicationShortcut
+    shortcutInDesktopData: ShortcutInDesktopData;
+    shortcutInApplicationShortcutData: ShortcutInApplicationShortcutData;
 }
 
-export interface ShortcutInDesktop {
+export interface ShortcutInDesktopData {
     isCreated: boolean;
     runAsAdmin: boolean;
     shortcutName: string;
     runFile: string;
 }
 
-export interface ShortcutInApplicationShortcut {
+export interface ShortcutInApplicationShortcutData {
     isCreated: boolean;
     runAsAdmin: boolean;
     shortcutName: string;

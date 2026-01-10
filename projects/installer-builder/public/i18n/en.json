@@ -1,0 +1,13 @@
+{
+    "app": {
+        "title": "Bill Insight"
+    },
+    "menuSidebar": {
+        "productDetails": "Product Details",
+        "settings": "Settings",
+        "uiEditor": "UI Editor",
+        "filesAndFolders": "Files And Folders",
+        "registry": "Registry",
+        "htmlEngine": "Html Engine"
+    }
+}

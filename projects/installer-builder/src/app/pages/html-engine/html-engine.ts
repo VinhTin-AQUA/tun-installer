@@ -18,7 +18,9 @@ export class HtmlEngine {
 
     installerPropertyStore = inject(InstallerPropertyStore);
 
-    appDir = this.installerPropertyStore.appDir();
+    projectDir = this.installerPropertyStore.projectDir();
+    pageDir = this.installerPropertyStore.pageDir();
+    installationLocation = this.installerPropertyStore.installationLocation();
     productName = this.installerPropertyStore.productName();
     icon = this.installerPropertyStore.icon();
     productVersion = this.installerPropertyStore.productVersion();
@@ -97,7 +99,9 @@ export class HtmlEngine {
 
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
-            '{{appDir}}': this.appDir,
+            '{{projectDir}}': this.projectDir,
+            '{{installationLocation}}': this.installationLocation,
+            '{{pageDir}}': this.pageDir,
             '{{productName}}': this.productName,
             '{{icon}}': this.icon,
             '{{productVersion}}': this.productVersion,

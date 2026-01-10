@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavItem } from './models/nav-item';
 import { filter } from 'rxjs';
+import { MainRoutes } from '../../../core/enums/routes.enum';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-main-layout',
-    imports: [RouterOutlet],
+    imports: [RouterOutlet, RouterLink, TranslatePipe, RouterLinkActive],
     templateUrl: './main-layout.html',
     styleUrl: './main-layout.css',
 })
@@ -18,12 +20,28 @@ export class MainLayout {
     ngOnInit() {
         this.navItems = [
             {
-                name: 'menuSidebar.home',
-                url: '/main/home',
+                name: 'menuSidebar.productDetails',
+                url: MainRoutes.ProductDetails,
+            },
+             {
+                name: 'menuSidebar.htmlEngine',
+                url: MainRoutes.HtmlEngine,
+            },
+            {
+                name: 'menuSidebar.uiEditor',
+                url: MainRoutes.UiEditor,
+            },
+            {
+                name: 'menuSidebar.filesAndFolders',
+                url: MainRoutes.FilesAndFolders,
+            },
+            {
+                name: 'menuSidebar.registry',
+                url: MainRoutes.Registry,
             },
             {
                 name: 'menuSidebar.settings',
-                url: '/main/settings',
+                url: MainRoutes.Settings,
             },
         ];
 

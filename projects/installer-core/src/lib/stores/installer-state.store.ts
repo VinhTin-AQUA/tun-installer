@@ -2,7 +2,9 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { InstallerProperties } from '../models/installer-properties';
 
 const initialState: InstallerProperties = {
-    appDir: '',
+    projectDir: '',
+    pageDir: '',
+    installationLocation: '',
     productName: '',
     icon: '',
     productVersion: '',
@@ -14,6 +16,18 @@ const initialState: InstallerProperties = {
     launchFile: '',
     runAsAdmin: false,
     launchApp: false,
+    shortcutInDesktop: {
+        isCreated: false,
+        runAsAdmin: false,
+        runFile: '',
+        shortcutName: '',
+    },
+    shortcutInApplicationShortcut: {
+        isCreated: false,
+        runAsAdmin: false,
+        runFile: '',
+        shortcutName: '',
+    },
 };
 
 export const InstallerPropertyStore = signalStore(
