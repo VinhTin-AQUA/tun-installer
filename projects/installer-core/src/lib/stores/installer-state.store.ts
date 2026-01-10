@@ -10,10 +10,10 @@ const initialState: InstallerProperties = {
     supportLink: '',
     supportEmail: '',
     comment: '',
-    buildDir: '',
-    fileToRun: '',
+    sourceDir: '',
+    launchFile: '',
     runAsAdmin: false,
-    lauchApp: false,
+    launchApp: false,
 };
 
 export const InstallerPropertyStore = signalStore(

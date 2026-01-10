@@ -1,0 +1,109 @@
+<div class="overflow-y-scroll w-full h-full">
+    <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class="mx-auto p-6 bg-white rounded-xl shadow space-y-6"
+    >
+        <h2 class="text-xl font-semibold text-gray-800">Installer Properties</h2>
+
+        <!-- Text Inputs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">App Directory</label>
+                <input formControlName="appDir" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                <input formControlName="productName" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Icon</label>
+                <input formControlName="icon" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Product Version</label>
+                <input formControlName="productVersion" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Publisher</label>
+                <input formControlName="publisher" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Support Link</label>
+                <input formControlName="supportLink" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Support Email</label>
+                <input formControlName="supportEmail" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Build Directory</label>
+                <input formControlName="buildDir" class="input" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">File To Run</label>
+                <input formControlName="fileToRun" class="input" />
+            </div>
+        </div>
+
+        <!-- Comment -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Comment</label>
+            <textarea formControlName="comment" rows="3" class="input"></textarea>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="flex gap-6">
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" formControlName="runAsAdmin" class="checkbox" />
+                Run as Administrator
+            </label>
+
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" formControlName="lauchApp" class="checkbox" />
+                Launch App After Install
+            </label>
+        </div>
+
+        <!-- shortcut -->
+        <div class="flex gap-6">
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" formControlName="runAsAdmin" class="checkbox" />
+                Create Shortcut in Desktop
+            </label>
+
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" formControlName="runAsAdmin" class="checkbox" />
+                Run as Administrator
+            </label>
+
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" formControlName="lauchApp" class="checkbox" />
+                Create Shortcut in Application Shortcut
+            </label>
+
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" formControlName="runAsAdmin" class="checkbox" />
+                Run as Administrator
+            </label>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-right">
+            <button
+                type="submit"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+                Save
+            </button>
+        </div>
+    </form>
+</div>

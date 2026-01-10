@@ -1,0 +1,64 @@
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+}
+
+.folder {
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.folder.active {
+    background: #e3f2fd;
+    font-weight: bold;
+}
+
+.content {
+    flex: 1;
+    padding: 10px;
+}
+
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.file-table th,
+.file-table td {
+    border: 1px solid #ddd;
+    padding: 6px;
+}
+
+.action-cell {
+    position: relative;
+}
+
+.context-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    width: 120px;
+    z-index: 10;
+}
+
+.context-menu div {
+    padding: 6px;
+    cursor: pointer;
+}
+
+.context-menu div:hover {
+    background: #f0f0f0;
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+}

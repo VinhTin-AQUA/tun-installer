@@ -21,3 +21,32 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+@layer components {
+    .input {
+        @apply mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    }
+
+    .checkbox {
+        @apply h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500;
+    }
+}
+
+/* scroll bar */
+div::-webkit-scrollbar {
+    width: 5px; /* width of the entire scrollbar */
+    height: 5px;
+}
+
+div::-webkit-scrollbar-track {
+    background: #fff; /* color of the tracking area */
+}
+
+div::-webkit-scrollbar-thumb {
+    background: #111827; /* color of the scroll thumb */
+}
+
+div::-webkit-scrollbar-thumb:hover {
+    background: #0f172a; /* color of the scroll thumb on hover */
+}

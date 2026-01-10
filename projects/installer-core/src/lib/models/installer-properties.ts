@@ -7,8 +7,8 @@ export interface InstallerProperties {
     supportLink: string; // support link
     supportEmail: string; // support email
     comment: string; // comment
-    buildDir: string; // source to compress
-    fileToRun: string; // exe file
+    sourceDir: string; // source to compress
+    launchFile: string; // exe file
     runAsAdmin: boolean; // run as administrator
-    lauchApp: boolean; // run app after install
+    launchApp: boolean; // run app after install
 };
