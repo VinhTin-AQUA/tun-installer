@@ -5,12 +5,28 @@
         <!-- Text Inputs -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700">Project Directory</label>
-                <input [field]="installerPropertyDataForm.projectDir" class="input" />
+                <label class="block text-sm font-medium text-gray-700"> Project Directory </label>
 
-                @if (installerPropertyDataForm.projectDir().touched() &&
-                installerPropertyDataForm.projectDir().invalid()) {
-                <div class="text-red-500">
+                <div class="flex gap-2 items-start">
+                    <!-- Input readonly -->
+                    <input
+                        class="input flex-1 bg-gray-100 cursor-not-allowed"
+                        [field]="installerPropertyDataForm.projectDir"
+                    />
+
+                    <!-- Button browse -->
+                    <button
+                        type="button"
+                        class="px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                        (click)="selectFolder('projectDir')"
+                    >
+                        Browse
+                    </button>
+                </div>
+
+                @if ( installerPropertyDataForm.projectDir().touched() &&
+                installerPropertyDataForm.projectDir().invalid() ) {
+                <div class="text-red-500 mt-1">
                     @for (error of installerPropertyDataForm.projectDir().errors(); track error) {
                     <p>{{ error.message }}</p>
                     }
@@ -159,19 +175,19 @@
                 <label class="flex items-center gap-2 font-medium text-sm">
                     <input
                         type="checkbox"
-                        [field]="installerPropertyDataForm.shortcutInDesktopData.isCreated"
+                        [field]="installerPropertyDataForm.shortcutInDesktop.isCreated"
                         class="checkbox"
                     />
                     Create Shortcut in Desktop
                 </label>
 
                 <!-- Detail -->
-                @if (installerPropertyDataForm.shortcutInDesktopData().value().isCreated) {
+                @if (installerPropertyDataForm.shortcutInDesktop().value().isCreated) {
                 <div class="ml-6 space-y-3">
                     <label class="flex items-center gap-2 text-sm text-gray-600">
                         <input
                             type="checkbox"
-                            [field]="installerPropertyDataForm.shortcutInDesktopData.runAsAdmin"
+                            [field]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
                             class="checkbox"
                         />
                         Run as Administrator
@@ -180,14 +196,14 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <input
                             type="text"
-                            [field]="installerPropertyDataForm.shortcutInDesktopData.shortcutName"
+                            [field]="installerPropertyDataForm.shortcutInDesktop.shortcutName"
                             placeholder="Shortcut name"
                             class="input input-bordered w-full"
                         />
 
                         <input
                             type="text"
-                            [field]="installerPropertyDataForm.shortcutInDesktopData.runFile"
+                            [field]="installerPropertyDataForm.shortcutInDesktop.runFile"
                             placeholder="Run file path"
                             class="input input-bordered w-full"
                         />
@@ -201,24 +217,20 @@
                 <label class="flex items-center gap-2 font-medium text-sm">
                     <input
                         type="checkbox"
-                        [field]="
-                            installerPropertyDataForm.shortcutInApplicationShortcutData.isCreated
-                        "
+                        [field]="installerPropertyDataForm.shortcutInApplicationShortcut.isCreated"
                         class="checkbox"
                     />
                     Create Shortcut in Application Shortcut
                 </label>
 
                 <!-- Detail -->
-                @if(installerPropertyDataForm.shortcutInApplicationShortcutData().value().isCreated)
-                {
+                @if(installerPropertyDataForm.shortcutInApplicationShortcut().value().isCreated) {
                 <div class="ml-6 space-y-3">
                     <label class="flex items-center gap-2 text-sm text-gray-600">
                         <input
                             type="checkbox"
                             [field]="
-                                installerPropertyDataForm.shortcutInApplicationShortcutData
-                                    .runAsAdmin
+                                installerPropertyDataForm.shortcutInApplicationShortcut.runAsAdmin
                             "
                             class="checkbox"
                         />
@@ -229,8 +241,7 @@
                         <input
                             type="text"
                             [field]="
-                                installerPropertyDataForm.shortcutInApplicationShortcutData
-                                    .shortcutName
+                                installerPropertyDataForm.shortcutInApplicationShortcut.shortcutName
                             "
                             placeholder="Shortcut name"
                             class="input input-bordered w-full"
@@ -239,7 +250,7 @@
                         <input
                             type="text"
                             [field]="
-                                installerPropertyDataForm.shortcutInApplicationShortcutData.runFile
+                                installerPropertyDataForm.shortcutInApplicationShortcut.runFile
                             "
                             placeholder="Run file path"
                             class="input input-bordered w-full"

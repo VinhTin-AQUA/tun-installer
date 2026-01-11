@@ -1,19 +1,19 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { InstallerDocument } from '../../core/models/installer-document.model';
+import { WorkingConfigFileState } from '../../core/models/installer-config.model';
 
-const initialState: InstallerDocument = {
+const initialState: WorkingConfigFileState = {
     content: '',
     filePath: null,
     isDirty: false,
 };
 
-export const InstallerDocumentStore = signalStore(
+export const WorkingConfigFileStore = signalStore(
     {
         providedIn: 'root',
     },
     withState(initialState),
     withMethods((store) => {
-        function update(updates: Partial<InstallerDocument>) {
+        function update(updates: Partial<WorkingConfigFileState>) {
             patchState(store, (currentState) => ({
                 ...updates,
             }));

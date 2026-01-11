@@ -3,7 +3,7 @@ import grapesjs from 'grapesjs';
 import { FormsModule } from '@angular/forms';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { Commands } from '../../core/enums/commands';
-import { WriteDataExe } from '../../core/models/write-data-exe';
+import { WriteDataExe } from '../../core/models/tauri-payloads/write-data-exe';
 import { convertHtmlCssToJson } from 'installer-core';
 
 @Component({

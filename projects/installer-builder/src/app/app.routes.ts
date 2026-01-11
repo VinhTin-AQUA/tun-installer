@@ -39,7 +39,7 @@ export const routes: Routes = [
                 component: Settings,
             },
 
-            { path: '', redirectTo: MainRoutes.HtmlEngine, pathMatch: 'full' },
+            { path: '', redirectTo: MainRoutes.ProductDetails, pathMatch: 'full' },
         ],
     },
     {
