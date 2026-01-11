@@ -42,8 +42,32 @@ export const InstallerPropertyStore = signalStore(
             }));
         }
 
+        function getData() {
+            const data: InstallerProperties = {
+                projectDir: store.projectDir(),
+                pageDir: store.pageDir(),
+                installationLocation: store.installationLocation(),
+                productName: store.productName(),
+                icon: store.icon(),
+                productVersion: store.productVersion(),
+                publisher: store.publisher(),
+                supportLink: store.supportLink(),
+                supportEmail: store.supportEmail(),
+                comment: store.comment(),
+                sourceDir: store.sourceDir(),
+                launchFile: store.launchFile(),
+                runAsAdmin: store.runAsAdmin(),
+                launchApp: store.launchApp(),
+                shortcutInDesktop: store.shortcutInDesktop(),
+                shortcutInApplicationShortcut: store.shortcutInApplicationShortcut(),
+            };
+
+            return data;
+        }
+
         return {
             update,
+            getData,
         };
     })
 );

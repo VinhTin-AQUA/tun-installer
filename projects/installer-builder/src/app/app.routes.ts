@@ -7,6 +7,7 @@ import { FilesAndFolders } from './pages/files-and-folders/files-and-folders';
 import { Registry } from './pages/registry/registry';
 import { MainRoutes } from './core/enums/routes.enum';
 import { Settings } from './pages/settings/settings';
+import { PreviewInstallerUi } from './pages/preview-installer-ui/preview-installer-ui';
 
 export const routes: Routes = [
     {
@@ -37,8 +38,13 @@ export const routes: Routes = [
                 path: MainRoutes.Settings,
                 component: Settings,
             },
-            { path: '', redirectTo: 'registry', pathMatch: 'full' },
+
+            { path: '', redirectTo: MainRoutes.HtmlEngine, pathMatch: 'full' },
         ],
+    },
+    {
+        path: 'preview-installer-ui',
+        component: PreviewInstallerUi,
     },
     { path: '**', redirectTo: '' },
 ];

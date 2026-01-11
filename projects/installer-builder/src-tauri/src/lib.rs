@@ -18,7 +18,8 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             write_data_to_exe_command,
-            load_html_pages_command
+            load_html_pages_command,
+            preview_installer_ui_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

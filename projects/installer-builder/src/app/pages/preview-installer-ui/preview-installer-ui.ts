@@ -1,16 +1,16 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { TauriCommandService } from '../../core/services/tauri-command-service';
-import { HtmlPage } from '../../core/models/html-page';
-import { Commands } from '../../core/enums/commands';
 import { InstallerPropertyStore } from 'installer-core';
+import { HtmlPage } from '../../core/models/html-page';
+import { TauriCommandService } from '../../core/services/tauri-command-service';
+import { Commands } from '../../core/enums/commands';
 
 @Component({
-    selector: 'app-html-engine',
+    selector: 'app-preview-installer-ui',
     imports: [],
-    templateUrl: './html-engine.html',
-    styleUrl: './html-engine.css',
+    templateUrl: './preview-installer-ui.html',
+    styleUrl: './preview-installer-ui.css',
 })
-export class HtmlEngine {
+export class PreviewInstallerUi {
     @ViewChild('viewer', { static: true })
     iframe!: ElementRef<HTMLIFrameElement>;
     htmlPages: HtmlPage[] = [];
@@ -98,13 +98,6 @@ export class HtmlEngine {
     prev() {
         this.index = Math.max(this.index - 1, 0);
         this.loadPage();
-    }
-
-    async preview() {
-        await this.tauriCommandService.invokeCommand(Commands.PREVIEW_INSTALLER_UI_COMMAND, {
-            width: 1200,
-            height: 700,
-        });
     }
 
     private propDataBindind(text: string): string {

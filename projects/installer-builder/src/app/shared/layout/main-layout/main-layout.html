@@ -1,7 +1,16 @@
 <div class="h-screen flex flex-col bg-gray-100">
     <!-- Header -->
-    <header class="h-10 bg-white shadow flex items-center px-6 shrink-0">
+    <header class="h-10 bg-white shadow flex items-center gap-2 px-6 shrink-0">
         <h1 class="text-xl font-semibold">My App</h1>
+        <div class="font-semibold">
+            @if(!installerDocumentStore.filePath()) {
+            <span>*Unsaved Document.json</span>
+            } @else if(installerDocumentStore.isDirty()) {
+            <span>*</span>
+            <span>{{ installerDocumentStore.filePath() }}</span>
+            } @else { <span>{{ installerDocumentStore.filePath() }}</span
+            >}
+        </div>
     </header>
 
     <!-- Body -->

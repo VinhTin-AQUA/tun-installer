@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { InstallerPropertyData } from './models/installer-property-data';
 import { Field, form, required } from '@angular/forms/signals';
+import { InstallerDocumentStore } from '../../shared/stores/installer-document.store';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
     selector: 'app-product-details',
@@ -38,6 +40,8 @@ export class ProductDetails {
         },
     });
 
+    installerDocumentStore = inject(InstallerDocumentStore);
+
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.projectDir, { message: 'Project Directory is required' });
         required(f.pageDir, { message: 'Page Directory is required' });
@@ -55,10 +59,26 @@ export class ProductDetails {
         // required(f.launchApp);
     });
 
-    constructor() {}
+    constructor(private toastService: ToastService) {}
+
+
+
+    onInputChanged() {
+        this.installerDocumentStore.update({
+            isDirty: true,
+        });
+    }
 
     submit() {
         const credentials = this.installerPropertyDataForm().value();
         console.log('Logging in with:', credentials);
+
+        
+    }
+
+    saveInstallerDocument() {
+        console.log(123);
+        
+        this.toastService.show("HELL", 'success')
     }
 }

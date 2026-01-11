@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavItem } from './models/nav-item';
 import { filter } from 'rxjs';
 import { MainRoutes } from '../../../core/enums/routes.enum';
 import { TranslatePipe } from '@ngx-translate/core';
+import { InstallerDocumentStore } from '../../stores/installer-document.store';
 
 @Component({
     selector: 'app-main-layout',
@@ -14,6 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class MainLayout {
     isDrawerOpen = false;
     navItems: NavItem[] = [];
+    installerDocumentStore = inject(InstallerDocumentStore);
 
     constructor(private router: Router) {}
 

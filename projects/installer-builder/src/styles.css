@@ -34,19 +34,19 @@ body {
 }
 
 /* scroll bar */
-div::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 5px; /* width of the entire scrollbar */
     height: 5px;
 }
 
-div::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: #fff; /* color of the tracking area */
 }
 
-div::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: #111827; /* color of the scroll thumb */
 }
 
-div::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: #0f172a; /* color of the scroll thumb on hover */
 }
