@@ -2,31 +2,29 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { InstallerProperties } from '../models/installer-properties';
 
 const initialState: InstallerProperties = {
-    projectDir: '',
-    pageDir: '',
-    installationLocation: '',
-    productName: '',
-    icon: '',
-    productVersion: '',
-    publisher: '',
-    supportLink: '',
-    supportEmail: '',
-    comment: '',
-    sourceDir: '',
-    launchFile: '',
+    projectDir: 'Choose project directory',
+    installationLocation: 'C:/ProgramFiles',
+    productName: 'Your App',
+    icon: 'icon.ico',
+    productVersion: '1.0.0',
+    publisher: 'Your Company',
+    supportLink: 'https://example.com/',
+    supportEmail: 'example@gmail.com',
+    comment: 'Your comment',
+    launchFile: 'your-app.exe',
     runAsAdmin: false,
     launchApp: false,
     shortcutInDesktop: {
         isCreated: false,
         runAsAdmin: false,
-        runFile: '',
-        shortcutName: '',
+        runFile: 'your-app.exe',
+        shortcutName: 'Your App',
     },
     shortcutInApplicationShortcut: {
         isCreated: false,
         runAsAdmin: false,
-        runFile: '',
-        shortcutName: '',
+        runFile: 'your-app.exe',
+        shortcutName: 'Your App',
     },
 };
 
@@ -45,7 +43,6 @@ export const InstallerPropertyStore = signalStore(
         function getData() {
             const data: InstallerProperties = {
                 projectDir: store.projectDir(),
-                pageDir: store.pageDir(),
                 installationLocation: store.installationLocation(),
                 productName: store.productName(),
                 icon: store.icon(),
@@ -54,7 +51,6 @@ export const InstallerPropertyStore = signalStore(
                 supportLink: store.supportLink(),
                 supportEmail: store.supportEmail(),
                 comment: store.comment(),
-                sourceDir: store.sourceDir(),
                 launchFile: store.launchFile(),
                 runAsAdmin: store.runAsAdmin(),
                 launchApp: store.launchApp(),

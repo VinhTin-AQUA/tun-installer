@@ -55,6 +55,16 @@
 ### Add prop binding in template
 
 
+## Project Structure
+
+```txt
+project-names
+    - sources
+    - pages
+    - prerequisites
+    - configs
+```
+
 ### properties
 
 -   appDir
@@ -80,3 +90,4 @@
 
 -   page1.html
 -   page2.html
+

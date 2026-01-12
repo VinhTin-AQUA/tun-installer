@@ -9,5 +9,8 @@
         "filesAndFolders": "Files And Folders",
         "registry": "Registry",
         "htmlEngine": "Html Engine"
+    },
+    "product-details": {
+        "input-config-file": "Input Config File Name"
     }
 }

@@ -6,6 +6,3 @@ export interface WorkingConfigFileState {
     isDirty: boolean;
 }
 
-export interface SaveConfig {
-    config: InstallerProperties;
-}

@@ -1,6 +1,10 @@
-import { InstallerProperties,InstallerPropertyStore } from 'installer-core';
+import { InstallerProperties } from 'installer-core';
+
+export interface SaveConfig {
+    properties: InstallerProperties;
+}
 
 export interface SaveInstallerDocument {
-    payload: InstallerProperties;
+    payload: SaveConfig;
     filePath: string;
 }

@@ -1,14 +1,17 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Field, form, readonly, required } from '@angular/forms/signals';
 import { WorkingConfigFileStore } from '../../shared/stores/installer-document.store';
 import { ToastService } from '../../core/services/toast-service';
 import { InstallerConfigService } from '../../core/services/installer-config-service';
 import { InstallerPropertyStore, InstallerProperties } from 'installer-core';
-import { FolderHelper } from '../../core/helpers/folder.helper';
+import { FolderHelper } from '../../shared/helpers/folder.helper';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ProjectFolders } from '../../core/consts/folder.const';
 
 @Component({
     selector: 'app-product-details',
-    imports: [Field],
+    imports: [Field, FormsModule, TranslatePipe],
     templateUrl: './product-details.html',
     styleUrl: './product-details.css',
 })
@@ -20,7 +23,6 @@ export class ProductDetails {
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.projectDir, { message: 'Project Directory is required' });
         readonly(f.projectDir);
-        required(f.pageDir, { message: 'Page Directory is required' });
         required(f.installationLocation, { message: 'Installation Location is required' });
         required(f.productName, { message: 'Product Name is required' });
         // required(f.icon);
@@ -29,39 +31,57 @@ export class ProductDetails {
         // required(f.supportLink);
         // required(f.supportEmail);
         // required(f.comment);
-        required(f.sourceDir, { message: 'Source Directory is required' });
         required(f.launchFile, { message: 'Launch File is required' });
         // required(f.runAsAdmin);
         // required(f.launchApp);
     });
 
+    isOpenConfigNameInput = signal<boolean>(false);
+    fileName = '';
+
     constructor(
         private toastService: ToastService,
         private installerDocumentService: InstallerConfigService
-    ) {}
+    ) {
+        effect(() => {
+            const projectDir = this.installerPropertyDataModel().projectDir;
 
-    onInputChanged() {
-        this.workingConfigFileStore.update({
-            isDirty: true,
+            this.workingConfigFileStore.update({
+                isDirty: true,
+            });
+
+            this.installerPropertyStore.update({
+                projectDir: projectDir,
+                installationLocation: this.installerPropertyDataModel().installationLocation,
+                productName: this.installerPropertyDataModel().productName,
+                icon: this.installerPropertyDataModel().icon,
+                productVersion: this.installerPropertyDataModel().productVersion,
+                publisher: this.installerPropertyDataModel().publisher,
+                supportLink: this.installerPropertyDataModel().supportLink,
+                supportEmail: this.installerPropertyDataModel().supportEmail,
+                comment: this.installerPropertyDataModel().comment,
+                launchFile: this.installerPropertyDataModel().launchFile,
+                runAsAdmin: this.installerPropertyDataModel().runAsAdmin,
+                launchApp: this.installerPropertyDataModel().launchApp,
+                shortcutInDesktop: this.installerPropertyDataModel().shortcutInDesktop,
+                shortcutInApplicationShortcut:
+                    this.installerPropertyDataModel().shortcutInApplicationShortcut,
+            });
         });
     }
 
-    // submit() {
-    //     const credentials = this.installerPropertyDataForm().value();
-    //     console.log('Logging in with:', credentials);
-
-    // }
-
-    async saveInstallerDocument() {
+    async onSaveInstallerConfig() {
         const formValid = this.formValid();
         if (!formValid) {
             return;
         }
 
-        await this.installerDocumentService.saveDocument({
-            filePath: '',
-            payload: this.installerPropertyStore.getData(),
-        });
+        if (!this.workingConfigFileStore.filePath()) {
+            this.openConfigNameInpu();
+            return;
+        }
+
+        await this.saveInstallerConfig(this.workingConfigFileStore.filePath());
     }
 
     async selectFolder(key: 'projectDir' | 'pageDir' | 'installationLocation' | 'sourceDir') {
@@ -76,16 +96,25 @@ export class ProductDetails {
             case 'projectDir':
                 this.installerPropertyDataForm.projectDir().setControlValue(folder);
                 break;
-            case 'pageDir':
-                this.installerPropertyDataForm.pageDir().setControlValue(folder);
-                break;
             case 'installationLocation':
                 this.installerPropertyDataForm.installationLocation().setControlValue(folder);
                 break;
-            case 'sourceDir':
-                this.installerPropertyDataForm.sourceDir().setControlValue(folder);
-                break;
         }
+    }
+
+    openConfigNameInpu() {
+        this.fileName = '';
+        this.isOpenConfigNameInput.set(true);
+    }
+
+    closeConfigNameInput() {
+        this.isOpenConfigNameInput.set(false);
+    }
+
+    async confirmConfigNameInput() {
+        if (!this.fileName.trim()) return;
+        this.closeConfigNameInput();
+        await this.saveInstallerConfig(null);
     }
 
     private formValid() {
@@ -101,17 +130,7 @@ export class ProductDetails {
             this.toastService.show(messages, 'error');
             return false;
         }
-        if (!this.installerPropertyDataForm.pageDir().valid()) {
-            const messages = this.installerPropertyDataForm
-                .pageDir()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
+
         if (!this.installerPropertyDataForm.projectDir().valid()) {
             const messages = this.installerPropertyDataForm
                 .projectDir()
@@ -167,17 +186,7 @@ export class ProductDetails {
             this.toastService.show(messages, 'error');
             return false;
         }
-        if (!this.installerPropertyDataForm.sourceDir().valid()) {
-            const messages = this.installerPropertyDataForm
-                .sourceDir()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
+
         if (!this.installerPropertyDataForm.launchFile().valid()) {
             const messages = this.installerPropertyDataForm
                 .launchFile()
@@ -190,5 +199,31 @@ export class ProductDetails {
             return false;
         }
         return true;
+    }
+
+    private async saveInstallerConfig(filePath: string | null) {
+        const f =
+            filePath ??
+            `${this.installerPropertyDataForm.projectDir().value()}/${ProjectFolders.configs}/${
+                this.fileName
+            }.json`;
+
+        const r = await this.installerDocumentService.saveDocument({
+            filePath: f,
+            payload: {
+                properties: { ...this.installerPropertyStore.getData() },
+            },
+        });
+
+        if (!r) {
+            this.toastService.show('Something error', 'error');
+            return;
+        }
+        this.toastService.show('Save', 'success');
+        this.workingConfigFileStore.update({
+            content: '',
+            filePath: f,
+            isDirty: false,
+        });
     }
 }

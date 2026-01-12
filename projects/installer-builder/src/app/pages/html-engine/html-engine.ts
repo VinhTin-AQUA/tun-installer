@@ -19,7 +19,6 @@ export class HtmlEngine {
     installerPropertyStore = inject(InstallerPropertyStore);
 
     projectDir = this.installerPropertyStore.projectDir();
-    pageDir = this.installerPropertyStore.pageDir();
     installationLocation = this.installerPropertyStore.installationLocation();
     productName = this.installerPropertyStore.productName();
     icon = this.installerPropertyStore.icon();
@@ -28,7 +27,6 @@ export class HtmlEngine {
     supportLink = this.installerPropertyStore.supportLink();
     supportEmail = this.installerPropertyStore.supportEmail();
     comment = this.installerPropertyStore.comment();
-    sourceDir = this.installerPropertyStore.sourceDir();
     launchFile = this.installerPropertyStore.launchFile();
     runAsAdmin = this.installerPropertyStore.runAsAdmin();
     launchApp = this.installerPropertyStore.launchApp();
@@ -110,7 +108,6 @@ export class HtmlEngine {
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
             '{{projectDir}}': this.projectDir,
-            '{{pageDir}}': this.pageDir,
             '{{installationLocation}}': this.installationLocation,
             '{{productName}}': this.productName,
             '{{icon}}': this.icon,
@@ -119,7 +116,6 @@ export class HtmlEngine {
             '{{supportLink}}': this.supportLink,
             '{{supportEmail}}': this.supportEmail,
             '{{comment}}': this.comment,
-            '{{sourceDir}}': this.sourceDir,
             '{{launchFile}}': this.launchFile,
             '{{runAsAdmin}}': this.runAsAdmin ? 'true' : 'false',
             '{{launchApp}}': this.launchApp ? 'true' : 'false',

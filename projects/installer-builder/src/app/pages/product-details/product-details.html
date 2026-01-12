@@ -36,7 +36,10 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Installation Location</label>
-                <input [field]="installerPropertyDataForm.installationLocation" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.installationLocation"
+                    class="input"
+                />
 
                 @if (installerPropertyDataForm.installationLocation().touched() &&
                 installerPropertyDataForm.installationLocation().invalid()) {
@@ -50,22 +53,11 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">Page Directory</label>
-                <input [field]="installerPropertyDataForm.pageDir" class="input" />
-
-                @if (installerPropertyDataForm.pageDir().touched() &&
-                installerPropertyDataForm.pageDir().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.pageDir().errors(); track error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
-                }
-            </div>
-
-            <div>
                 <label class="block text-sm font-medium text-gray-700">Product Name</label>
-                <input [field]="installerPropertyDataForm.productName" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.productName"
+                    class="input"
+                />
 
                 @if (installerPropertyDataForm.productName().touched() &&
                 installerPropertyDataForm.productName().invalid()) {
@@ -79,12 +71,18 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Icon</label>
-                <input [field]="installerPropertyDataForm.icon" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.icon"
+                    class="input"
+                />
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Product Version</label>
-                <input [field]="installerPropertyDataForm.productVersion" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.productVersion"
+                    class="input"
+                />
 
                 @if (installerPropertyDataForm.productVersion().touched() &&
                 installerPropertyDataForm.productVersion().invalid()) {
@@ -99,7 +97,10 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Publisher</label>
-                <input [field]="installerPropertyDataForm.publisher" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.publisher"
+                    class="input"
+                />
 
                 @if (installerPropertyDataForm.publisher().touched() &&
                 installerPropertyDataForm.publisher().invalid()) {
@@ -113,31 +114,26 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Support Link</label>
-                <input [field]="installerPropertyDataForm.supportLink" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.supportLink"
+                    class="input"
+                />
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Support Email</label>
-                <input [field]="installerPropertyDataForm.supportEmail" class="input" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Source Directory</label>
-                <input [field]="installerPropertyDataForm.sourceDir" class="input" />
-
-                @if (installerPropertyDataForm.sourceDir().touched() &&
-                installerPropertyDataForm.sourceDir().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.sourceDir().errors(); track error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
-                }
+                <input
+                    [field]="installerPropertyDataForm.supportEmail"
+                    class="input"
+                />
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Launch File</label>
-                <input [field]="installerPropertyDataForm.launchFile" class="input" />
+                <input
+                    [field]="installerPropertyDataForm.launchFile"
+                    class="input"
+                />
 
                 @if (installerPropertyDataForm.launchFile().touched() &&
                 installerPropertyDataForm.launchFile().invalid()) {
@@ -153,7 +149,11 @@
         <!-- Comment -->
         <div>
             <label class="block text-sm font-medium text-gray-700">Comment</label>
-            <textarea [field]="installerPropertyDataForm.comment" rows="3" class="input"></textarea>
+            <textarea
+                [field]="installerPropertyDataForm.comment"
+                rows="3"
+                class="input"
+            ></textarea>
         </div>
 
         <!-- Checkboxes -->
@@ -264,7 +264,7 @@
         <!-- Submit -->
         <div class="text-right">
             <button
-                (click)="saveInstallerDocument()"
+                (click)="onSaveInstallerConfig()"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
                 Save
@@ -272,3 +272,50 @@
         </div>
     </div>
 </div>
+
+<!-- Overlay -->
+@if(isOpenConfigNameInput()) {
+<div class="fixed inset-0 bg-gray-800/50 flex items-center justify-center z-50">
+    <!-- Dialog -->
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <h2 class="text-lg font-semibold mb-4">
+            {{ 'product-details.input-config-file' | translate }}
+        </h2>
+
+        <!-- Input group -->
+        <div class="flex">
+            <input
+                type="text"
+                [(ngModel)]="fileName"
+                placeholder="config"
+                class="flex-1 border border-r-0 border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            <!-- Suffix -->
+            <span
+                class="border border-gray-300 rounded-r-md px-3 py-2 bg-gray-100 text-gray-600 select-none"
+            >
+                .json
+            </span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2 mt-6">
+            <button
+                (click)="closeConfigNameInput()"
+                class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300"
+            >
+                Hủy
+            </button>
+
+            <button
+                (click)="confirmConfigNameInput()"
+                [disabled]="!fileName.trim()"
+                class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            >
+                Xác nhận
+            </button>
+        </div>
+    </div>
+</div>
+}

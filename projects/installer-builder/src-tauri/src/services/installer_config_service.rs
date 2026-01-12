@@ -1,12 +1,24 @@
-use crate::models::InstallerDocumentContent;
+use crate::models::InstallerDocumentConfig;
+use anyhow::{bail, Result};
+use std::path::Path;
 use tokio::fs;
 
-pub async fn save_installer_config(file_path: String, payload: InstallerDocumentContent) -> anyhow::Result<Option<bool>> {
-    // Serialize sang JSON
-    let json = serde_json::to_string_pretty(&payload)?;
+pub async fn save_installer_config(
+    file_path: String,
+    payload: InstallerDocumentConfig,
+) -> anyhow::Result<Option<bool>> {
+    let path = Path::new(&file_path);
 
-    // Ghi file async
+    let parent_dir = path
+        .parent()
+        .ok_or_else(|| anyhow::anyhow!("Đường dẫn file không hợp lệ"))?;
+
+    if !parent_dir.exists() {
+        bail!("Thư mục chưa tồn tại: {}", parent_dir.display());
+    }
+
+    let json = serde_json::to_string_pretty(&payload)?;
     fs::write(file_path.as_str(), json).await?;
 
-     Ok(Some(true))
+    Ok(Some(true))
 }

@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct InstallerProperties {
-    project_ir: String,
-    page_dir: String,
+    project_dir: String,
     installation_location: String, // install location
     product_name: String,          // app name
     icon: String,                  // icon
@@ -12,7 +12,6 @@ pub struct InstallerProperties {
     support_link: String,          // support link
     support_email: String,         // support email
     comment: String,               // comment
-    source_dir: String,            // source to compress
     launch_file: String,           // exe file
     run_as_admin: bool,            // run as administrator
     launch_app: bool,              // run app after install
@@ -21,14 +20,16 @@ pub struct InstallerProperties {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ShortcutInDesktop {
-    isc_reated: bool,
+    is_created: bool,
     run_as_admin: bool,
     shortcut_name: String,
     run_file: String,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ShortcutInApplicationShortcut {
     is_created: bool,
     run_as_admin: bool,
@@ -37,6 +38,7 @@ pub struct ShortcutInApplicationShortcut {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct InstallerDocumentContent {
-    pub installer_document: InstallerProperties,
+#[serde(rename_all = "camelCase")]
+pub struct InstallerDocumentConfig {
+    pub properties: InstallerProperties,
 }
