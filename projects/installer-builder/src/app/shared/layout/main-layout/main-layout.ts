@@ -4,7 +4,7 @@ import { NavItem } from './models/nav-item';
 import { filter } from 'rxjs';
 import { MainRoutes } from '../../../core/enums/routes.enum';
 import { TranslatePipe } from '@ngx-translate/core';
-import { WorkingConfigFileStore } from '../../stores/installer-document.store';
+import { WorkingConfigFileStore } from '../../stores/working-config.store';
 
 @Component({
     selector: 'app-main-layout',

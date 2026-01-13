@@ -14,13 +14,25 @@ export const WorkingConfigFileStore = signalStore(
     withState(initialState),
     withMethods((store) => {
         function update(updates: Partial<WorkingConfigFileState>) {
+            console.log(updates);
+            
             patchState(store, (currentState) => ({
                 ...updates,
             }));
         }
 
+        function getData() {
+            const data: WorkingConfigFileState = {
+                content: store.content(),
+                filePath: store.filePath(),
+                isDirty: store.isDirty(),
+            };
+            return data;
+        }
+
         return {
             update,
+            getData,
         };
     })
 );

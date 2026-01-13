@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TauriCommandService } from './tauri-command-service';
 import { Commands } from '../enums/commands';
-import { SaveInstallerDocument } from '../models/tauri-payloads/save-Installer-document';
+import {
+    InstallerDocumentConfig,
+    SaveInstallerDocument,
+} from '../models/tauri-payloads/save-Installer-document';
+import { WorkingConfigFileState } from '../models/installer-config.model';
 
 @Injectable({
     providedIn: 'root',
@@ -9,7 +13,7 @@ import { SaveInstallerDocument } from '../models/tauri-payloads/save-Installer-d
 export class InstallerConfigService {
     constructor(private tauriCommandService: TauriCommandService) {}
 
-    async saveDocument(data: SaveInstallerDocument): Promise<boolean> {
+    async saveInstallerDocumentConfig(data: SaveInstallerDocument): Promise<boolean> {
         const r = await this.tauriCommandService.invokeCommand<boolean>(
             Commands.SAVE_INSTALLER_CONFIG_COMMAND,
             data
@@ -17,5 +21,27 @@ export class InstallerConfigService {
         return r ?? false;
     }
 
-    async loadDocument() {}
+    async updateWorkingConfig(data: WorkingConfigFileState): Promise<boolean> {
+        const r = await this.tauriCommandService.invokeCommand<boolean>(
+            Commands.UPDATE_WORKING_CONFIG_COMMAND,
+            { data: data }
+        );
+        return r ?? false;
+    }
+
+    async loadWorkingConfig() {
+        const r = await this.tauriCommandService.invokeCommand<WorkingConfigFileState>(
+            Commands.LOAD_WORKING_CONFIG_COMMAND,
+            {}
+        );
+        return r;
+    }
+
+    async loadInstallerDocumentConfig(filePath: string) {
+        const r = await this.tauriCommandService.invokeCommand<InstallerDocumentConfig>(
+            Commands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
+            { filePath: filePath }
+        );
+        return r;
+    }
 }

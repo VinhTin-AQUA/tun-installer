@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { Field, form, readonly, required } from '@angular/forms/signals';
-import { WorkingConfigFileStore } from '../../shared/stores/installer-document.store';
+import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
 import { ToastService } from '../../core/services/toast-service';
 import { InstallerConfigService } from '../../core/services/installer-config-service';
 import { InstallerPropertyStore, InstallerProperties } from 'installer-core';
@@ -41,7 +41,7 @@ export class ProductDetails {
 
     constructor(
         private toastService: ToastService,
-        private installerDocumentService: InstallerConfigService
+        private installerConfigService: InstallerConfigService
     ) {
         effect(() => {
             const projectDir = this.installerPropertyDataModel().projectDir;
@@ -67,6 +67,85 @@ export class ProductDetails {
                 shortcutInApplicationShortcut:
                     this.installerPropertyDataModel().shortcutInApplicationShortcut,
             });
+        });
+    }
+
+    async ngOnInit() {
+        const r = await this.installerConfigService.loadWorkingConfig();
+        if (!r) {
+            return;
+        }
+        this.workingConfigFileStore.update(r);
+
+        if (!r.filePath) {
+            return;
+        }
+
+        const installerDocumentConfig =
+            await this.installerConfigService.loadInstallerDocumentConfig(r.filePath);
+        if (!installerDocumentConfig) {
+            return;
+        }
+
+        this.installerPropertyDataForm.comment().value.set('Hello');
+
+        this.installerPropertyDataForm
+            .projectDir()
+            .value.set(installerDocumentConfig.properties.projectDir);
+        this.installerPropertyDataForm
+            .installationLocation()
+            .value.set(installerDocumentConfig.properties.installationLocation);
+        this.installerPropertyDataForm
+            .productName()
+            .value.set(installerDocumentConfig.properties.productName);
+        this.installerPropertyDataForm.icon().value.set(installerDocumentConfig.properties.icon);
+        this.installerPropertyDataForm
+            .productVersion()
+            .value.set(installerDocumentConfig.properties.productVersion);
+        this.installerPropertyDataForm
+            .publisher()
+            .value.set(installerDocumentConfig.properties.publisher);
+        this.installerPropertyDataForm
+            .supportLink()
+            .value.set(installerDocumentConfig.properties.supportLink);
+        this.installerPropertyDataForm
+            .supportEmail()
+            .value.set(installerDocumentConfig.properties.supportEmail);
+        this.installerPropertyDataForm
+            .comment()
+            .value.set(installerDocumentConfig.properties.comment);
+        this.installerPropertyDataForm
+            .launchFile()
+            .value.set(installerDocumentConfig.properties.launchFile);
+        this.installerPropertyDataForm
+            .runAsAdmin()
+            .value.set(installerDocumentConfig.properties.runAsAdmin);
+        this.installerPropertyDataForm
+            .launchApp()
+            .value.set(installerDocumentConfig.properties.launchApp);
+        this.installerPropertyDataForm
+            .shortcutInDesktop()
+            .value.set(installerDocumentConfig.properties.shortcutInDesktop);
+        this.installerPropertyDataForm
+            .shortcutInApplicationShortcut()
+            .value.set(installerDocumentConfig.properties.shortcutInApplicationShortcut);
+
+        this.installerPropertyStore.update({
+            projectDir: installerDocumentConfig.properties.projectDir,
+            installationLocation: installerDocumentConfig.properties.installationLocation,
+            productName: installerDocumentConfig.properties.productName,
+            icon: installerDocumentConfig.properties.icon,
+            productVersion: installerDocumentConfig.properties.productVersion,
+            publisher: installerDocumentConfig.properties.publisher,
+            supportLink: installerDocumentConfig.properties.supportLink,
+            supportEmail: installerDocumentConfig.properties.supportEmail,
+            comment: installerDocumentConfig.properties.comment,
+            launchFile: installerDocumentConfig.properties.launchFile,
+            runAsAdmin: installerDocumentConfig.properties.runAsAdmin,
+            launchApp: installerDocumentConfig.properties.launchApp,
+            shortcutInDesktop: installerDocumentConfig.properties.shortcutInDesktop,
+            shortcutInApplicationShortcut:
+                installerDocumentConfig.properties.shortcutInApplicationShortcut,
         });
     }
 
@@ -208,7 +287,7 @@ export class ProductDetails {
                 this.fileName
             }.json`;
 
-        const r = await this.installerDocumentService.saveDocument({
+        const r = await this.installerConfigService.saveInstallerDocumentConfig({
             filePath: f,
             payload: {
                 properties: { ...this.installerPropertyStore.getData() },
@@ -225,5 +304,9 @@ export class ProductDetails {
             filePath: f,
             isDirty: false,
         });
+
+        const r2 = await this.installerConfigService.updateWorkingConfig(
+            this.workingConfigFileStore.getData()
+        );
     }
 }
