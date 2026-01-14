@@ -1,13 +1,11 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { Field, form, readonly, required } from '@angular/forms/signals';
-import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
+import { Component, inject, signal } from '@angular/core';
+import { Field } from '@angular/forms/signals';
 import { ToastService } from '../../core/services/toast-service';
-import { InstallerConfigService } from '../../core/services/installer-config-service';
-import { InstallerPropertyStore, InstallerProperties } from 'installer-core';
 import { FolderHelper } from '../../shared/helpers/folder.helper';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ProjectFolders } from '../../core/consts/folder.const';
+import { FileStateConfigService } from '../../core/services/file-state-config-service';
 
 @Component({
     selector: 'app-product-details',
@@ -16,137 +14,19 @@ import { ProjectFolders } from '../../core/consts/folder.const';
     styleUrl: './product-details.css',
 })
 export class ProductDetails {
-    workingConfigFileStore = inject(WorkingConfigFileStore);
-    installerPropertyStore = inject(InstallerPropertyStore);
-    installerPropertyDataModel = signal<InstallerProperties>(this.installerPropertyStore.getData());
-
-    installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
-        required(f.projectDir, { message: 'Project Directory is required' });
-        readonly(f.projectDir);
-        required(f.installationLocation, { message: 'Installation Location is required' });
-        required(f.productName, { message: 'Product Name is required' });
-        // required(f.icon);
-        required(f.productVersion, { message: 'Product Version is required' });
-        required(f.publisher, { message: 'Publisher is required' });
-        // required(f.supportLink);
-        // required(f.supportEmail);
-        // required(f.comment);
-        required(f.launchFile, { message: 'Launch File is required' });
-        // required(f.runAsAdmin);
-        // required(f.launchApp);
-    });
+    fileStateConfigService = inject(FileStateConfigService);
+    workingConfigFileStore = this.fileStateConfigService.workingConfigFileStore;
+    installerPropertyStore = this.fileStateConfigService.installerPropertyStore;
+    installerPropertyDataModel = this.fileStateConfigService.installerPropertyDataModel;
+    installerPropertyDataForm = this.fileStateConfigService.installerPropertyDataForm;
 
     isOpenConfigNameInput = signal<boolean>(false);
     fileName = '';
 
-    constructor(
-        private toastService: ToastService,
-        private installerConfigService: InstallerConfigService
-    ) {
-        effect(() => {
-            const projectDir = this.installerPropertyDataModel().projectDir;
-
-            this.workingConfigFileStore.update({
-                isDirty: true,
-            });
-
-            this.installerPropertyStore.update({
-                projectDir: projectDir,
-                installationLocation: this.installerPropertyDataModel().installationLocation,
-                productName: this.installerPropertyDataModel().productName,
-                icon: this.installerPropertyDataModel().icon,
-                productVersion: this.installerPropertyDataModel().productVersion,
-                publisher: this.installerPropertyDataModel().publisher,
-                supportLink: this.installerPropertyDataModel().supportLink,
-                supportEmail: this.installerPropertyDataModel().supportEmail,
-                comment: this.installerPropertyDataModel().comment,
-                launchFile: this.installerPropertyDataModel().launchFile,
-                runAsAdmin: this.installerPropertyDataModel().runAsAdmin,
-                launchApp: this.installerPropertyDataModel().launchApp,
-                shortcutInDesktop: this.installerPropertyDataModel().shortcutInDesktop,
-                shortcutInApplicationShortcut:
-                    this.installerPropertyDataModel().shortcutInApplicationShortcut,
-            });
-        });
-    }
+    constructor(private toastService: ToastService) {}
 
     async ngOnInit() {
-        const r = await this.installerConfigService.loadWorkingConfig();
-        if (!r) {
-            return;
-        }
-        this.workingConfigFileStore.update(r);
-
-        if (!r.filePath) {
-            return;
-        }
-
-        const installerDocumentConfig =
-            await this.installerConfigService.loadInstallerDocumentConfig(r.filePath);
-        if (!installerDocumentConfig) {
-            return;
-        }
-
-        this.installerPropertyDataForm.comment().value.set('Hello');
-
-        this.installerPropertyDataForm
-            .projectDir()
-            .value.set(installerDocumentConfig.properties.projectDir);
-        this.installerPropertyDataForm
-            .installationLocation()
-            .value.set(installerDocumentConfig.properties.installationLocation);
-        this.installerPropertyDataForm
-            .productName()
-            .value.set(installerDocumentConfig.properties.productName);
-        this.installerPropertyDataForm.icon().value.set(installerDocumentConfig.properties.icon);
-        this.installerPropertyDataForm
-            .productVersion()
-            .value.set(installerDocumentConfig.properties.productVersion);
-        this.installerPropertyDataForm
-            .publisher()
-            .value.set(installerDocumentConfig.properties.publisher);
-        this.installerPropertyDataForm
-            .supportLink()
-            .value.set(installerDocumentConfig.properties.supportLink);
-        this.installerPropertyDataForm
-            .supportEmail()
-            .value.set(installerDocumentConfig.properties.supportEmail);
-        this.installerPropertyDataForm
-            .comment()
-            .value.set(installerDocumentConfig.properties.comment);
-        this.installerPropertyDataForm
-            .launchFile()
-            .value.set(installerDocumentConfig.properties.launchFile);
-        this.installerPropertyDataForm
-            .runAsAdmin()
-            .value.set(installerDocumentConfig.properties.runAsAdmin);
-        this.installerPropertyDataForm
-            .launchApp()
-            .value.set(installerDocumentConfig.properties.launchApp);
-        this.installerPropertyDataForm
-            .shortcutInDesktop()
-            .value.set(installerDocumentConfig.properties.shortcutInDesktop);
-        this.installerPropertyDataForm
-            .shortcutInApplicationShortcut()
-            .value.set(installerDocumentConfig.properties.shortcutInApplicationShortcut);
-
-        this.installerPropertyStore.update({
-            projectDir: installerDocumentConfig.properties.projectDir,
-            installationLocation: installerDocumentConfig.properties.installationLocation,
-            productName: installerDocumentConfig.properties.productName,
-            icon: installerDocumentConfig.properties.icon,
-            productVersion: installerDocumentConfig.properties.productVersion,
-            publisher: installerDocumentConfig.properties.publisher,
-            supportLink: installerDocumentConfig.properties.supportLink,
-            supportEmail: installerDocumentConfig.properties.supportEmail,
-            comment: installerDocumentConfig.properties.comment,
-            launchFile: installerDocumentConfig.properties.launchFile,
-            runAsAdmin: installerDocumentConfig.properties.runAsAdmin,
-            launchApp: installerDocumentConfig.properties.launchApp,
-            shortcutInDesktop: installerDocumentConfig.properties.shortcutInDesktop,
-            shortcutInApplicationShortcut:
-                installerDocumentConfig.properties.shortcutInApplicationShortcut,
-        });
+        await this.fileStateConfigService.openFileConfig(this.workingConfigFileStore.filePath());
     }
 
     async onSaveInstallerConfig() {
@@ -156,7 +36,7 @@ export class ProductDetails {
         }
 
         if (!this.workingConfigFileStore.filePath()) {
-            this.openConfigNameInpu();
+            this.openConfigNameInput();
             return;
         }
 
@@ -167,7 +47,6 @@ export class ProductDetails {
         const folder = await FolderHelper.selectFolder();
 
         if (!folder) {
-            this.toastService.show('Error when select folder. Please again', 'error');
             return;
         }
 
@@ -181,7 +60,7 @@ export class ProductDetails {
         }
     }
 
-    openConfigNameInpu() {
+    openConfigNameInput() {
         this.fileName = '';
         this.isOpenConfigNameInput.set(true);
     }
@@ -287,7 +166,7 @@ export class ProductDetails {
                 this.fileName
             }.json`;
 
-        const r = await this.installerConfigService.saveInstallerDocumentConfig({
+        const r = await this.fileStateConfigService.updateFileContent({
             filePath: f,
             payload: {
                 properties: { ...this.installerPropertyStore.getData() },
@@ -305,7 +184,7 @@ export class ProductDetails {
             isDirty: false,
         });
 
-        const r2 = await this.installerConfigService.updateWorkingConfig(
+        const r2 = await this.fileStateConfigService.updateFileState(
             this.workingConfigFileStore.getData()
         );
     }

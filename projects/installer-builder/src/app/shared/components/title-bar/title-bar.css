@@ -115,7 +115,7 @@
     z-index: 9999;
 
     transform-origin: top left;
-    animation: menuZoomIn 0.18s ease-out forwards;
+    animation: menuZoomIn 0.1s ease-out forwards;
 }
 
 .menu-item {

@@ -14,8 +14,6 @@ export const WorkingConfigFileStore = signalStore(
     withState(initialState),
     withMethods((store) => {
         function update(updates: Partial<WorkingConfigFileState>) {
-            console.log(updates);
-            
             patchState(store, (currentState) => ({
                 ...updates,
             }));

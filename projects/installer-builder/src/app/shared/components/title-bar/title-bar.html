@@ -4,12 +4,11 @@
         <span class="app-name">MyApp</span>
 
         <div class="menu-wrapper">
-            <button class="tb-btn ghost" (click)="toggleMenu('file')">File</button>
+            <button class="tb-btn ghost" (click)="toggleMenu('file', $event)">File</button>
 
             @if (openMenu === 'file') {
-            <div class="menu" (appClickOutside)="toggleMenu('file')">
-                <div class="menu-item">New File</div>
-                <div class="menu-item">Open…</div>
+            <div class="menu" (appClickOutside)="openMenu = null">
+                <div class="menu-item" (click)="openFile()">Open…</div>
                 <div class="menu-item">Save</div>
                 <div class="menu-item">Save As…</div>
                 <div class="menu-separator"></div>
@@ -19,7 +18,7 @@
         </div>
 
         <div class="menu-wrapper">
-            <button class="tb-btn ghost" (click)="toggleMenu('edit')">Edit</button>
+            <button class="tb-btn ghost" (click)="toggleMenu('edit', $event)">Edit</button>
 
             @if (openMenu === 'edit') {
             <div class="menu" (appClickOutside)="openMenu = null">
@@ -34,7 +33,7 @@
         </div>
 
         <div class="menu-wrapper">
-            <button class="tb-btn ghost" (click)="toggleMenu('view')">View</button>
+            <button class="tb-btn ghost" (click)="toggleMenu('view', $event)">View</button>
 
             @if (openMenu === 'view') {
             <div class="menu" (appClickOutside)="openMenu = null">
