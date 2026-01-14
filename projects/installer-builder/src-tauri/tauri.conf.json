@@ -13,12 +13,13 @@
         "windows": [
             {
                 "title": "Installer Builder",
-                "width": 1200,
-                "height": 700,
+                "width": 600,
+                "height": 400,
                 "resizable": true,
                 "fullscreen": false,
                 "center": true,
-                "maximized": true
+                "maximized": false,
+                "decorations": false
             }
         ],
         "security": {

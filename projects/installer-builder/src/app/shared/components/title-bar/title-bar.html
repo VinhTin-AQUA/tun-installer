@@ -1,0 +1,70 @@
+<div class="title-bar">
+    <!-- LEFT (drag region) -->
+    <div class="title-left" data-tauri-drag-region>
+        <span class="app-name">MyApp</span>
+
+        <div class="menu-wrapper">
+            <button class="tb-btn ghost" (click)="toggleMenu('file')">File</button>
+
+            @if (openMenu === 'file') {
+            <div class="menu" (appClickOutside)="toggleMenu('file')">
+                <div class="menu-item">New File</div>
+                <div class="menu-item">Open…</div>
+                <div class="menu-item">Save</div>
+                <div class="menu-item">Save As…</div>
+                <div class="menu-separator"></div>
+                <div class="menu-item danger">Close File</div>
+            </div>
+            }
+        </div>
+
+        <div class="menu-wrapper">
+            <button class="tb-btn ghost" (click)="toggleMenu('edit')">Edit</button>
+
+            @if (openMenu === 'edit') {
+            <div class="menu" (appClickOutside)="openMenu = null">
+                <div class="menu-item">Undo</div>
+                <div class="menu-item">Redo</div>
+                <div class="menu-separator"></div>
+                <div class="menu-item">Cut</div>
+                <div class="menu-item">Copy</div>
+                <div class="menu-item">Paste</div>
+            </div>
+            }
+        </div>
+
+        <div class="menu-wrapper">
+            <button class="tb-btn ghost" (click)="toggleMenu('view')">View</button>
+
+            @if (openMenu === 'view') {
+            <div class="menu" (appClickOutside)="openMenu = null">
+                <div class="menu-item">Zoom In</div>
+                <div class="menu-item">Zoom Out</div>
+                <div class="menu-item">Reset Zoom</div>
+                <div class="menu-separator"></div>
+                <div class="menu-item">Toggle Sidebar</div>
+                <div class="menu-item">Fullscreen</div>
+            </div>
+            }
+        </div>
+
+        <!-- FILE INFO -->
+        @if(currentFile) {
+        <div class="file-info">
+            <span class="file-name">{{ currentFile }}</span>
+            <span class="file-status" [class.dirty]="isDirty">
+                {{ isDirty ? '● Unsaved' : 'Saved' }}
+            </span>
+        </div>
+        } @else {
+        <ng-template> <span class="file-placeholder">No document opened</span> </ng-template>}
+    </div>
+
+    <!-- RIGHT -->
+    <div class="title-right">
+        <button class="tb-btn icon" title="Settings" (click)="openSettings()">⚙</button>
+        <button class="tb-btn icon" title="Minimize" (click)="minimize()">─</button>
+        <button class="tb-btn icon" title="Maximize" (click)="toggleMaximize()">☐</button>
+        <button class="tb-btn icon close" title="Close" (click)="close()">✕</button>
+    </div>
+</div>

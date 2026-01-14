@@ -5,10 +5,11 @@ import { filter } from 'rxjs';
 import { MainRoutes } from '../../../core/enums/routes.enum';
 import { TranslatePipe } from '@ngx-translate/core';
 import { WorkingConfigFileStore } from '../../stores/working-config.store';
+import { TitleBar } from "../../components/title-bar/title-bar";
 
 @Component({
     selector: 'app-main-layout',
-    imports: [RouterOutlet, RouterLink, TranslatePipe, RouterLinkActive],
+    imports: [RouterOutlet, RouterLink, TranslatePipe, RouterLinkActive, TitleBar],
     templateUrl: './main-layout.html',
     styleUrl: './main-layout.css',
 })

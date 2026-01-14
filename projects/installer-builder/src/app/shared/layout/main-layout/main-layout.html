@@ -1,6 +1,6 @@
 <div class="h-screen flex flex-col bg-gray-100">
     <!-- Header -->
-    <header class="h-10 bg-white shadow flex items-center gap-2 px-6 shrink-0">
+    <!-- <header class="h-10 bg-white shadow flex items-center gap-2 px-6 shrink-0">
         <h1 class="text-xl font-semibold">My App</h1>
         <div class="font-semibold">
             @if(!installerDocumentStore.filePath()) {
@@ -11,7 +11,9 @@
             } @else { <span>{{ installerDocumentStore.filePath() }}</span
             >}
         </div>
-    </header>
+    </header> -->
+
+    <app-title-bar></app-title-bar>
 
     <!-- Body -->
     <div class="flex flex-1 overflow-hidden">
