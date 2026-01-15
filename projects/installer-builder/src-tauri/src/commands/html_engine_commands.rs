@@ -3,8 +3,8 @@ use tauri::{AppHandle, WebviewUrl, WebviewWindowBuilder, command};
 
 
 #[command]
-pub async fn load_html_pages_command() -> Result<Option<Vec<HtmlPage>>, String> {
-    let pages = load_html_pages().await.map_err(|e| e.to_string());
+pub async fn load_html_pages_command(project_dir: String) -> Result<Option<Vec<HtmlPage>>, String> {
+    let pages = load_html_pages(project_dir).await.map_err(|e| e.to_string());
     return pages;
 }
 

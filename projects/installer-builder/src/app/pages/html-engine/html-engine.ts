@@ -1,8 +1,10 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { HtmlPage } from '../../core/models/html-page';
 import { Commands } from '../../core/enums/commands';
 import { InstallerPropertyStore } from 'installer-core';
+import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
     selector: 'app-html-engine',
@@ -11,11 +13,10 @@ import { InstallerPropertyStore } from 'installer-core';
     styleUrl: './html-engine.css',
 })
 export class HtmlEngine {
-    @ViewChild('viewer', { static: true })
-    iframe!: ElementRef<HTMLIFrameElement>;
+    @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
+
     htmlPages: HtmlPage[] = [];
     index = 0;
-
     installerPropertyStore = inject(InstallerPropertyStore);
 
     projectDir = this.installerPropertyStore.projectDir();
@@ -31,27 +32,54 @@ export class HtmlEngine {
     runAsAdmin = this.installerPropertyStore.runAsAdmin();
     launchApp = this.installerPropertyStore.launchApp();
 
-    constructor(private tauriCommandService: TauriCommandService) {}
+    iframeWidth = signal<number>(800);
+    iframeHeight = signal<number>(500);
+
+    constructor(
+        private tauriCommandService: TauriCommandService,
+        private toastService: ToastService
+    ) {}
 
     async ngOnInit() {
-        this.installerPropertyStore.update({
-            productName: 'MyApp',
-            productVersion: '1.0.1',
-        });
+        // this.installerPropertyStore.update({
+        //     productName: 'MyApp',
+        //     productVersion: '1.0.1',
+        // });
+    }
 
+    async ngAfterViewInit() {
         await this.loadPages();
     }
 
-    ngAfterViewInit() {}
-
     async loadPages() {
-        const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
+        if (!this.projectDir) {
+            this.toastService.show('Please choose or create new config', 'error');
+            return;
+        }
+
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectDir };
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             Commands.LOAD_HTML_PAGES_COMMAND,
-            {}
+            loadHtmlPage
         );
 
         if (!pages) {
-            return;
+            pages = [
+                {
+                    name: 'no-name',
+                    content: `
+                    <div style="
+                        width: 100vw;
+                        height: 100vh;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    ">
+                        <span>No HTML Pages found</span>
+                    </div>
+                    `,
+                },
+            ];
         }
 
         for (let page of pages) {
@@ -103,6 +131,14 @@ export class HtmlEngine {
             width: 1200,
             height: 700,
         });
+    }
+
+    updateFrameWidth(event: any) {
+        this.iframeWidth.set(event.target.value);
+    }
+
+    updateFrameHeight(event: any) {
+        this.iframeHeight.set(event.target.value);
     }
 
     private propDataBindind(text: string): string {

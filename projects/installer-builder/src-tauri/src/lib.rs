@@ -2,6 +2,7 @@ mod commands;
 mod models;
 mod services;
 mod states;
+mod consts;
 use std::sync::Mutex;
 
 use commands::*;

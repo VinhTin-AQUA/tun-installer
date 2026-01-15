@@ -1,14 +1,26 @@
+use std::path::{Path, PathBuf};
+
+use anyhow::bail;
 use tokio::fs;
 
-use crate::models::HtmlPage;
+use crate::{consts, models::HtmlPage};
 
 // pub struct HtmlEngine {}
 
-pub async fn load_html_pages() -> anyhow::Result<Option<Vec<HtmlPage>>> {
-    let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
-    let mut result: Vec<HtmlPage> = Vec::new();
+pub async fn load_html_pages(project_dir: String) -> anyhow::Result<Option<Vec<HtmlPage>>> {
+    // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
-    let mut dir = fs::read_dir(folder_path).await?;
+    let mut page_dir = PathBuf::from(project_dir);
+    page_dir.push(consts::HTML_PAGE);
+
+    // let page_dir = Path::new(&page_dir);
+
+    if !page_dir.exists() {
+        bail!("Thư mục {} không tồn tại", page_dir.display())
+    }
+
+    let mut result: Vec<HtmlPage> = Vec::new();
+    let mut dir = fs::read_dir(&page_dir).await?;
 
     while let Some(entry) = dir.next_entry().await? {
         let path = entry.path();
@@ -17,8 +29,8 @@ pub async fn load_html_pages() -> anyhow::Result<Option<Vec<HtmlPage>>> {
         if path.is_file() {
             let file_name = path
                 .file_name()
-                .unwrap_or_default()
-                .to_string_lossy()
+                .and_then(|s| s.to_str())
+                .unwrap_or("")
                 .to_string();
 
             let content = fs::read_to_string(&path).await?;

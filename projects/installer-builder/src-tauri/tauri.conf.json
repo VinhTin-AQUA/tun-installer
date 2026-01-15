@@ -18,7 +18,7 @@
                 "resizable": true,
                 "fullscreen": false,
                 "center": true,
-                "maximized": false,
+                "maximized": true,
                 "decorations": false
             }
         ],

@@ -12,6 +12,7 @@ import { FileStateConfigService } from '../../../core/services/file-state-config
     styleUrl: './title-bar.css',
 })
 export class TitleBar {
+    appName = "Tun Installer";
     private appWindow = getCurrentWindow();
 
     currentFile: string | null = null;
