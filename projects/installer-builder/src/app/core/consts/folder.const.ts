@@ -1,5 +1,5 @@
 export const ProjectFolders = {
-    sources: 'sources',
+    resources: 'resources',
     pages: 'pages',
     prerequisites: 'prerequisites',
     configs: 'configs',

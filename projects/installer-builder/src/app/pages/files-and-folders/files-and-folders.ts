@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FolderNode, FileItem } from './models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'installer-core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { Commands } from '../../core/enums/commands';
+import { ProjectFolders } from '../../core/consts/folder.const';
 
 @Component({
     selector: 'app-files-and-folders',
@@ -12,10 +13,10 @@ import { Commands } from '../../core/enums/commands';
     styleUrl: './files-and-folders.css',
 })
 export class FilesAndFolders {
-    folders: FolderNode[] = [
+    folders = signal<FolderNode[]>([
         {
-            id: 'build-dir',
-            name: 'Build Dir',
+            id: 'Resources',
+            name: 'resources',
             expanded: false,
             children: [],
         },
@@ -29,24 +30,9 @@ export class FilesAndFolders {
             id: 'root',
             name: 'Root',
             expanded: false,
-            children: [
-                {
-                    id: 'docs',
-                    name: 'Documents',
-                    children: [
-                        { id: 'reports', name: 'Reports', expanded: false },
-                        { id: 'letters', name: 'Letters', expanded: false },
-                    ],
-                    expanded: false,
-                },
-                {
-                    id: 'images',
-                    name: 'Images',
-                    expanded: false,
-                },
-            ],
+            children: [],
         },
-    ];
+    ]);
 
     files: FileItem[] = [
         {
@@ -75,6 +61,9 @@ export class FilesAndFolders {
         },
     ];
 
+    resourceFolder: string = '';
+    prerequisites: string = '';
+
     selectedFolderId: string = 'root';
     openedMenuFileId?: string;
     installerProperties = inject(InstallerPropertyStore);
@@ -82,18 +71,43 @@ export class FilesAndFolders {
     constructor(private tauriCommandService: TauriCommandService) {}
 
     async ngOnInit() {
-        const folders = await this.tauriCommandService.invokeCommand(Commands.READ_SUBFOLDERS_COMMAND, {
-            path: this.installerProperties.projectDir(),
-        });
+        this.resourceFolder = `${this.installerProperties.projectDir()}/${ProjectFolders.resources}`;
+        this.prerequisites = `${this.installerProperties.projectDir()}/${ProjectFolders.prerequisites}`;
 
-        console.log(folders);
-        
+        const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
+            Commands.READ_SUBFOLDERS_COMMAND,
+            {
+                path: this.resourceFolder,
+            },
+        );
+
+        if (!resources) {
+            return;
+        }
+
+        this.folders.update((x) => {
+            x[0].children = resources;
+            return x;
+        });
     }
 
     selectFolder(folder: FolderNode) {
         folder.expanded = !folder.expanded;
         this.selectedFolderId = folder.id;
         this.openedMenuFileId = undefined;
+    }
+
+    async getFilesInFolder(folder: string) {
+        const files = await this.tauriCommandService.invokeCommand<FolderNode[]>(
+            Commands.READ_FILES_IN_FOLDER_COMMAND,
+            {
+                path: `${this.installerProperties.projectDir()}/${folder}`,
+            },
+        );
+
+        if (!files) {
+            return;
+        }
     }
 
     get filesInSelectedFolder(): FileItem[] {
