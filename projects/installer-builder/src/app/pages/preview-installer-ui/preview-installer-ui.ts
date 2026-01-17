@@ -46,7 +46,7 @@ export class PreviewInstallerUi {
 
     async loadPages() {
         const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
-            Commands.LOAD_HTML_PAGES_COMMAND,
+            Commands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
             {}
         );
 

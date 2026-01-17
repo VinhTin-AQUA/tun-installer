@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "projectDir": "C:\\Users\\tinhv\\Desktop\\f\\tun-installer\\examples\\test-project",
+    "installationLocation": "C:/ProgramFiles",
+    "productName": "Your App",
+    "icon": "icon.ico",
+    "productVersion": "1.0.0",
+    "publisher": "Your Company",
+    "supportLink": "https://example.com/",
+    "supportEmail": "example@gmail.com",
+    "comment": "Your comment",
+    "launchFile": "your-app.exe",
+    "runAsAdmin": true,
+    "launchApp": false,
+    "shortcutInDesktop": {
+      "isCreated": true,
+      "runAsAdmin": false,
+      "shortcutName": "Your App",
+      "runFile": "your-app.exe"
+    },
+    "shortcutInApplicationShortcut": {
+      "isCreated": false,
+      "runAsAdmin": false,
+      "shortcutName": "Your App",
+      "runFile": "your-app.exe"
+    }
+  }
+}

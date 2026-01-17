@@ -1,4 +1,47 @@
 <div class="h-screen flex">
+    <!-- RIGHT SIDEBAR (LUÔN HIỂN THỊ) -->
+    <div class="w-40 border-l bg-gray-50 flex flex-col">
+        <div class="px-4 py-3 font-semibold border-b">Pages</div>
+
+        <div class="p-3 space-y-4 overflow-y-auto bg-white text-sm">
+            <!-- First Time Install -->
+            <div class="text-[11px] font-semibold text-gray-800 uppercase tracking-wider">
+                First Time Install
+            </div>
+
+            <ul class="space-y-1">
+                @for (firstInstallPage of firstInstallPages(); track $index) {
+                    <li>
+                        <button
+                            (click)="loadPage(firstInstallPage.name, 'firstInstall')"
+                            class="w-full text-left px-2 py-1.5 rounded text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                        >
+                            {{ firstInstallPage.name }}
+                        </button>
+                    </li>
+                }
+            </ul>
+
+            <!-- Maintenance -->
+            <div class="text-[11px] font-semibold text-gray-800 uppercase tracking-wider">
+                Maintenance
+            </div>
+
+            <ul class="space-y-1">
+                @for (maintenancePage of maintenancePages(); track $index) {
+                    <li>
+                        <button
+                            (click)="loadPage(maintenancePage.name, 'maintenance')"
+                            class="w-full text-left px-2 py-1.5 rounded text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                        >
+                            {{ maintenancePage.name }}
+                        </button>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
     <!-- MAIN CONTENT -->
     <div class="flex-1 flex flex-col items-center justify-center overflow-hidden bg-gray-300">
         <iframe
@@ -10,27 +53,33 @@
     </div>
 
     <!-- RIGHT SIDEBAR (LUÔN HIỂN THỊ) -->
-    <div class="w-80 border-l bg-gray-50 flex flex-col">
+    <div class="w-50 border-l bg-gray-50 flex flex-col">
         <div class="px-4 py-3 font-semibold border-b">Editor Panel</div>
 
         <div class="p-4 space-y-4 overflow-y-auto">
             <div class="grid grid-cols-2 gap-2">
                 <div>
-                    <label class="block text-sm font-medium mb-1"> Width </label>
+                    <label class="block text-sm font-medium"> Width </label>(<small
+                        class="font-semibold text-[0.7rem]"
+                        >600px-800px</small
+                    >)
                     <input
                         type="number"
                         class="w-full px-3 py-2 border rounded"
-                        [value]="iframeWidth()"
+                        [value]="800"
                         (input)="updateFrameWidth($event)"
                     />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-1"> Height </label>
+                    <label class="block text-sm font-medium"> Height </label>(<small
+                        class="font-semibold text-[0.7rem]"
+                        >400px-600px</small
+                    >)
                     <input
                         type="number"
                         class="w-full px-3 py-2 border rounded"
-                        [value]="iframeHeight()"
-                       (input)="updateFrameHeight($event)"
+                        [value]="600"
+                        (input)="updateFrameHeight($event)"
                     />
                 </div>
             </div>

@@ -3,8 +3,8 @@ export {};
 declare global {
     interface Window {
         App: {
-            next: () => void;
-            prev: () => void;
+            next: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
+            prev: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
             save: (data: any) => Promise<void>;
             logData: () => void;
         };
