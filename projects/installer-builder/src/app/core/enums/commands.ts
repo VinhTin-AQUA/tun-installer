@@ -8,4 +8,6 @@ export enum Commands {
     LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND = 'load_installer_document_config_command',
     LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND = 'load_html_first_time_install_pages_command',
     LOAD_HTML_MAINTENANCE_PAGES_COMMAND = 'load_html_maintenance_pages_command',
+    READ_SUBFOLDERS_COMMAND = 'read_subfolders_command',
+    READ_FILES_IN_FOLDER_COMMAND = 'read_files_in_folder_command',
 }

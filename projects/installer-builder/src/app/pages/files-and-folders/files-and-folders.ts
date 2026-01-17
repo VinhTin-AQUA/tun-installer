@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FolderNode, FileItem } from './models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { InstallerPropertyStore } from 'installer-core';
+import { TauriCommandService } from '../../core/services/tauri-command-service';
+import { Commands } from '../../core/enums/commands';
 
 @Component({
     selector: 'app-files-and-folders',
@@ -74,6 +77,18 @@ export class FilesAndFolders {
 
     selectedFolderId: string = 'root';
     openedMenuFileId?: string;
+    installerProperties = inject(InstallerPropertyStore);
+
+    constructor(private tauriCommandService: TauriCommandService) {}
+
+    async ngOnInit() {
+        const folders = await this.tauriCommandService.invokeCommand(Commands.READ_SUBFOLDERS_COMMAND, {
+            path: this.installerProperties.projectDir(),
+        });
+
+        console.log(folders);
+        
+    }
 
     selectFolder(folder: FolderNode) {
         folder.expanded = !folder.expanded;

@@ -3,3 +3,6 @@ pub use html_page::*;
 
 pub mod installer_config;
 pub use installer_config::*;
+
+pub mod resource_folder;
+pub use resource_folder::*;
