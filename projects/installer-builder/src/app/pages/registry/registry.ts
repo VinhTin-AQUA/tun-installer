@@ -1,6 +1,13 @@
-import { Component } from '@angular/core';
-import { RegistryEntry } from './models/registry-entry';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {
+    InstallerPropertyStore,
+    RegistryKeyStore,
+    RegistryValue,
+    RegistryValueType,
+} from 'installer-core';
+import { FileStateConfigService } from '../../core/services/file-state-config-service';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
     selector: 'app-registry',
@@ -13,28 +20,92 @@ export class Registry {
     uninstallRegistry =
         'Computer\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall'; //  + publisher\\appName
 
-    // Mảng mặc định
-    configRegistryEntries: RegistryEntry[] = [
-        { name: 'PostgreSQL', type: 'String', data: '17.5-3' },
-        { name: 'MyApp', type: 'DWORD', data: '1' },
+    configRegistryEntries: RegistryValue[] = [
+        { name: 'PostgreSQL', type: RegistryValueType.REG_DWORD, data: '17.5-3' },
+        { name: 'MyApp', type: RegistryValueType.REG_DWORD, data: '1' },
     ];
 
-    uninstallRegistryEntries: RegistryEntry[] = [
-        { name: 'PostgreSQL 17', type: 'String', data: 'C:\\Program Files\\PostgreSQL\\17' },
-        { name: 'MyApp', type: 'String', data: 'C:\\Program Files\\MyApp' },
+    uninstallRegistryEntries: RegistryValue[] = [
+        {
+            name: 'PostgreSQL 17',
+            type: RegistryValueType.REG_DWORD,
+            data: 'C:\\Program Files\\PostgreSQL\\17',
+        },
+        {
+            name: 'MyApp',
+            type: RegistryValueType.REG_DWORD,
+            data: 'C:\\Program Files\\MyApp',
+        },
     ];
 
-    // Gợi ý mặc định
     nameSuggestions = ['PostgreSQL', 'MyApp', 'NodeJS', 'Python'];
-    typeOptions = ['String', 'DWORD', 'QWORD', 'Binary'];
+    typeOptions =  Object.values(RegistryValueType);
     dataSuggestions = ['1', '0', 'C:\\Program Files\\', '17.5-3'];
+    registryKeyStore = inject(RegistryKeyStore);
+    installerPropertyStore = inject(InstallerPropertyStore);
 
-    // Thêm giá trị mới
+    constructor(
+        private fileStateConfigService: FileStateConfigService,
+        private toastService: ToastService,
+    ) {}
+
     addConfigEntry() {
-        this.configRegistryEntries.push({ name: '', type: 'String', data: '' });
+        this.configRegistryEntries.push({
+            name: '',
+            type: RegistryValueType.REG_DWORD,
+            data: '',
+        });
     }
 
     addUninstallEntry() {
-        this.uninstallRegistryEntries.push({ name: '', type: 'String', data: '' });
+        this.uninstallRegistryEntries.push({
+            name: '',
+            type: RegistryValueType.REG_DWORD,
+            data: '',
+        });
+    }
+
+    removeConfigEntry(name: string) {
+        const index = this.configRegistryEntries.findIndex((item) => item.name === name);
+        if (index !== -1) {
+            this.configRegistryEntries.splice(index, 1);
+        }
+    }
+
+    removeUninstallEntry(name: string) {
+        const index = this.uninstallRegistryEntries.findIndex((item) => item.name === name);
+        if (index !== -1) {
+            this.uninstallRegistryEntries.splice(index, 1);
+        }
+    }
+
+    async saveEntryConfig() {
+        const registryName = [
+            this.installerPropertyStore.publisher(),
+            this.installerPropertyStore.productName(),
+        ].join('\\');
+        const configRegistryPath = `${this.configRegistry}\\${registryName}`;
+        const uninstallRegistryPath = `${this.uninstallRegistry}\\${registryName}`;
+
+        this.registryKeyStore.updateRegistry({
+            configRegistry: {
+                name: registryName,
+                path: configRegistryPath,
+                values: this.configRegistryEntries,
+            },
+            uninstallRegistry: {
+                name: registryName,
+                path: uninstallRegistryPath,
+                values: this.uninstallRegistryEntries,
+            },
+        });
+
+        console.log(this.registryKeyStore.getData());
+
+        const r = await this.fileStateConfigService.saveInstallerConfig('');
+
+        if (r) {
+            this.toastService.show('Success', 'success');
+        }
     }
 }

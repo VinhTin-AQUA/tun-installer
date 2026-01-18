@@ -1,7 +1,8 @@
-import { InstallerProperties } from 'installer-core';
+import { InstallerProperties, RegistryKeys } from 'installer-core';
 
 export interface InstallerDocumentConfig {
     properties: InstallerProperties;
+    registryKeys: RegistryKeys;
 }
 
 export interface SaveInstallerDocument {

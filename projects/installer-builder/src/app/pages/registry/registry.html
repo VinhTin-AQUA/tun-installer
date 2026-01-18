@@ -9,37 +9,53 @@
                     <th class="border px-4 py-2 text-left">Name</th>
                     <th class="border px-4 py-2 text-left">Type</th>
                     <th class="border px-4 py-2 text-left">Data</th>
+                    <th class="border px-4 py-2 text-left"></th>
                 </tr>
             </thead>
             <tbody>
                 @for (entry of configRegistryEntries; track $index) {
-                <tr class="hover:bg-gray-50">
-                    <td class="border px-4 py-2">
-                        <input
-                            list="nameList"
-                            [(ngModel)]="entry.name"
-                            class="w-full border rounded px-2 py-1"
-                        />
-                        <datalist id="nameList">
-                            <option *ngFor="let n of nameSuggestions" [value]="n"></option>
-                        </datalist>
-                    </td>
-                    <td class="border px-4 py-2">
-                        <select [(ngModel)]="entry.type" class="w-full border rounded px-2 py-1">
-                            <option *ngFor="let t of typeOptions" [value]="t">{{ t }}</option>
-                        </select>
-                    </td>
-                    <td class="border px-4 py-2">
-                        <input
-                            list="dataList"
-                            [(ngModel)]="entry.data"
-                            class="w-full border rounded px-2 py-1"
-                        />
-                        <datalist id="dataList">
-                            <option *ngFor="let d of dataSuggestions" [value]="d"></option>
-                        </datalist>
-                    </td>
-                </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="border px-4 py-2">
+                            <input
+                                list="nameList"
+                                [(ngModel)]="entry.name"
+                                class="w-full border rounded px-2 py-1"
+                            />
+                            <datalist id="nameList">
+                                @for (n of nameSuggestions; track $index) {
+                                    <option [value]="n">{{ n }}</option>
+                                }
+                            </datalist>
+                        </td>
+                        <td class="border px-4 py-2">
+                            <select
+                                [(ngModel)]="entry.type"
+                                class="w-full border rounded px-2 py-1"
+                            >
+                                @for (t of typeOptions; track $index) {
+                                    <option [value]="t">{{ t }}</option>
+                                }
+                            </select>
+                        </td>
+                        <td class="border px-4 py-2">
+                            <input
+                                list="dataList"
+                                [(ngModel)]="entry.data"
+                                class="w-full border rounded px-2 py-1"
+                            />
+                            <datalist id="dataList">
+                                @for (d of dataSuggestions; track $index) {
+                                    <option [value]="d">{{ d }}</option>
+                                }
+                            </datalist>
+                        </td>
+
+                        <td class="border px-4 py-2">
+                            <button (click)="removeConfigEntry(entry.name)" class="bg-red-400">
+                                delete
+                            </button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -61,31 +77,42 @@
                     <th class="border px-4 py-2 text-left">Name</th>
                     <th class="border px-4 py-2 text-left">Type</th>
                     <th class="border px-4 py-2 text-left">Data</th>
+                    <th class="border px-4 py-2 text-left"></th>
                 </tr>
             </thead>
             <tbody>
                 @for (entry of uninstallRegistryEntries; track $index) {
-                <tr class="hover:bg-gray-50">
-                    <td class="border px-4 py-2">
-                        <input
-                            list="nameList"
-                            [(ngModel)]="entry.name"
-                            class="w-full border rounded px-2 py-1"
-                        />
-                    </td>
-                    <td class="border px-4 py-2">
-                        <select [(ngModel)]="entry.type" class="w-full border rounded px-2 py-1">
-                            <option *ngFor="let t of typeOptions" [value]="t">{{ t }}</option>
-                        </select>
-                    </td>
-                    <td class="border px-4 py-2">
-                        <input
-                            list="dataList"
-                            [(ngModel)]="entry.data"
-                            class="w-full border rounded px-2 py-1"
-                        />
-                    </td>
-                </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="border px-4 py-2">
+                            <input
+                                list="nameList"
+                                [(ngModel)]="entry.name"
+                                class="w-full border rounded px-2 py-1"
+                            />
+                        </td>
+                        <td class="border px-4 py-2">
+                            <select
+                                [(ngModel)]="entry.type"
+                                class="w-full border rounded px-2 py-1"
+                            >
+                                @for (t of typeOptions; track $index) {
+                                    <option [value]="t">{{ t }}</option>
+                                }
+                            </select>
+                        </td>
+                        <td class="border px-4 py-2">
+                            <input
+                                list="dataList"
+                                [(ngModel)]="entry.data"
+                                class="w-full border rounded px-2 py-1"
+                            />
+                        </td>
+                        <td class="border px-4 py-2">
+                            <button (click)="removeUninstallEntry(entry.name)" class="bg-red-400">
+                                delete
+                            </button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -95,5 +122,11 @@
         >
             Add Entry
         </button>
+    </div>
+
+    <!-- Save -->
+
+    <div>
+        <button (click)="saveEntryConfig()" class="bg-red-400">Save</button>
     </div>
 </div>

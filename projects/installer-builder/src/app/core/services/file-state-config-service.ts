@@ -1,6 +1,6 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
-import { InstallerProperties, InstallerPropertyStore } from 'installer-core';
+import { InstallerProperties, InstallerPropertyStore, RegistryKeyStore } from 'installer-core';
 import { form, required, readonly } from '@angular/forms/signals';
 import { TauriCommandService } from './tauri-command-service';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../models/tauri-payloads/save-Installer-document';
 import { Commands } from '../enums/commands';
 import { WorkingConfigFileState } from '../models/installer-config.model';
+import { ProjectFolders } from '../consts/folder.const';
 
 @Injectable({
     providedIn: 'root',
@@ -17,6 +18,7 @@ export class FileStateConfigService {
     workingConfigFileStore = inject(WorkingConfigFileStore);
     installerPropertyStore = inject(InstallerPropertyStore);
     installerPropertyDataModel = signal<InstallerProperties>(this.installerPropertyStore.getData());
+    registryKeyStore = inject(RegistryKeyStore);
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.projectDir, { message: 'Project Directory is required' });
@@ -64,7 +66,27 @@ export class FileStateConfigService {
 
     /* ====== private methods ====== */
 
-    async openFileConfig(filePath: string | null = null) {
+    /* ====== state ====== */
+
+    async getFileState() {
+        const r = await this.tauriCommandService.invokeCommand<WorkingConfigFileState>(
+            Commands.LOAD_WORKING_CONFIG_COMMAND,
+            {},
+        );
+        return r;
+    }
+
+    async updateFileState(data: WorkingConfigFileState): Promise<boolean> {
+        const r = await this.tauriCommandService.invokeCommand<boolean>(
+            Commands.UPDATE_WORKING_CONFIG_COMMAND,
+            { data: data },
+        );
+        return r ?? false;
+    }
+
+    /* ====== content ====== */
+
+    async init(filePath: string | null = null) {
         if (!filePath) {
             const fileState = await this.getFileState();
 
@@ -82,8 +104,8 @@ export class FileStateConfigService {
             await this.updateFileState({ content: '', filePath: filePath ?? '', isDirty: false });
         }
 
-        const installerDocumentConfig = await this.loadFileContent(
-            this.workingConfigFileStore.filePath()!
+        const installerDocumentConfig = await this.loadInstallerDocumentConfig(
+            this.workingConfigFileStore.filePath()!,
         );
 
         if (!installerDocumentConfig) {
@@ -148,41 +170,54 @@ export class FileStateConfigService {
             shortcutInApplicationShortcut:
                 installerDocumentConfig.properties.shortcutInApplicationShortcut,
         });
+
+        this.registryKeyStore.updateRegistry({
+            configRegistry: installerDocumentConfig.registryKeys.configRegistry,
+            uninstallRegistry: installerDocumentConfig.registryKeys.uninstallRegistry,
+        });
     }
 
-    /* ====== state ====== */
+    async saveInstallerConfig(fileName: string): Promise<boolean> {
+        const filePath = this.workingConfigFileStore.filePath();
 
-    async getFileState() {
-        const r = await this.tauriCommandService.invokeCommand<WorkingConfigFileState>(
-            Commands.LOAD_WORKING_CONFIG_COMMAND,
-            {}
-        );
-        return r;
-    }
+        const f =
+            filePath ??
+            `${this.installerPropertyDataForm.projectDir().value()}/${ProjectFolders.configs}/${
+                fileName
+            }.json`;
 
-    async updateFileState(data: WorkingConfigFileState): Promise<boolean> {
-        const r = await this.tauriCommandService.invokeCommand<boolean>(
-            Commands.UPDATE_WORKING_CONFIG_COMMAND,
-            { data: data }
-        );
-        return r ?? false;
-    }
+        const data: SaveInstallerDocument = {
+            filePath: f,
+            payload: {
+                properties: { ...this.installerPropertyStore.getData() },
+                registryKeys: this.registryKeyStore.getData(),
+            },
+        };
 
-    /* ====== content ====== */
-
-    async loadFileContent(filePath: string) {
-        const r = await this.tauriCommandService.invokeCommand<InstallerDocumentConfig>(
-            Commands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
-            { filePath: filePath }
-        );
-        return r;
-    }
-
-    async updateFileContent(data: SaveInstallerDocument): Promise<boolean> {
         const r = await this.tauriCommandService.invokeCommand<boolean>(
             Commands.SAVE_INSTALLER_CONFIG_COMMAND,
-            data
+            data,
         );
-        return r ?? false;
+
+        if (!r) {
+            return false;
+        }
+
+        this.workingConfigFileStore.update({
+            content: '',
+            filePath: f,
+            isDirty: false,
+        });
+
+        const r2 = await this.updateFileState(this.workingConfigFileStore.getData());
+        return true;
+    }
+
+    private async loadInstallerDocumentConfig(filePath: string) {
+        const r = await this.tauriCommandService.invokeCommand<InstallerDocumentConfig>(
+            Commands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
+            { filePath: filePath },
+        );
+        return r;
     }
 }

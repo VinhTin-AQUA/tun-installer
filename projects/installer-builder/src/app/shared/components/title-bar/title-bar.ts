@@ -55,6 +55,6 @@ export class TitleBar {
     async openFile() {
         this.openMenu = null;
         const filePath = await FileHelper.selectFile();
-        this.fileStateConfigService.openFileConfig(filePath);
+        this.fileStateConfigService.init(filePath);
     }
 }

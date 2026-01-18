@@ -26,7 +26,7 @@ export class ProductDetails {
     constructor(private toastService: ToastService) {}
 
     async ngOnInit() {
-        await this.fileStateConfigService.openFileConfig(this.workingConfigFileStore.filePath());
+        // await this.fileStateConfigService.openFileConfig(this.workingConfigFileStore.filePath());
     }
 
     async onSaveInstallerConfig() {
@@ -36,11 +36,35 @@ export class ProductDetails {
         }
 
         if (!this.workingConfigFileStore.filePath()) {
+            this.workingConfigFileStore.update({
+                filePath: 'filePath',
+            });
             this.openConfigNameInput();
             return;
         }
 
-        await this.saveInstallerConfig(this.workingConfigFileStore.filePath());
+        if (!this.fileName) {
+            this.toastService.show('Config file name is not empty', 'error');
+            return;
+        }
+
+        const filePath = `${this.installerPropertyDataForm.projectDir().value()}/${ProjectFolders.configs}/${
+            this.fileName
+        }.json`;
+
+        this.workingConfigFileStore.update({
+            filePath: filePath,
+        });
+
+        const r = await this.fileStateConfigService.saveInstallerConfig(this.fileName);
+
+        if (!r) {
+            this.toastService.show('Something error', 'error');
+            return;
+        }
+
+        this.toastService.show('Save', 'success');
+        this.closeConfigNameInput();
     }
 
     async selectFolder(key: 'projectDir' | 'pageDir' | 'installationLocation' | 'sourceDir') {
@@ -67,12 +91,6 @@ export class ProductDetails {
 
     closeConfigNameInput() {
         this.isOpenConfigNameInput.set(false);
-    }
-
-    async confirmConfigNameInput() {
-        if (!this.fileName.trim()) return;
-        this.closeConfigNameInput();
-        await this.saveInstallerConfig(null);
     }
 
     private formValid() {
@@ -157,35 +175,5 @@ export class ProductDetails {
             return false;
         }
         return true;
-    }
-
-    private async saveInstallerConfig(filePath: string | null) {
-        const f =
-            filePath ??
-            `${this.installerPropertyDataForm.projectDir().value()}/${ProjectFolders.configs}/${
-                this.fileName
-            }.json`;
-
-        const r = await this.fileStateConfigService.updateFileContent({
-            filePath: f,
-            payload: {
-                properties: { ...this.installerPropertyStore.getData() },
-            },
-        });
-
-        if (!r) {
-            this.toastService.show('Something error', 'error');
-            return;
-        }
-        this.toastService.show('Save', 'success');
-        this.workingConfigFileStore.update({
-            content: '',
-            filePath: f,
-            isDirty: false,
-        });
-
-        const r2 = await this.fileStateConfigService.updateFileState(
-            this.workingConfigFileStore.getData()
-        );
     }
 }

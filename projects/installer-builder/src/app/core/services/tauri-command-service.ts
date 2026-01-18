@@ -15,6 +15,8 @@ export class TauriCommandService {
             return initOk;
         } catch (e: any) {
             this.toastService.show(e.toString(), 'error');
+            console.log(e.toString());
+            
             return null;
         }
     }

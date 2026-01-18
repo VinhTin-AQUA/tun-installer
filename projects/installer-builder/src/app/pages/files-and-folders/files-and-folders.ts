@@ -15,8 +15,8 @@ import { ProjectFolders } from '../../core/consts/folder.const';
 export class FilesAndFolders {
     folders = signal<FolderNode[]>([
         {
-            id: 'Resources',
-            name: 'resources',
+            id: 'resources',
+            name: 'Resources',
             expanded: false,
             children: [],
         },
@@ -26,45 +26,14 @@ export class FilesAndFolders {
             expanded: false,
             children: [],
         },
-        {
-            id: 'root',
-            name: 'Root',
-            expanded: false,
-            children: [],
-        },
     ]);
 
-    files: FileItem[] = [
-        {
-            id: 'f1',
-            folderId: 'root',
-            name: 'readme.txt',
-            size: 1200,
-            type: 'txt',
-            physicalPath: 'C:/root/readme.txt',
-        },
-        {
-            id: 'f2',
-            folderId: 'docs',
-            name: 'document.docx',
-            size: 20480,
-            type: 'docx',
-            physicalPath: 'C:/docs/document.docx',
-        },
-        {
-            id: 'f3',
-            folderId: 'images',
-            name: 'photo.png',
-            size: 512000,
-            type: 'png',
-            physicalPath: 'C:/images/photo.png',
-        },
-    ];
+    files = signal<FileItem[]>([]);
 
     resourceFolder: string = '';
     prerequisites: string = '';
 
-    selectedFolderId: string = 'root';
+    selectedFolderId: string = 'resources';
     openedMenuFileId?: string;
     installerProperties = inject(InstallerPropertyStore);
 
@@ -80,25 +49,25 @@ export class FilesAndFolders {
                 path: this.resourceFolder,
             },
         );
-
         if (!resources) {
             return;
         }
-
         this.folders.update((x) => {
             x[0].children = resources;
             return x;
         });
+
+        await this.getFilesInFolder('resources');
     }
 
-    selectFolder(folder: FolderNode) {
+    async selectFolder(folder: FolderNode) {
         folder.expanded = !folder.expanded;
         this.selectedFolderId = folder.id;
         this.openedMenuFileId = undefined;
     }
 
     async getFilesInFolder(folder: string) {
-        const files = await this.tauriCommandService.invokeCommand<FolderNode[]>(
+        const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
             Commands.READ_FILES_IN_FOLDER_COMMAND,
             {
                 path: `${this.installerProperties.projectDir()}/${folder}`,
@@ -106,13 +75,15 @@ export class FilesAndFolders {
         );
 
         if (!files) {
+            this.files.set([]);
             return;
         }
+        this.files.set(files);
     }
 
-    get filesInSelectedFolder(): FileItem[] {
-        return this.files.filter((f) => f.folderId === this.selectedFolderId);
-    }
+    // get filesInSelectedFolder(): FileItem[] {
+    //     return this.files().filter((f) => f.folderId === this.selectedFolderId);
+    // }
 
     toggleContextMenu(fileId: string, event: MouseEvent) {
         event.stopPropagation();

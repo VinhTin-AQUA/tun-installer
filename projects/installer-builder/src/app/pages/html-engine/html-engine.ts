@@ -51,7 +51,7 @@ export class HtmlEngine {
     }
 
     async ngAfterViewInit() {
-        await this.loadPages;
+        await this.loadPages();
     }
 
     private async loadFirstInstallPages() {

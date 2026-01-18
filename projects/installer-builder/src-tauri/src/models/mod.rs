@@ -6,3 +6,9 @@ pub use installer_config::*;
 
 pub mod resource_folder;
 pub use resource_folder::*;
+
+pub mod installer_properties;
+pub use installer_properties::*;
+
+pub mod registry;
+pub use registry::*;
