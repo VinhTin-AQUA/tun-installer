@@ -1,0 +1,12 @@
+[package]
+name = "compress-exe"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lzma-rs = "0.3"
+walkdir = "2"
+serde = { version = "1", features = ["derive"] }
+bincode = "1"
+anyhow = "1"
+indicatif = "0.17"
