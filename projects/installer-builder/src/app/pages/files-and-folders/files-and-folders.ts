@@ -52,6 +52,7 @@ export class FilesAndFolders {
         if (!resources) {
             return;
         }
+
         this.folders.update((x) => {
             x[0].children = resources;
             return x;

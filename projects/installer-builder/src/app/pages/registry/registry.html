@@ -14,7 +14,12 @@
             </thead>
             <tbody>
                 @for (entry of configRegistryEntries; track $index) {
-                    <tr class="hover:bg-gray-50">
+                    <tr
+                        class="hover:bg-gray-50"
+                        [ngClass]="{
+                            'bg-red-100': invalidConfigEntries().includes(entry.name),
+                        }"
+                    >
                         <td class="border px-4 py-2">
                             <input
                                 list="nameList"
@@ -82,7 +87,12 @@
             </thead>
             <tbody>
                 @for (entry of uninstallRegistryEntries; track $index) {
-                    <tr class="hover:bg-gray-50">
+                    <tr
+                        class="hover:bg-gray-50"
+                        [ngClass]="{
+                            'bg-red-100': invalidUninstallEntries().includes(entry.name),
+                        }"
+                    >
                         <td class="border px-4 py-2">
                             <input
                                 list="nameList"

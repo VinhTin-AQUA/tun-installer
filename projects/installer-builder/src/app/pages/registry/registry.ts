@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
     InstallerPropertyStore,
@@ -8,10 +8,11 @@ import {
 } from 'installer-core';
 import { FileStateConfigService } from '../../core/services/file-state-config-service';
 import { ToastService } from '../../core/services/toast-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-registry',
-    imports: [FormsModule],
+    imports: [FormsModule, CommonModule],
     templateUrl: './registry.html',
     styleUrl: './registry.css',
 })
@@ -39,10 +40,12 @@ export class Registry {
     ];
 
     nameSuggestions = ['PostgreSQL', 'MyApp', 'NodeJS', 'Python'];
-    typeOptions =  Object.values(RegistryValueType);
+    typeOptions = Object.values(RegistryValueType);
     dataSuggestions = ['1', '0', 'C:\\Program Files\\', '17.5-3'];
     registryKeyStore = inject(RegistryKeyStore);
     installerPropertyStore = inject(InstallerPropertyStore);
+    invalidConfigEntries = signal<string[]>([]);
+    invalidUninstallEntries = signal<string[]>([]);
 
     constructor(
         private fileStateConfigService: FileStateConfigService,
@@ -80,6 +83,32 @@ export class Registry {
     }
 
     async saveEntryConfig() {
+        this.invalidConfigEntries.set(
+            this.configRegistryEntries
+                .filter(
+                    (entry) => !entry.name?.trim() || !entry.type || !entry.data?.toString().trim(),
+                )
+                .map((x) => x.name),
+        );
+
+        this.invalidUninstallEntries.set(
+            this.uninstallRegistryEntries
+                .filter(
+                    (entry) => !entry.name?.trim() || !entry.type || !entry.data?.toString().trim(),
+                )
+                .map((x) => x.name),
+        );
+
+        if (this.invalidConfigEntries().length > 0) {
+            this.toastService.show('Name, Type and Data are required', 'error');
+            return;
+        }
+
+        if (this.invalidUninstallEntries().length > 0) {
+            this.toastService.show('Name, Type and Data are required', 'error');
+            return;
+        }
+
         const registryName = [
             this.installerPropertyStore.publisher(),
             this.installerPropertyStore.productName(),
