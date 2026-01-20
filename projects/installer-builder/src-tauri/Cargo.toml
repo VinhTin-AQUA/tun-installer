@@ -29,4 +29,8 @@ anyhow = "1.0.100"
 tauri-plugin-dialog = "2"
 async-recursion = "1.0"
 
+walkdir = "2"
+bincode = "1"
+zstd = "0.13"
+
 metadata = { path = "../../../tauri-libs/metadata" }

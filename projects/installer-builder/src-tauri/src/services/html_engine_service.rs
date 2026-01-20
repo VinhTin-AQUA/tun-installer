@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use anyhow::bail;
 use tokio::fs;
@@ -47,8 +47,9 @@ use crate::{consts, models::HtmlPage};
 //     Ok(Some(result))
 // }
 
-
-pub async fn load_html_first_time_install_pages(project_dir: String) -> anyhow::Result<Option<Vec<HtmlPage>>> {
+pub async fn load_html_first_time_install_pages(
+    project_dir: String,
+) -> anyhow::Result<Option<Vec<HtmlPage>>> {
     // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
     let mut page_dir = PathBuf::from(project_dir);
@@ -89,7 +90,9 @@ pub async fn load_html_first_time_install_pages(project_dir: String) -> anyhow::
     Ok(Some(result))
 }
 
-pub async fn load_html_maintenance_pages(project_dir: String) -> anyhow::Result<Option<Vec<HtmlPage>>> {
+pub async fn load_html_maintenance_pages(
+    project_dir: String,
+) -> anyhow::Result<Option<Vec<HtmlPage>>> {
     // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
     let mut page_dir = PathBuf::from(project_dir);
@@ -129,5 +132,3 @@ pub async fn load_html_maintenance_pages(project_dir: String) -> anyhow::Result<
 
     Ok(Some(result))
 }
-
-
