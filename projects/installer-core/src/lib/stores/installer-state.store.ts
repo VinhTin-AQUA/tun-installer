@@ -2,8 +2,6 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { InstallerProperties } from '../models/installer-properties';
 
 const initialState: InstallerProperties = {
-    projectDir: '',
-    installationLocation: '',
     productName: '',
     icon: '',
     productVersion: '',
@@ -26,6 +24,7 @@ const initialState: InstallerProperties = {
         runFile: '',
         shortcutName: '',
     },
+    installationLocation: '',
 };
 
 export const InstallerPropertyStore = signalStore(
@@ -42,7 +41,6 @@ export const InstallerPropertyStore = signalStore(
 
         function getData() {
             const data: InstallerProperties = {
-                projectDir: store.projectDir(),
                 installationLocation: store.installationLocation(),
                 productName: store.productName(),
                 icon: store.icon(),
@@ -65,5 +63,5 @@ export const InstallerPropertyStore = signalStore(
             update,
             getData,
         };
-    })
+    }),
 );

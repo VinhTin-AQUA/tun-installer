@@ -55,9 +55,9 @@ export class TitleBar {
     }
 
     async openFile() {
-        this.openMenu = null;
-        const filePath = await FileHelper.selectFile();
-        this.fileStateConfigService.init(filePath);
+        // this.openMenu = null;
+        // const filePath = await FileHelper.selectFile();
+        // this.fileStateConfigService.init(filePath);
     }
 
     openCreateNewProject() {

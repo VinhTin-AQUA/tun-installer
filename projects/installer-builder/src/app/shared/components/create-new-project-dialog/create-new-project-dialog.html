@@ -24,11 +24,18 @@
                 <div class="flex gap-2">
                     <input
                         type="text"
-                        disabled
-                        value="/Users/yourname/projects"
                         class="flex-1 rounded-lg border bg-gray-100 px-3 py-2 text-sm text-gray-600 cursor-not-allowed"
+                        [field]="form.baseDir"
                     />
+                    @if (form.baseDir().touched() && form.baseDir().invalid()) {
+                        <div class="text-red-500 mt-1">
+                            @for (error of form.baseDir().errors(); track error) {
+                                <p>{{ error.message }}</p>
+                            }
+                        </div>
+                    }
                     <button
+                        (click)="onSelectLocation()"
                         class="whitespace-nowrap rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
                     >
                         Browse
@@ -41,9 +48,17 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1"> Project Name </label>
                 <input
                     type="text"
-                    placeholder="my-awesome-project"
+                    placeholder="project name"
                     class="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    [field]="form.projectName"
                 />
+                @if (form.projectName().touched() && form.projectName().invalid()) {
+                    <div class="text-red-500 mt-1">
+                        @for (error of form.projectName().errors(); track error) {
+                            <p>{{ error.message }}</p>
+                        }
+                    </div>
+                }
             </div>
         </div>
 
@@ -56,6 +71,7 @@
                 Cancel
             </button>
             <button
+                (click)="save()"
                 class="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 transition"
             >
                 Save

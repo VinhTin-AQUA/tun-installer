@@ -31,10 +31,6 @@ export class MainLayout {
                 url: MainRoutes.HtmlEngine,
             },
             {
-                name: 'menuSidebar.uiEditor',
-                url: MainRoutes.UiEditor,
-            },
-            {
                 name: 'menuSidebar.filesAndFolders',
                 url: MainRoutes.FilesAndFolders,
             },

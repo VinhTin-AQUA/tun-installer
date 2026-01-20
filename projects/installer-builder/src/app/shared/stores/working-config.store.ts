@@ -1,10 +1,15 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { WorkingConfigFileState } from '../../core/models/installer-config.model';
+import { WorkingConfigFileState } from '../../core/models/working-config-file-state';
 
 const initialState: WorkingConfigFileState = {
-    content: '',
-    filePath: null,
     isDirty: false,
+    configFile: '',
+    projectFile: '',
+    pageDir: '',
+    projectDir: '',
+    configDir: '',
+    prerequisiteDir: '',
+    resourceDir: '',
 };
 
 export const WorkingConfigFileStore = signalStore(
@@ -21,9 +26,14 @@ export const WorkingConfigFileStore = signalStore(
 
         function getData() {
             const data: WorkingConfigFileState = {
-                content: store.content(),
-                filePath: store.filePath(),
+                configFile: store.configFile(),
+                projectFile: store.projectFile(),
                 isDirty: store.isDirty(),
+                pageDir: store.pageDir(),
+                projectDir: store.projectDir(),
+                configDir: store.configDir(),
+                prerequisiteDir: store.prerequisiteDir(),
+                resourceDir: store.resourceDir(),
             };
             return data;
         }
@@ -32,5 +42,5 @@ export const WorkingConfigFileStore = signalStore(
             update,
             getData,
         };
-    })
+    }),
 );

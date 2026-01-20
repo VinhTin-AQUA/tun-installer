@@ -3,6 +3,7 @@ mod consts;
 mod models;
 mod services;
 mod states;
+mod helpers;
 use std::sync::Mutex;
 
 use commands::*;
@@ -36,7 +37,8 @@ pub fn run() {
             load_html_first_time_install_pages_command,
             load_html_maintenance_pages_command,
             read_subfolders_command,
-            read_files_in_folder_command
+            read_files_in_folder_command,
+            create_tuninstaller_project_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

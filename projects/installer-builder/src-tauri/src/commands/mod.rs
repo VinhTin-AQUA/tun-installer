@@ -9,3 +9,6 @@ pub use installer_config_commands::*;
 
 pub mod resource_folder_commands;
 pub use resource_folder_commands::*;
+
+pub mod project_mananager_command;
+pub use project_mananager_command::*;

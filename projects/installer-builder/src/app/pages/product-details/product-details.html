@@ -5,37 +5,6 @@
         <!-- Text Inputs -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700"> Project Directory </label>
-
-                <div class="flex gap-2 items-start">
-                    <!-- Input readonly -->
-                    <input
-                        class="input flex-1 bg-gray-100 cursor-not-allowed"
-                        [field]="installerPropertyDataForm.projectDir"
-                        placeholder="Choose project directory"
-                    />
-
-                    <!-- Button browse -->
-                    <button
-                        type="button"
-                        class="px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-                        (click)="selectFolder('projectDir')"
-                    >
-                        Browse
-                    </button>
-                </div>
-
-                @if ( installerPropertyDataForm.projectDir().touched() &&
-                installerPropertyDataForm.projectDir().invalid() ) {
-                <div class="text-red-500 mt-1">
-                    @for (error of installerPropertyDataForm.projectDir().errors(); track error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
-                }
-            </div>
-
-            <div>
                 <label class="block text-sm font-medium text-gray-700">Installation Location</label>
                 <input
                     [field]="installerPropertyDataForm.installationLocation"
@@ -43,14 +12,18 @@
                     placeholder="C:/ProgramFiles"
                 />
 
-                @if (installerPropertyDataForm.installationLocation().touched() &&
-                installerPropertyDataForm.installationLocation().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.installationLocation().errors(); track
-                    error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
+                @if (
+                    installerPropertyDataForm.installationLocation().touched() &&
+                    installerPropertyDataForm.installationLocation().invalid()
+                ) {
+                    <div class="text-red-500">
+                        @for (
+                            error of installerPropertyDataForm.installationLocation().errors();
+                            track error
+                        ) {
+                            <p>{{ error.message }}</p>
+                        }
+                    </div>
                 }
             </div>
 
@@ -62,13 +35,18 @@
                     placeholder="Your App"
                 />
 
-                @if (installerPropertyDataForm.productName().touched() &&
-                installerPropertyDataForm.productName().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.productName().errors(); track error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
+                @if (
+                    installerPropertyDataForm.productName().touched() &&
+                    installerPropertyDataForm.productName().invalid()
+                ) {
+                    <div class="text-red-500">
+                        @for (
+                            error of installerPropertyDataForm.productName().errors();
+                            track error
+                        ) {
+                            <p>{{ error.message }}</p>
+                        }
+                    </div>
                 }
             </div>
 
@@ -89,14 +67,18 @@
                     placeholder="1.0.0"
                 />
 
-                @if (installerPropertyDataForm.productVersion().touched() &&
-                installerPropertyDataForm.productVersion().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.productVersion().errors(); track error)
-                    {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
+                @if (
+                    installerPropertyDataForm.productVersion().touched() &&
+                    installerPropertyDataForm.productVersion().invalid()
+                ) {
+                    <div class="text-red-500">
+                        @for (
+                            error of installerPropertyDataForm.productVersion().errors();
+                            track error
+                        ) {
+                            <p>{{ error.message }}</p>
+                        }
+                    </div>
                 }
             </div>
 
@@ -108,13 +90,18 @@
                     placeholder="Your company"
                 />
 
-                @if (installerPropertyDataForm.publisher().touched() &&
-                installerPropertyDataForm.publisher().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.publisher().errors(); track error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
+                @if (
+                    installerPropertyDataForm.publisher().touched() &&
+                    installerPropertyDataForm.publisher().invalid()
+                ) {
+                    <div class="text-red-500">
+                        @for (
+                            error of installerPropertyDataForm.publisher().errors();
+                            track error
+                        ) {
+                            <p>{{ error.message }}</p>
+                        }
+                    </div>
                 }
             </div>
 
@@ -144,13 +131,18 @@
                     placeholder="yourapp.exe"
                 />
 
-                @if (installerPropertyDataForm.launchFile().touched() &&
-                installerPropertyDataForm.launchFile().invalid()) {
-                <div class="text-red-500">
-                    @for (error of installerPropertyDataForm.launchFile().errors(); track error) {
-                    <p>{{ error.message }}</p>
-                    }
-                </div>
+                @if (
+                    installerPropertyDataForm.launchFile().touched() &&
+                    installerPropertyDataForm.launchFile().invalid()
+                ) {
+                    <div class="text-red-500">
+                        @for (
+                            error of installerPropertyDataForm.launchFile().errors();
+                            track error
+                        ) {
+                            <p>{{ error.message }}</p>
+                        }
+                    </div>
                 }
             </div>
         </div>
@@ -158,11 +150,7 @@
         <!-- Comment -->
         <div>
             <label class="block text-sm font-medium text-gray-700">Comment</label>
-            <textarea
-                [field]="installerPropertyDataForm.comment"
-                rows="3"
-                class="input"
-            ></textarea>
+            <textarea [field]="installerPropertyDataForm.comment" rows="3" class="input"></textarea>
         </div>
 
         <!-- Checkboxes -->
@@ -192,32 +180,32 @@
 
                 <!-- Detail -->
                 @if (installerPropertyDataForm.shortcutInDesktop().value().isCreated) {
-                <div class="ml-6 space-y-3">
-                    <label class="flex items-center gap-2 text-sm text-gray-600">
-                        <input
-                            type="checkbox"
-                            [field]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
-                            class="checkbox"
-                        />
-                        Run as Administrator
-                    </label>
+                    <div class="ml-6 space-y-3">
+                        <label class="flex items-center gap-2 text-sm text-gray-600">
+                            <input
+                                type="checkbox"
+                                [field]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
+                                class="checkbox"
+                            />
+                            Run as Administrator
+                        </label>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <input
-                            type="text"
-                            [field]="installerPropertyDataForm.shortcutInDesktop.shortcutName"
-                            placeholder="Shortcut name"
-                            class="input input-bordered w-full"
-                        />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input
+                                type="text"
+                                [field]="installerPropertyDataForm.shortcutInDesktop.shortcutName"
+                                placeholder="Shortcut name"
+                                class="input input-bordered w-full"
+                            />
 
-                        <input
-                            type="text"
-                            [field]="installerPropertyDataForm.shortcutInDesktop.runFile"
-                            placeholder="Run file path"
-                            class="input input-bordered w-full"
-                        />
+                            <input
+                                type="text"
+                                [field]="installerPropertyDataForm.shortcutInDesktop.runFile"
+                                placeholder="Run file path"
+                                class="input input-bordered w-full"
+                            />
+                        </div>
                     </div>
-                </div>
                 }
             </div>
 
@@ -233,39 +221,41 @@
                 </label>
 
                 <!-- Detail -->
-                @if(installerPropertyDataForm.shortcutInApplicationShortcut().value().isCreated) {
-                <div class="ml-6 space-y-3">
-                    <label class="flex items-center gap-2 text-sm text-gray-600">
-                        <input
-                            type="checkbox"
-                            [field]="
-                                installerPropertyDataForm.shortcutInApplicationShortcut.runAsAdmin
-                            "
-                            class="checkbox"
-                        />
-                        Run as Administrator
-                    </label>
+                @if (installerPropertyDataForm.shortcutInApplicationShortcut().value().isCreated) {
+                    <div class="ml-6 space-y-3">
+                        <label class="flex items-center gap-2 text-sm text-gray-600">
+                            <input
+                                type="checkbox"
+                                [field]="
+                                    installerPropertyDataForm.shortcutInApplicationShortcut
+                                        .runAsAdmin
+                                "
+                                class="checkbox"
+                            />
+                            Run as Administrator
+                        </label>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <input
-                            type="text"
-                            [field]="
-                                installerPropertyDataForm.shortcutInApplicationShortcut.shortcutName
-                            "
-                            placeholder="Shortcut name"
-                            class="input input-bordered w-full"
-                        />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input
+                                type="text"
+                                [field]="
+                                    installerPropertyDataForm.shortcutInApplicationShortcut
+                                        .shortcutName
+                                "
+                                placeholder="Shortcut name"
+                                class="input input-bordered w-full"
+                            />
 
-                        <input
-                            type="text"
-                            [field]="
-                                installerPropertyDataForm.shortcutInApplicationShortcut.runFile
-                            "
-                            placeholder="Run file path"
-                            class="input input-bordered w-full"
-                        />
+                            <input
+                                type="text"
+                                [field]="
+                                    installerPropertyDataForm.shortcutInApplicationShortcut.runFile
+                                "
+                                placeholder="Run file path"
+                                class="input input-bordered w-full"
+                            />
+                        </div>
                     </div>
-                </div>
                 }
             </div>
         </div>
@@ -281,50 +271,3 @@
         </div>
     </div>
 </div>
-
-<!-- Overlay -->
-@if(isOpenConfigNameInput()) {
-<div class="fixed inset-0 bg-gray-800/50 flex items-center justify-center z-50">
-    <!-- Dialog -->
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-        <h2 class="text-lg font-semibold mb-4">
-            {{ 'product-details.input-config-file' | translate }}
-        </h2>
-
-        <!-- Input group -->
-        <div class="flex">
-            <input
-                type="text"
-                [(ngModel)]="fileName"
-                placeholder="config"
-                class="flex-1 border border-r-0 border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <!-- Suffix -->
-            <span
-                class="border border-gray-300 rounded-r-md px-3 py-2 bg-gray-100 text-gray-600 select-none"
-            >
-                .json
-            </span>
-        </div>
-
-        <!-- Buttons -->
-        <div class="flex justify-end gap-2 mt-6">
-            <button
-                (click)="closeConfigNameInput()"
-                class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300"
-            >
-                Hủy
-            </button>
-
-            <button
-                (click)="onSaveInstallerConfig()"
-                [disabled]="!fileName.trim()"
-                class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
-            >
-                Xác nhận
-            </button>
-        </div>
-    </div>
-</div>
-}

@@ -1,15 +1,14 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
 import { InstallerProperties, InstallerPropertyStore, RegistryKeyStore } from 'installer-core';
-import { form, required, readonly } from '@angular/forms/signals';
+import { form, required } from '@angular/forms/signals';
 import { TauriCommandService } from './tauri-command-service';
 import {
     InstallerDocumentConfig,
     SaveInstallerDocument,
 } from '../models/tauri-payloads/save-Installer-document';
 import { Commands } from '../enums/commands';
-import { WorkingConfigFileState } from '../models/installer-config.model';
-import { ProjectFolders } from '../consts/folder.const';
+import { WorkingConfigFileState } from '../models/working-config-file-state';
 
 @Injectable({
     providedIn: 'root',
@@ -21,8 +20,6 @@ export class FileStateConfigService {
     registryKeyStore = inject(RegistryKeyStore);
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
-        required(f.projectDir, { message: 'Project Directory is required' });
-        readonly(f.projectDir);
         required(f.installationLocation, { message: 'Installation Location is required' });
         required(f.productName, { message: 'Product Name is required' });
         // required(f.icon);
@@ -38,14 +35,13 @@ export class FileStateConfigService {
 
     constructor(private tauriCommandService: TauriCommandService) {
         effect(() => {
-            const projectDir = this.installerPropertyDataModel().projectDir;
+            const projectDir = this.installerPropertyDataModel().comment;
 
             this.workingConfigFileStore.update({
                 isDirty: true,
             });
 
             this.installerPropertyStore.update({
-                projectDir: projectDir,
                 installationLocation: this.installerPropertyDataModel().installationLocation,
                 productName: this.installerPropertyDataModel().productName,
                 icon: this.installerPropertyDataModel().icon,
@@ -68,7 +64,7 @@ export class FileStateConfigService {
 
     /* ====== state ====== */
 
-    async getFileState() {
+    async getWorkingConfigFileState() {
         const r = await this.tauriCommandService.invokeCommand<WorkingConfigFileState>(
             Commands.LOAD_WORKING_CONFIG_COMMAND,
             {},
@@ -86,35 +82,22 @@ export class FileStateConfigService {
 
     /* ====== content ====== */
 
-    async init(filePath: string | null = null) {
-        if (!filePath) {
-            const fileState = await this.getFileState();
+    async init() {
+        const workingConfigFileState = await this.getWorkingConfigFileState();
 
-            if (!fileState) {
-                return;
-            }
-            this.workingConfigFileStore.update(fileState);
-            await this.updateFileState(fileState);
-
-            if (!fileState.filePath) {
-                return;
-            }
-        } else {
-            this.workingConfigFileStore.update({ filePath: filePath });
-            await this.updateFileState({ content: '', filePath: filePath ?? '', isDirty: false });
+        if (!workingConfigFileState?.projectDir) {
+            return;
         }
 
+        this.workingConfigFileStore.update(workingConfigFileState);
         const installerDocumentConfig = await this.loadInstallerDocumentConfig(
-            this.workingConfigFileStore.filePath()!,
+            this.workingConfigFileStore.configFile(),
         );
 
         if (!installerDocumentConfig) {
             return;
         }
 
-        this.installerPropertyDataForm
-            .projectDir()
-            .value.set(installerDocumentConfig.properties.projectDir);
         this.installerPropertyDataForm
             .installationLocation()
             .value.set(installerDocumentConfig.properties.installationLocation);
@@ -154,7 +137,6 @@ export class FileStateConfigService {
             .value.set(installerDocumentConfig.properties.shortcutInApplicationShortcut);
 
         this.installerPropertyStore.update({
-            projectDir: installerDocumentConfig.properties.projectDir,
             installationLocation: installerDocumentConfig.properties.installationLocation,
             productName: installerDocumentConfig.properties.productName,
             icon: installerDocumentConfig.properties.icon,
@@ -177,19 +159,13 @@ export class FileStateConfigService {
         });
     }
 
-    async saveInstallerConfig(fileName: string): Promise<boolean> {
-        const filePath = this.workingConfigFileStore.filePath();
-
-        const f =
-            filePath ??
-            `${this.installerPropertyDataForm.projectDir().value()}/${ProjectFolders.configs}/${
-                fileName
-            }.json`;
+    async saveInstallerConfig(): Promise<boolean> {
+        const filePath = this.workingConfigFileStore.configFile();
 
         const data: SaveInstallerDocument = {
-            filePath: f,
+            filePath: filePath,
             payload: {
-                properties: { ...this.installerPropertyStore.getData() },
+                properties: this.installerPropertyStore.getData(),
                 registryKeys: this.registryKeyStore.getData(),
             },
         };
@@ -204,8 +180,6 @@ export class FileStateConfigService {
         }
 
         this.workingConfigFileStore.update({
-            content: '',
-            filePath: f,
             isDirty: false,
         });
 

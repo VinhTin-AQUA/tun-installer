@@ -5,6 +5,7 @@ import { InstallerPropertyStore } from 'installer-core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { Commands } from '../../core/enums/commands';
 import { ProjectFolders } from '../../core/consts/folder.const';
+import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
 
 @Component({
     selector: 'app-files-and-folders',
@@ -30,23 +31,21 @@ export class FilesAndFolders {
 
     files = signal<FileItem[]>([]);
 
-    resourceFolder: string = '';
-    prerequisites: string = '';
+    // resourceFolder: string = '';
+    // prerequisites: string = '';
 
     selectedFolderId: string = 'resources';
     openedMenuFileId?: string;
     installerProperties = inject(InstallerPropertyStore);
+    workingConfigFileStore = inject(WorkingConfigFileStore);
 
     constructor(private tauriCommandService: TauriCommandService) {}
 
     async ngOnInit() {
-        this.resourceFolder = `${this.installerProperties.projectDir()}/${ProjectFolders.resources}`;
-        this.prerequisites = `${this.installerProperties.projectDir()}/${ProjectFolders.prerequisites}`;
-
         const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
             Commands.READ_SUBFOLDERS_COMMAND,
             {
-                path: this.resourceFolder,
+                path: this.workingConfigFileStore.resourceDir(),
             },
         );
         if (!resources) {
@@ -71,7 +70,7 @@ export class FilesAndFolders {
         const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
             Commands.READ_FILES_IN_FOLDER_COMMAND,
             {
-                path: `${this.installerProperties.projectDir()}/${folder}`,
+                path: `${this.workingConfigFileStore.projectDir()}/${folder}`,
             },
         );
 

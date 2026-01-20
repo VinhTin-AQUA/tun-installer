@@ -10,4 +10,5 @@ export enum Commands {
     LOAD_HTML_MAINTENANCE_PAGES_COMMAND = 'load_html_maintenance_pages_command',
     READ_SUBFOLDERS_COMMAND = 'read_subfolders_command',
     READ_FILES_IN_FOLDER_COMMAND = 'read_files_in_folder_command',
+    CREATE_TUNINSTALLER_PROJECT_COMMAND = 'create_tuninstaller_project_command'
 }

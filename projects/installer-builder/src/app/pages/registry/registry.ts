@@ -129,10 +129,7 @@ export class Registry {
             },
         });
 
-        console.log(this.registryKeyStore.getData());
-
-        const r = await this.fileStateConfigService.saveInstallerConfig('');
-
+        const r = await this.fileStateConfigService.saveInstallerConfig();
         if (r) {
             this.toastService.show('Success', 'success');
         }

@@ -22,8 +22,7 @@ export class App {
 
     async ngOnInit() {
         try {
-            const path = this.workingConfigFileStore.filePath();
-            await this.fileStateConfigService.init(path);
+            await this.fileStateConfigService.init();
         } finally {
             this.isLoading.set(false);
         }

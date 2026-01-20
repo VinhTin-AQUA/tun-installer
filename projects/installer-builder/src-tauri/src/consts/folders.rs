@@ -1,6 +1,6 @@
-pub const HTML_PAGE: &str = "pages";
-pub const HTML_FIRST_TIME_INSTALL: &str = "first-time-install";
-pub const HTML_MAINTENANCE: &str = "maintenance";
-pub const CONFIG_PAGE: &str = "configs";
-pub const PREREQUISITES: &str = "prerequisites";
+pub const HTML_PAGE_DIR: &str = "pages";
+pub const HTML_FIRST_TIME_INSTALL_DIR: &str = "first-time-install";
+pub const HTML_MAINTENANCE_DIR: &str = "maintenance";
+pub const CONFIG_DIR: &str = "configs";
+pub const PREREQUISITE_DIR: &str = "prerequisites";
 

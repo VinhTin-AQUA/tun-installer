@@ -18,7 +18,6 @@ export class PreviewInstallerUi {
 
     installerPropertyStore = inject(InstallerPropertyStore);
 
-    projectDir = this.installerPropertyStore.projectDir();
     installationLocation = this.installerPropertyStore.installationLocation();
     productName = this.installerPropertyStore.productName();
     icon = this.installerPropertyStore.icon();
@@ -100,7 +99,6 @@ export class PreviewInstallerUi {
 
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
-            '{{projectDir}}': this.projectDir,
             '{{installationLocation}}': this.installationLocation,
             '{{productName}}': this.productName,
             '{{icon}}': this.icon,

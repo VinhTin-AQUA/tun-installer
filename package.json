@@ -43,13 +43,6 @@
     "@ngx-translate/http-loader": "^17.0.0",
     "@tauri-apps/api": "^2.9.1",
     "@tauri-apps/plugin-dialog": "^2.5.0",
-    "grapesjs": "^0.22.14",
-    "grapesjs-blocks-basic": "^1.0.2",
-    "grapesjs-blocks-flexbox": "^1.0.1",
-    "grapesjs-custom-code": "^1.0.2",
-    "grapesjs-navbar": "^1.0.2",
-    "grapesjs-plugin-forms": "^2.0.6",
-    "grapesjs-preset-webpage": "^1.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

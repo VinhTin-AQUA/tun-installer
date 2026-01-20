@@ -9,3 +9,6 @@ pub use resource_folder_service::*;
 
 pub mod compress_service;
 pub use compress_service::*;
+
+pub mod project_mananager_service;
+pub use project_mananager_service::*;

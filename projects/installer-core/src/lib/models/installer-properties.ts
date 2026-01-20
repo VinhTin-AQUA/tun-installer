@@ -1,5 +1,4 @@
 export interface InstallerProperties {
-    projectDir: string;
     installationLocation: string; // install location
     productName: string; // app name
     icon: string; // icon

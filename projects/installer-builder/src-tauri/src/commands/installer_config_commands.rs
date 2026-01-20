@@ -25,8 +25,16 @@ pub fn update_working_config_command(
     data: WorkingConfigState,
 ) -> Result<Option<bool>, String> {
     let mut state = state.lock().unwrap();
-    state.content = data.content;
-    state.file_path = data.file_path;
+
+    state.config_dir = data.config_dir;
+    state.page_dir = data.page_dir;
+    state.prerequisite_dir = data.prerequisite_dir;
+    state.resource_dir = data.resource_dir;
+
+    state.config_file = data.config_file;
+    state.project_file = data.project_file;
+    state.project_dir = data.project_dir;
+
     state.is_dirty = data.is_dirty;
     Ok(Some(true))
 }
@@ -37,8 +45,15 @@ pub fn load_working_config_command(
 ) -> Result<Option<WorkingConfigState>, String> {
     let state: std::sync::MutexGuard<'_, WorkingConfigState> = state.lock().unwrap();
     Ok(Some(WorkingConfigState {
-        content: state.content.clone(),
-        file_path: state.file_path.clone(),
+        config_dir: state.config_dir.clone(),
+        page_dir: state.page_dir.clone(),
+        prerequisite_dir: state.prerequisite_dir.clone(),
+        resource_dir: state.resource_dir.clone(),
+
+        config_file: state.config_file.clone(),
+        project_file: state.project_file.clone(),
+        project_dir: state.project_dir.clone(),
+        
         is_dirty: state.is_dirty.clone(),
     }))
 }

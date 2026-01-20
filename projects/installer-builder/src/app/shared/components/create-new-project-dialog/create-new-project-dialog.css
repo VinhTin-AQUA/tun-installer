@@ -20,7 +20,7 @@
     border-radius: 0.75rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 
-    animation: modalScaleIn 0.25s ease-out forwards;
+    animation: modalScaleIn 0.1s ease-out forwards;
 }
 
 /* Animations */
@@ -35,11 +35,11 @@
 
 @keyframes modalScaleIn {
     from {
+        transform: scale(0.7);
         opacity: 0;
-        transform: scale(0.95) translateY(4px);
     }
     to {
+        transform: scale(1);
         opacity: 1;
-        transform: scale(1) translateY(0);
     }
 }

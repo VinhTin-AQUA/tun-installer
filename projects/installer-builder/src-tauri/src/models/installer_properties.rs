@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InstallerProperties {
-    project_dir: String,
     installation_location: String, // install location
     product_name: String,          // app name
     icon: String,                  // icon

@@ -1,0 +1,39 @@
+{
+  "properties": {
+    "installationLocation": "fse",
+    "productName": "hdr",
+    "icon": "gr",
+    "productVersion": "ht",
+    "publisher": "gdr",
+    "supportLink": "h",
+    "supportEmail": "ht",
+    "comment": "hft",
+    "launchFile": "yjy",
+    "runAsAdmin": true,
+    "launchApp": false,
+    "shortcutInDesktop": {
+      "isCreated": true,
+      "runAsAdmin": true,
+      "shortcutName": "hdr",
+      "runFile": "gdr"
+    },
+    "shortcutInApplicationShortcut": {
+      "isCreated": true,
+      "runAsAdmin": false,
+      "shortcutName": "",
+      "runFile": ""
+    }
+  },
+  "registryKeys": {
+    "configRegistry": {
+      "name": "",
+      "path": "",
+      "values": []
+    },
+    "uninstallRegistry": {
+      "name": "",
+      "path": "",
+      "values": []
+    }
+  }
+}

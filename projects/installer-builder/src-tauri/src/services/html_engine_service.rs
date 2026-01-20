@@ -53,8 +53,8 @@ pub async fn load_html_first_time_install_pages(
     // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
     let mut page_dir = PathBuf::from(project_dir);
-    page_dir.push(consts::HTML_PAGE);
-    page_dir.push(consts::HTML_FIRST_TIME_INSTALL);
+    page_dir.push(consts::HTML_PAGE_DIR);
+    page_dir.push(consts::HTML_FIRST_TIME_INSTALL_DIR);
 
     // let page_dir = Path::new(&page_dir);
 
@@ -96,8 +96,8 @@ pub async fn load_html_maintenance_pages(
     // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
     let mut page_dir = PathBuf::from(project_dir);
-    page_dir.push(consts::HTML_PAGE);
-    page_dir.push(consts::HTML_MAINTENANCE);
+    page_dir.push(consts::HTML_PAGE_DIR);
+    page_dir.push(consts::HTML_MAINTENANCE_DIR);
 
     // let page_dir = Path::new(&page_dir);
 

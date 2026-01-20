@@ -5,6 +5,7 @@ import { Commands } from '../../core/enums/commands';
 import { InstallerPropertyStore } from 'installer-core';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from '../../core/services/toast-service';
+import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
 
 @Component({
     selector: 'app-html-engine',
@@ -19,7 +20,6 @@ export class HtmlEngine {
     index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
 
-    projectDir = this.installerPropertyStore.projectDir();
     installationLocation = this.installerPropertyStore.installationLocation();
     productName = this.installerPropertyStore.productName();
     icon = this.installerPropertyStore.icon();
@@ -34,9 +34,9 @@ export class HtmlEngine {
 
     iframeWidth = signal<number>(800);
     iframeHeight = signal<number>(500);
-
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
+    workingConfigFileStore = inject(WorkingConfigFileStore)
 
     constructor(
         private tauriCommandService: TauriCommandService,
@@ -55,12 +55,9 @@ export class HtmlEngine {
     }
 
     private async loadFirstInstallPages() {
-        if (!this.projectDir) {
-            this.toastService.show('Please choose or create new config', 'error');
-            return;
-        }
+       
 
-        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectDir };
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             Commands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
             loadHtmlPage,
@@ -79,12 +76,9 @@ export class HtmlEngine {
     }
 
     private async loadMaintenancePages() {
-        if (!this.projectDir) {
-            this.toastService.show('Please choose or create new config', 'error');
-            return;
-        }
+  
 
-        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectDir };
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             Commands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
             loadHtmlPage,
@@ -181,7 +175,6 @@ export class HtmlEngine {
 
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
-            '{{projectDir}}': this.projectDir,
             '{{installationLocation}}': this.installationLocation,
             '{{productName}}': this.productName,
             '{{icon}}': this.icon,

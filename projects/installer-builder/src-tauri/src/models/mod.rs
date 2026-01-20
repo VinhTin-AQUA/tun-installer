@@ -12,3 +12,6 @@ pub use installer_properties::*;
 
 pub mod registry;
 pub use registry::*;
+
+pub mod project_manager_model;
+pub use project_manager_model::*;

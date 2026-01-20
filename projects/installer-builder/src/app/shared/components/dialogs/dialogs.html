@@ -1,5 +1,7 @@
-<div class="h-screen w-screen flex items-center justify-center">
-    @if (dialogStore.createNewProjectDialog()) {
-        <app-create-new-project-dialog></app-create-new-project-dialog>
-    }
+<div class="fixed top-0 left-0">
+    <div class="flex items-center justify-center pointer-events-auto">
+        @if (dialogStore.createNewProjectDialog()) {
+            <app-create-new-project-dialog></app-create-new-project-dialog>
+        }
+    </div>
 </div>

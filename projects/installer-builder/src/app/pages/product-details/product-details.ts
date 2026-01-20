@@ -1,11 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { Field } from '@angular/forms/signals';
 import { ToastService } from '../../core/services/toast-service';
-import { FolderHelper } from '../../shared/helpers/folder.helper';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ProjectFolders } from '../../core/consts/folder.const';
 import { FileStateConfigService } from '../../core/services/file-state-config-service';
+import { DialogStore } from '../../shared/stores/dialog.store';
 
 @Component({
     selector: 'app-product-details',
@@ -20,8 +19,7 @@ export class ProductDetails {
     installerPropertyDataModel = this.fileStateConfigService.installerPropertyDataModel;
     installerPropertyDataForm = this.fileStateConfigService.installerPropertyDataForm;
 
-    isOpenConfigNameInput = signal<boolean>(false);
-    fileName = '';
+    dialogStore = inject(DialogStore);
 
     constructor(private toastService: ToastService) {}
 
@@ -35,89 +33,24 @@ export class ProductDetails {
             return;
         }
 
-        if (!this.workingConfigFileStore.filePath()) {
-            this.workingConfigFileStore.update({
-                filePath: 'filePath',
+        if (!this.workingConfigFileStore.projectFile()) {
+            this.dialogStore.update({
+                createNewProjectDialog: true,
             });
-            this.openConfigNameInput();
+
             return;
         }
 
-        if (!this.fileName) {
-            this.toastService.show('Config file name is not empty', 'error');
-            return;
-        }
-
-        const filePath = `${this.installerPropertyDataForm.projectDir().value()}/${ProjectFolders.configs}/${
-            this.fileName
-        }.json`;
-
-        this.workingConfigFileStore.update({
-            filePath: filePath,
-        });
-
-        const r = await this.fileStateConfigService.saveInstallerConfig(this.fileName);
-
+        const r = await this.fileStateConfigService.saveInstallerConfig();
         if (!r) {
             this.toastService.show('Something error', 'error');
             return;
         }
 
         this.toastService.show('Save', 'success');
-        this.closeConfigNameInput();
-    }
-
-    async selectFolder(key: 'projectDir' | 'pageDir' | 'installationLocation' | 'sourceDir') {
-        const folder = await FolderHelper.selectFolder();
-
-        if (!folder) {
-            return;
-        }
-
-        switch (key) {
-            case 'projectDir':
-                this.installerPropertyDataForm.projectDir().setControlValue(folder);
-                break;
-            case 'installationLocation':
-                this.installerPropertyDataForm.installationLocation().setControlValue(folder);
-                break;
-        }
-    }
-
-    openConfigNameInput() {
-        this.fileName = '';
-        this.isOpenConfigNameInput.set(true);
-    }
-
-    closeConfigNameInput() {
-        this.isOpenConfigNameInput.set(false);
     }
 
     private formValid() {
-        if (!this.installerPropertyDataForm.projectDir().valid()) {
-            const messages = this.installerPropertyDataForm
-                .projectDir()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-
-            this.toastService.show(messages, 'error');
-            return false;
-        }
-
-        if (!this.installerPropertyDataForm.projectDir().valid()) {
-            const messages = this.installerPropertyDataForm
-                .projectDir()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
         if (!this.installerPropertyDataForm.installationLocation().valid()) {
             const messages = this.installerPropertyDataForm
                 .installationLocation()
