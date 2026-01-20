@@ -4,10 +4,11 @@ import { LanguageService } from './core/services/language-service';
 import { Toast } from './shared/components/toast/toast';
 import { FileStateConfigService } from './core/services/file-state-config-service';
 import { WorkingConfigFileStore } from './shared/stores/working-config.store';
+import { Dialogs } from "./shared/components/dialogs/dialogs";
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Toast],
+    imports: [RouterOutlet, Toast, Dialogs],
     templateUrl: './app.html',
     styleUrl: './app.css',
 })

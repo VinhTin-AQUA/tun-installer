@@ -4,6 +4,7 @@ import { ClickOutside } from '../../directives/click-outside';
 import { FileHelper } from '../../helpers/file.helper';
 import { InstallerPropertyStore } from 'installer-core';
 import { FileStateConfigService } from '../../../core/services/file-state-config-service';
+import { DialogStore } from '../../stores/dialog.store';
 
 @Component({
     selector: 'app-title-bar',
@@ -12,7 +13,7 @@ import { FileStateConfigService } from '../../../core/services/file-state-config
     styleUrl: './title-bar.css',
 })
 export class TitleBar {
-    appName = "Tun Installer";
+    appName = 'Tun Installer';
     private appWindow = getCurrentWindow();
 
     currentFile: string | null = null;
@@ -20,6 +21,7 @@ export class TitleBar {
     openMenu: 'file' | 'edit' | 'view' | null = null;
 
     installerPropertyStore = inject(InstallerPropertyStore);
+    dialogStore = inject(DialogStore);
 
     /**
      *
@@ -48,7 +50,7 @@ export class TitleBar {
     }
 
     toggleMenu(menu: 'file' | 'edit' | 'view', event: Event) {
-        event.stopPropagation()
+        event.stopPropagation();
         this.openMenu = this.openMenu === menu ? null : menu;
     }
 
@@ -56,5 +58,10 @@ export class TitleBar {
         this.openMenu = null;
         const filePath = await FileHelper.selectFile();
         this.fileStateConfigService.init(filePath);
+    }
+
+    openCreateNewProject() {
+        this.openMenu = null;
+        this.dialogStore.update({ createNewProjectDialog: true });
     }
 }
