@@ -1,4 +1,10 @@
-use crate::{models::InstallerDocumentConfig, services::{create_tuninstaller_project, load_installer_document_config, save_installer_config}};
+use crate::{
+    models::{InstallerDocumentConfig, TunInstallerProject},
+    services::{
+        create_tuninstaller_project, load_installer_document_config, open_tuninstaller_project,
+        save_installer_config,
+    },
+};
 use anyhow::Result;
 use tauri::command;
 
@@ -34,4 +40,15 @@ pub async fn load_installer_document_config_command(
         .map_err(|e| e.to_string())?;
 
     Ok(r)
+}
+
+#[command]
+pub async fn open_tuninstaller_project_command(
+    project_path: String,
+) -> Result<TunInstallerProject, String> {
+    let r: Result<TunInstallerProject, String> = open_tuninstaller_project(project_path)
+        .await
+        .map_err(|e| e.to_string());
+
+    r
 }

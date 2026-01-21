@@ -5,4 +5,5 @@ use serde::{Deserialize, Serialize};
 pub struct TunInstallerProject {
     pub name: String,
     pub created_date: String,
+    pub project_dir: String
 }

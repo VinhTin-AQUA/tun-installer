@@ -9,6 +9,7 @@ export enum ProjectManagerCommands {
     LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND = 'load_installer_document_config_command',
     READ_SUBFOLDERS_COMMAND = 'read_subfolders_command',
     READ_FILES_IN_FOLDER_COMMAND = 'read_files_in_folder_command',
+    OPEN_TUNINSTALLER_PROJECT_COMMAND = 'open_tuninstaller_project_command'
 }
 
 export enum CompressCommands {

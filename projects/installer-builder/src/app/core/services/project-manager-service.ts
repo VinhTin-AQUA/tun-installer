@@ -9,6 +9,7 @@ import {
 } from '../models/tauri-payloads/save-Installer-document';
 import { CreateTunInstallerProject } from '../models/tauri-payloads/create-tuninstaller-project';
 import { ProjectManagerCommands } from '../enums/commands';
+import { TunInstallerProject } from '../models/tun-installer-project';
 
 @Injectable({
     providedIn: 'root',
@@ -134,6 +135,8 @@ export class ProjectManagerService {
         });
     }
 
+    //========== project ===========
+
     async createNewProject(data: CreateTunInstallerProject) {
         const r = await this.tauriCommandService.invokeCommand<boolean>(
             ProjectManagerCommands.CREATE_TUNINSTALLER_PROJECT_COMMAND,
@@ -141,6 +144,18 @@ export class ProjectManagerService {
         );
         return r;
     }
+
+    async openProject(projectPath: string) {
+        const r = await this.tauriCommandService.invokeCommand<TunInstallerProject>(
+            ProjectManagerCommands.OPEN_TUNINSTALLER_PROJECT_COMMAND,
+            {
+                projectPath: projectPath,
+            },
+        );
+        return r;
+    }
+
+    //========== config ============
 
     async saveInstallerConfig(): Promise<boolean> {
         const filePath = this.projectStore.configFile();
