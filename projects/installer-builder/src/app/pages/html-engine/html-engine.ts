@@ -152,13 +152,8 @@ export class HtmlEngine {
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
-                // width: this.iframeWidth(),
-                // height: this.iframeHeight(),
-
-                width: 800 + 72,
-
-
-                height: 600 + 54,
+                width: this.iframeWidth() + 72,
+                height: this.iframeHeight() + 54,
             },
         );
     }
