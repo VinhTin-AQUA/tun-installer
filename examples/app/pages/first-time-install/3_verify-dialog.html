@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Test Installer - Verify</title>
+
+        <style>
+            html,
+            body {
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            body {
+                font-family: 'Segoe UI', Arial, sans-serif;
+                background: linear-gradient(135deg, #4f46e5, #6366f1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div
+            style="
+                width: 720px;
+                height: 400px;
+                background: #ffffff;
+                border-radius: 16px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                padding: 40px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            "
+        >
+            <!-- Header -->
+            <div style="display: flex; align-items: center">
+                <!-- Logo -->
+                <div
+                    style="
+                        width: 64px;
+                        height: 64px;
+                        border-radius: 14px;
+                        background: #4f46e5;
+                        color: #ffffff;
+                        font-size: 28px;
+                        font-weight: bold;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 20px;
+                    "
+                >
+                    TI
+                </div>
+
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; color: #111827">Ready to Install</h1>
+                    <p style="margin: 6px 0 0; color: #6b7280">Test Installer 1.0.0</p>
+                </div>
+            </div>
+
+            <!-- Verification Content -->
+            <div>
+                <p style="font-size: 16px; color: #374151; margin-bottom: 16px">
+                    Please review and confirm the following before installing:
+                </p>
+
+                <ul
+                    style="
+                        margin: 0;
+                        padding-left: 20px;
+                        color: #374151;
+                        line-height: 1.7;
+                        font-size: 15px;
+                    "
+                >
+                    <li>The application will be installed on your selected folder.</li>
+                    <li>Existing files may be updated or replaced.</li>
+                    <li>No personal data will be collected during installation.</li>
+                    <li>You can uninstall the application at any time.</li>
+                </ul>
+            </div>
+
+            <!-- Agreement -->
+            <div
+                style="
+                    background: #f9fafb;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 12px;
+                    padding: 18px;
+                    display: flex;
+                    align-items: center;
+                "
+            >
+                <input
+                    type="checkbox"
+                    id="agree"
+                    style="width: 18px; height: 18px; margin-right: 12px; cursor: pointer"
+                />
+                <label for="agree" style="font-size: 15px; color: #374151; cursor: pointer">
+                    I have read and agree to the terms and conditions.
+                </label>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center">
+                <button
+                    style="
+                        background: #e5e7eb;
+                        color: #111827;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 26px;
+                        font-size: 16px;
+                        cursor: pointer;
+                    "
+                >
+                    ← Back
+                </button>
+
+                <button
+                    style="
+                        background: #4f46e5;
+                        color: #ffffff;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 30px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        transition: background 0.2s ease;
+                    "
+                    onmouseover="this.style.background = '#4338ca'"
+                    onmouseout="this.style.background = '#4f46e5'"
+                >
+                    Install
+                </button>
+            </div>
+        </div>
+    </body>
+</html>

@@ -3,6 +3,7 @@ import { InstallerPropertyStore } from 'installer-core';
 import { HtmlPage } from '../../core/models/html-page';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { HtmlEngineCommands } from '../../core/enums/commands';
+import { ProjectStore } from '../../core/stores/project-store';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -11,12 +12,12 @@ import { HtmlEngineCommands } from '../../core/enums/commands';
     styleUrl: './preview-installer-ui.css',
 })
 export class PreviewInstallerUi {
-    @ViewChild('viewer', { static: true })
-    iframe!: ElementRef<HTMLIFrameElement>;
+    @ViewChild('viewer', { static: true }) iframe!: ElementRef<HTMLIFrameElement>;
     htmlPages: HtmlPage[] = [];
     index = 0;
 
     installerPropertyStore = inject(InstallerPropertyStore);
+    projectStore = inject(ProjectStore)
 
     installationLocation = this.installerPropertyStore.installationLocation();
     productName = this.installerPropertyStore.productName();
@@ -33,11 +34,6 @@ export class PreviewInstallerUi {
     constructor(private tauriCommandService: TauriCommandService) {}
 
     async ngOnInit() {
-        this.installerPropertyStore.update({
-            productName: 'MyApp',
-            productVersion: '1.0.1',
-        });
-
         await this.loadPages();
     }
 
@@ -46,7 +42,9 @@ export class PreviewInstallerUi {
     async loadPages() {
         const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
-            {}
+            {
+                projectDir: this.projectStore.projectDir()
+            }
         );
 
         if (!pages) {

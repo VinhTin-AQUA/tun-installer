@@ -1,6 +1,6 @@
 ### Angular commands
 
--   create angular monorepo
+- create angular monorepo
 
     ```bash
     ng new my-workspace --create-application=false
@@ -13,13 +13,13 @@
     ng s installer-template
     ```
 
--   create component in lib
+- create component in lib
 
     ```bash
     ng generate component components/button --project=shared-lib
     ```
 
--   build lib
+- build lib
 
     ```bash
     ng build shared-lib
@@ -27,33 +27,32 @@
 
 ### Cargo commands
 
--   run với installer_builder là name trong khối [package] trong Cargo.toml của src-tauri cụ thể
+- run với installer_builder là name trong khối [package] trong Cargo.toml của src-tauri cụ thể
 
     ```bash
     cargo run -p installer_builder
     npm run dev:installer:builder
     ```
 
--   Run with npx
+- Run with npx
 
     ```bash
     cd projects/installer-builder/src-tauri && npx tauri dev
     ```
 
--   Build tauri with npx
+- Build tauri with npx
 
     ```bash
     cd projects/installer-builder/src-tauri && npx tauri build --no-bundle --target x86_64-pc-windows-msvc
     ```
 
--   create crate lib
+- create crate lib
 
     ```bash
     cargo new shared-lib --lib
     ```
 
 ### Add prop binding in template
-
 
 ## Project Structure
 
@@ -67,27 +66,53 @@ project-names
 
 ### properties
 
--   appDir
--   productName
--   icon
--   productVersion
--   publisher
--   supportLink
--   supportEmail
--   comment
--   buildDir
--   fileToRun
--   runAsAdmin
--   lauchApp
+- appDir
+- productName
+- icon
+- productVersion
+- publisher
+- supportLink
+- supportEmail
+- comment
+- buildDir
+- fileToRun
+- runAsAdmin
+- lauchApp
 
 ### methods
 
--   next
--   prev
--   save
+- next
+- prev
+- save
 
 ### Pages folder
 
--   page1.html
--   page2.html
+- page1.html
+- page2.html
 
+### Lưu ý khi tạo html page
+
+- html, body nên để stlye như sau
+
+    ```css
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    ```
+
+- toàn bộ nội dung bên trong không nên vượt quá kích thước của screen
+
+- thứ tự các màng hình sắp xếp theo thứ tự alphabet
+- bổ sung nút chọn folder và hiển thị vào input, bổ sung dung lượng khả dụng, dung lượng yêu cầu, dung lương còn lại sau khi cài đặt,  bổ sung thêm progress bar

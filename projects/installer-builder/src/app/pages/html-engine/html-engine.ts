@@ -33,10 +33,10 @@ export class HtmlEngine {
     launchApp = this.installerPropertyStore.launchApp();
 
     iframeWidth = signal<number>(800);
-    iframeHeight = signal<number>(500);
+    iframeHeight = signal<number>(600);
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    workingConfigFileStore = inject(ProjectStore)
+    workingConfigFileStore = inject(ProjectStore);
 
     constructor(
         private tauriCommandService: TauriCommandService,
@@ -55,8 +55,6 @@ export class HtmlEngine {
     }
 
     private async loadFirstInstallPages() {
-       
-
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
@@ -76,8 +74,6 @@ export class HtmlEngine {
     }
 
     private async loadMaintenancePages() {
-  
-
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             HtmlEngineCommands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
@@ -153,24 +149,32 @@ export class HtmlEngine {
     }
 
     async preview() {
-        await this.tauriCommandService.invokeCommand(HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND, {
-            width: 1200,
-            height: 700,
-        });
+        await this.tauriCommandService.invokeCommand(
+            HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
+            {
+                // width: this.iframeWidth(),
+                // height: this.iframeHeight(),
+
+                width: 800 + 72,
+
+
+                height: 600 + 54,
+            },
+        );
     }
 
     updateFrameWidth(event: any) {
         const value =
             event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
 
-        this.iframeWidth.set(value);
+        this.iframeWidth.set(Number(value));
     }
 
     updateFrameHeight(event: any) {
         const value =
             event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
 
-        this.iframeHeight.set(value);
+        this.iframeHeight.set(Number(value));
     }
 
     private propDataBindind(text: string): string {

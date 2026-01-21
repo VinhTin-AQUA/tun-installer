@@ -1,6 +1,6 @@
 <div class="h-screen flex">
     <!-- RIGHT SIDEBAR (LUÔN HIỂN THỊ) -->
-    <div class="w-40 border-l bg-gray-50 flex flex-col">
+    <div class="w-60 border-l bg-gray-50 flex flex-col">
         <div class="px-4 py-3 font-semibold border-b">Pages</div>
 
         <div class="p-3 space-y-4 overflow-y-auto bg-white text-sm">
@@ -45,10 +45,12 @@
     <!-- MAIN CONTENT -->
     <div class="flex-1 flex flex-col items-center justify-center overflow-hidden bg-gray-300">
         <iframe
+            id="viewer"
             #viewer
-            class="border border-gray-500"
+            class="border border-gray-500 rounded-md"
             [style.width.px]="iframeWidth()"
             [style.height.px]="iframeHeight()"
+            scrolling="no"
         ></iframe>
     </div>
 

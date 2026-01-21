@@ -9,4 +9,5 @@ export interface ProjectState {
     projectDir: string;
 
     isDirty: boolean;
+    projectName: string;
 }

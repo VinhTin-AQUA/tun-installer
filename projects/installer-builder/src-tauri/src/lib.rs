@@ -9,7 +9,7 @@ use std::sync::Mutex;
 use commands::*;
 use tauri::Manager;
 
-use crate::states::WorkingConfigState;
+use crate::states::ProjectState;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -23,7 +23,7 @@ pub fn run() {
                         .build(),
                 )?;
             }
-            app.manage(Mutex::new(WorkingConfigState::default()));
+            app.manage(Mutex::new(ProjectState::default()));
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

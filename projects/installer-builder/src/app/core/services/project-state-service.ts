@@ -26,7 +26,7 @@ export class ProjectStateService {
     }
 
     async updateProjectState(baseDir: string, projectName: string) {
-        this.projectStore.updateAll(baseDir, projectName);
+        this.projectStore.updateDir(baseDir, projectName);
 
         const r = await this.tauriCommandService.invokeCommand<boolean>(
             ProjectStateCommands.UPDATE_PROJECT_STATE_COMMAND,

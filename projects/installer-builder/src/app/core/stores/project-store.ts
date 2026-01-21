@@ -11,6 +11,7 @@ const initialState: ProjectState = {
     configDir: '',
     prerequisiteDir: '',
     resourceDir: '',
+    projectName: '',
 };
 
 export const ProjectStore = signalStore(
@@ -19,7 +20,7 @@ export const ProjectStore = signalStore(
     },
     withState(initialState),
     withMethods((store) => {
-        function updateAll(baseDir: string, projectName: string) {
+        function updateDir(baseDir: string, projectName: string) {
             patchState(store, (currentState) => ({
                 configDir: `${baseDir}/${projectName}/${ProjectFolders.configs}`,
                 pageDir: `${baseDir}/${projectName}/${ProjectFolders.pages}`,
@@ -33,7 +34,7 @@ export const ProjectStore = signalStore(
             }));
         }
 
-        function updateValue(updates: Partial<ProjectState>) {
+        function updateValues(updates: Partial<ProjectState>) {
             patchState(store, (currentState) => ({
                 ...updates,
             }));
@@ -49,13 +50,14 @@ export const ProjectStore = signalStore(
                 configDir: store.configDir(),
                 prerequisiteDir: store.prerequisiteDir(),
                 resourceDir: store.resourceDir(),
+                projectName: store.projectName(),
             };
             return data;
         }
 
         return {
-            updateAll,
-            updateValues: updateValue,
+            updateDir,
+            updateValues,
             getData,
         };
     }),

@@ -152,6 +152,16 @@ export class ProjectManagerService {
                 projectPath: projectPath,
             },
         );
+
+        if (!r) {
+            return;
+        }
+
+        this.projectStore.updateValues({
+            projectDir: r.projectDir,
+            projectName: r.name,
+        });
+
         return r;
     }
 

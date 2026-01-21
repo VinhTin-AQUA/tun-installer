@@ -1,12 +1,12 @@
 use std::sync::Mutex;
 
-use crate::states::WorkingConfigState;
+use crate::states::ProjectState;
 use tauri::{command, State};
 
 #[command]
 pub fn update_project_state_command(
-    state: State<'_, Mutex<WorkingConfigState>>,
-    data: WorkingConfigState,
+    state: State<'_, Mutex<ProjectState>>,
+    data: ProjectState,
 ) -> Result<Option<bool>, String> {
     let mut state = state.lock().unwrap();
 
@@ -25,10 +25,10 @@ pub fn update_project_state_command(
 
 #[command]
 pub fn load_project_state_command(
-    state: State<'_, Mutex<WorkingConfigState>>,
-) -> Result<Option<WorkingConfigState>, String> {
-    let state: std::sync::MutexGuard<'_, WorkingConfigState> = state.lock().unwrap();
-    Ok(Some(WorkingConfigState {
+    state: State<'_, Mutex<ProjectState>>,
+) -> Result<Option<ProjectState>, String> {
+    let state: std::sync::MutexGuard<'_, ProjectState> = state.lock().unwrap();
+    Ok(Some(ProjectState {
         config_dir: state.config_dir.clone(),
         page_dir: state.page_dir.clone(),
         prerequisite_dir: state.prerequisite_dir.clone(),
@@ -37,6 +37,7 @@ pub fn load_project_state_command(
         config_file: state.config_file.clone(),
         project_file: state.project_file.clone(),
         project_dir: state.project_dir.clone(),
+        project_name: state.project_dir.clone(),
 
         is_dirty: state.is_dirty.clone(),
     }))
