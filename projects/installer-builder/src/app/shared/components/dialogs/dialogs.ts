@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DialogStore } from '../../stores/dialog.store';
+import { DialogStore } from '../../../core/stores/dialog.store';
 import { CreateNewProjectDialog } from '../create-new-project-dialog/create-new-project-dialog';
 
 @Component({

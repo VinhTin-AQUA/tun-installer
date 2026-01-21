@@ -4,7 +4,7 @@ import { NavItem } from './models/nav-item';
 import { filter } from 'rxjs';
 import { MainRoutes } from '../../../core/enums/routes.enum';
 import { TranslatePipe } from '@ngx-translate/core';
-import { WorkingConfigFileStore } from '../../stores/working-config.store';
+import { ProjectStore } from '../../../core/stores/project-store';
 import { TitleBar } from "../../components/title-bar/title-bar";
 
 @Component({
@@ -16,7 +16,7 @@ import { TitleBar } from "../../components/title-bar/title-bar";
 export class MainLayout {
     isDrawerOpen = false;
     navItems: NavItem[] = [];
-    installerDocumentStore = inject(WorkingConfigFileStore);
+    installerDocumentStore = inject(ProjectStore);
 
     constructor(private router: Router) {}
 

@@ -1,15 +1,12 @@
-import { booleanAttribute, Component, inject, signal } from '@angular/core';
-import { DialogStore } from '../../stores/dialog.store';
+import { Component, inject, signal } from '@angular/core';
+import { DialogStore } from '../../../core/stores/dialog.store';
 import { Field, form, readonly, required } from '@angular/forms/signals';
 import { FolderHelper } from '../../helpers/folder.helper';
-import { TauriCommandService } from '../../../core/services/tauri-command-service';
-import { Commands } from '../../../core/enums/commands';
 import { CreateTunInstallerProject } from '../../../core/models/tauri-payloads/create-tuninstaller-project';
 import { ToastService } from '../../../core/services/toast-service';
-import { WorkingConfigFileStore } from '../../stores/working-config.store';
-import { ProjectFolders } from '../../../core/consts/folder.const';
-import { FileStateConfigService } from '../../../core/services/file-state-config-service';
-import { WorkingConfigFileState } from '../../../core/models/working-config-file-state';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
+import { ProjectStateService } from '../../../core/services/project-state-service';
 
 @Component({
     selector: 'app-create-new-project-dialog',
@@ -30,12 +27,12 @@ export class CreateNewProjectDialog {
         required(f.projectName, { message: 'Project Name is required' });
     });
 
-    workingConfigFileStore = inject(WorkingConfigFileStore);
+    workingConfigFileStore = inject(ProjectStore);
 
     constructor(
-        private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
-        private fileStateConfigService: FileStateConfigService,
+        private projectManagerService: ProjectManagerService,
+        private projectStateService: ProjectStateService,
     ) {}
 
     closeDialog() {
@@ -51,32 +48,19 @@ export class CreateNewProjectDialog {
     }
 
     async save() {
-        const r = await this.tauriCommandService.invokeCommand<boolean>(
-            Commands.CREATE_TUNINSTALLER_PROJECT_COMMAND,
-            this.data(),
-        );
-
+        const r = await this.projectManagerService.createNewProject(this.data());
         if (!r) {
             return;
         }
         this.toastService.show('Success', 'success');
 
-        const workingConfigFileState: WorkingConfigFileState = {
-            configDir: `${this.data().baseDir}/${this.data().projectName}/${ProjectFolders.configs}`,
-            pageDir: `${this.data().baseDir}/${this.data().projectName}/${ProjectFolders.pages}`,
-            prerequisiteDir: `${this.data().baseDir}/${this.data().projectName}/${ProjectFolders.prerequisites}`,
-            resourceDir: `${this.data().baseDir}/${this.data().projectName}/${ProjectFolders.resources}`,
+        await this.projectStateService.updateProjectState(
+            this.data().baseDir,
+            this.data().projectName,
+        );
 
-            projectDir: `${this.data().baseDir}/${this.data().projectName}`,
-            configFile: `${this.data().baseDir}/${this.data().projectName}/${ProjectFolders.configs}/config.json`,
-            projectFile: `${this.data().baseDir}/${this.data().projectName}/${this.data().projectName}.tunins`,
-            isDirty: false,
-        };
-
-        this.workingConfigFileStore.update(workingConfigFileState);
-        await this.fileStateConfigService.saveInstallerConfig();
-        await this.fileStateConfigService.updateFileState(workingConfigFileState);
-        // await this.fileStateConfigService.init();
+        await this.projectManagerService.saveInstallerConfig();
+        await this.projectManagerService.init();
         this.dialogStore.update({
             createNewProjectDialog: false,
         });

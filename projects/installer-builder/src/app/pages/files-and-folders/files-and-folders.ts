@@ -3,9 +3,8 @@ import { FolderNode, FileItem } from './models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'installer-core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
-import { Commands } from '../../core/enums/commands';
-import { ProjectFolders } from '../../core/consts/folder.const';
-import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
+import { ProjectStore } from '../../core/stores/project-store';
+import { ProjectManagerCommands } from '../../core/enums/commands';
 
 @Component({
     selector: 'app-files-and-folders',
@@ -37,13 +36,13 @@ export class FilesAndFolders {
     selectedFolderId: string = 'resources';
     openedMenuFileId?: string;
     installerProperties = inject(InstallerPropertyStore);
-    workingConfigFileStore = inject(WorkingConfigFileStore);
+    workingConfigFileStore = inject(ProjectStore);
 
     constructor(private tauriCommandService: TauriCommandService) {}
 
     async ngOnInit() {
         const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
-            Commands.READ_SUBFOLDERS_COMMAND,
+            ProjectManagerCommands.READ_SUBFOLDERS_COMMAND,
             {
                 path: this.workingConfigFileStore.resourceDir(),
             },
@@ -68,7 +67,7 @@ export class FilesAndFolders {
 
     async getFilesInFolder(folder: string) {
         const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
-            Commands.READ_FILES_IN_FOLDER_COMMAND,
+            ProjectManagerCommands.READ_FILES_IN_FOLDER_COMMAND,
             {
                 path: `${this.workingConfigFileStore.projectDir()}/${folder}`,
             },

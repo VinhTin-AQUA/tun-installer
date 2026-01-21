@@ -1,24 +1,26 @@
-use crate::{models::HtmlPage, services::{load_html_first_time_install_pages, load_html_maintenance_pages}};
-use tauri::{AppHandle, WebviewUrl, WebviewWindowBuilder, command};
-
-
-// #[command]
-// pub async fn load_html_pages_command(project_dir: String) -> Result<Option<Vec<HtmlPage>>, String> {
-//     let pages = load_html_pages(project_dir).await.map_err(|e| e.to_string());
-//     return pages;
-// }
-
+use crate::{
+    models::HtmlPage,
+    services::{load_html_first_time_install_pages, load_html_maintenance_pages},
+};
+use tauri::{command, AppHandle, WebviewUrl, WebviewWindowBuilder};
 
 #[command]
-pub async fn load_html_first_time_install_pages_command(project_dir: String) -> Result<Option<Vec<HtmlPage>>, String> {
-    let pages = load_html_first_time_install_pages(project_dir).await.map_err(|e| e.to_string());
+pub async fn load_html_first_time_install_pages_command(
+    project_dir: String,
+) -> Result<Option<Vec<HtmlPage>>, String> {
+    let pages = load_html_first_time_install_pages(project_dir)
+        .await
+        .map_err(|e| e.to_string());
     return pages;
 }
 
-
 #[command]
-pub async fn load_html_maintenance_pages_command(project_dir: String) -> Result<Option<Vec<HtmlPage>>, String> {
-    let pages = load_html_maintenance_pages(project_dir).await.map_err(|e| e.to_string());
+pub async fn load_html_maintenance_pages_command(
+    project_dir: String,
+) -> Result<Option<Vec<HtmlPage>>, String> {
+    let pages = load_html_maintenance_pages(project_dir)
+        .await
+        .map_err(|e| e.to_string());
     return pages;
 }
 

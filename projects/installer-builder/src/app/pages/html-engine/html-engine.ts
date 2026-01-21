@@ -1,11 +1,11 @@
 import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { HtmlPage } from '../../core/models/html-page';
-import { Commands } from '../../core/enums/commands';
 import { InstallerPropertyStore } from 'installer-core';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from '../../core/services/toast-service';
-import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
+import { ProjectStore } from '../../core/stores/project-store';
+import { HtmlEngineCommands } from '../../core/enums/commands';
 
 @Component({
     selector: 'app-html-engine',
@@ -36,7 +36,7 @@ export class HtmlEngine {
     iframeHeight = signal<number>(500);
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    workingConfigFileStore = inject(WorkingConfigFileStore)
+    workingConfigFileStore = inject(ProjectStore)
 
     constructor(
         private tauriCommandService: TauriCommandService,
@@ -59,7 +59,7 @@ export class HtmlEngine {
 
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
-            Commands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
+            HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
             loadHtmlPage,
         );
 
@@ -80,7 +80,7 @@ export class HtmlEngine {
 
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
-            Commands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
+            HtmlEngineCommands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
             loadHtmlPage,
         );
 
@@ -153,7 +153,7 @@ export class HtmlEngine {
     }
 
     async preview() {
-        await this.tauriCommandService.invokeCommand(Commands.PREVIEW_INSTALLER_UI_COMMAND, {
+        await this.tauriCommandService.invokeCommand(HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND, {
             width: 1200,
             height: 700,
         });

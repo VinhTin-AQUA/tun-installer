@@ -1,10 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LanguageService } from './core/services/language-service';
 import { Toast } from './shared/components/toast/toast';
-import { FileStateConfigService } from './core/services/file-state-config-service';
-import { WorkingConfigFileStore } from './shared/stores/working-config.store';
-import { Dialogs } from "./shared/components/dialogs/dialogs";
+import { Dialogs } from './shared/components/dialogs/dialogs';
+import { ProjectStateService } from './core/services/project-state-service';
+import { ProjectManagerService } from './core/services/project-manager-service';
 
 @Component({
     selector: 'app-root',
@@ -14,15 +14,22 @@ import { Dialogs } from "./shared/components/dialogs/dialogs";
 })
 export class App {
     protected readonly title = signal('installer-builder');
-    fileStateConfigService = inject(FileStateConfigService);
-    workingConfigFileStore = this.fileStateConfigService.workingConfigFileStore;
     isLoading = signal(true);
 
-    constructor(private languageService: LanguageService) {}
+    constructor(
+        private languageService: LanguageService,
+        private projectStateService: ProjectStateService,
+        private projectManagerService: ProjectManagerService,
+    ) {}
 
     async ngOnInit() {
+        await this.init();
+    }
+
+    private async init() {
         try {
-            await this.fileStateConfigService.init();
+            await this.projectStateService.getProjectState();
+            await this.projectManagerService.init();
         } finally {
             this.isLoading.set(false);
         }

@@ -3,8 +3,8 @@ import { Field } from '@angular/forms/signals';
 import { ToastService } from '../../core/services/toast-service';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FileStateConfigService } from '../../core/services/file-state-config-service';
-import { DialogStore } from '../../shared/stores/dialog.store';
+import { DialogStore } from '../../core/stores/dialog.store';
+import { ProjectManagerService } from '../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-product-details',
@@ -13,11 +13,11 @@ import { DialogStore } from '../../shared/stores/dialog.store';
     styleUrl: './product-details.css',
 })
 export class ProductDetails {
-    fileStateConfigService = inject(FileStateConfigService);
-    workingConfigFileStore = this.fileStateConfigService.workingConfigFileStore;
-    installerPropertyStore = this.fileStateConfigService.installerPropertyStore;
-    installerPropertyDataModel = this.fileStateConfigService.installerPropertyDataModel;
-    installerPropertyDataForm = this.fileStateConfigService.installerPropertyDataForm;
+    projectManagerService = inject(ProjectManagerService);
+    workingConfigFileStore = this.projectManagerService.projectStore;
+    installerPropertyStore = this.projectManagerService.installerPropertyStore;
+    installerPropertyDataModel = this.projectManagerService.installerPropertyDataModel;
+    installerPropertyDataForm = this.projectManagerService.installerPropertyDataForm;
 
     dialogStore = inject(DialogStore);
 
@@ -41,7 +41,7 @@ export class ProductDetails {
             return;
         }
 
-        const r = await this.fileStateConfigService.saveInstallerConfig();
+        const r = await this.projectManagerService.saveInstallerConfig();
         if (!r) {
             this.toastService.show('Something error', 'error');
             return;

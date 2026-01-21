@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { ClickOutside } from '../../directives/click-outside';
-import { FileHelper } from '../../helpers/file.helper';
 import { InstallerPropertyStore } from 'installer-core';
-import { FileStateConfigService } from '../../../core/services/file-state-config-service';
-import { DialogStore } from '../../stores/dialog.store';
+import { DialogStore } from '../../../core/stores/dialog.store';
 
 @Component({
     selector: 'app-title-bar',
@@ -26,7 +24,7 @@ export class TitleBar {
     /**
      *
      */
-    constructor(private fileStateConfigService: FileStateConfigService) {}
+    constructor() {}
 
     async minimize() {
         await this.appWindow.minimize();

@@ -28,11 +28,10 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             write_data_to_exe_command,
-            // load_html_pages_command,
             preview_installer_ui_command,
             save_installer_config_command,
-            update_working_config_command,
-            load_working_config_command,
+            update_project_state_command,
+            load_project_state_command,
             load_installer_document_config_command,
             load_html_first_time_install_pages_command,
             load_html_maintenance_pages_command,

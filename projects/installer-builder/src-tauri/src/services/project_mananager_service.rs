@@ -1,7 +1,6 @@
 use anyhow::bail;
 use chrono::Local;
-use quick_xml::se::to_string;
-use std::fmt::format;
+use quick_xml::de::from_str;
 use std::fs::{self, File};
 use std::io::Write;
 use std::path::Path;
@@ -54,6 +53,16 @@ pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> an
 
     let config_file_path = base_path.join(CONFIG_DIR).join("config.json");
     File::create(config_file_path)?;
+
+    Ok(true)
+}
+
+async fn open_tuninstaller_project(project_path: String) -> anyhow::Result<bool> {
+
+    let xml_content = tokio::fs::read_to_string(project_path).await?;
+    let project: TunInstallerProject = from_str(&xml_content)?;
+
+    println!("{:#?}", project);
 
     Ok(true)
 }

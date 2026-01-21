@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { InstallerPropertyStore } from 'installer-core';
 import { HtmlPage } from '../../core/models/html-page';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
-import { Commands } from '../../core/enums/commands';
+import { HtmlEngineCommands } from '../../core/enums/commands';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -45,7 +45,7 @@ export class PreviewInstallerUi {
 
     async loadPages() {
         const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
-            Commands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
+            HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
             {}
         );
 

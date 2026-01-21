@@ -6,9 +6,9 @@ import {
     RegistryValue,
     RegistryValueType,
 } from 'installer-core';
-import { FileStateConfigService } from '../../core/services/file-state-config-service';
 import { ToastService } from '../../core/services/toast-service';
 import { CommonModule } from '@angular/common';
+import { ProjectManagerService } from '../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-registry',
@@ -48,8 +48,8 @@ export class Registry {
     invalidUninstallEntries = signal<string[]>([]);
 
     constructor(
-        private fileStateConfigService: FileStateConfigService,
         private toastService: ToastService,
+        private projectManagerService: ProjectManagerService,
     ) {}
 
     addConfigEntry() {
@@ -129,7 +129,7 @@ export class Registry {
             },
         });
 
-        const r = await this.fileStateConfigService.saveInstallerConfig();
+        const r = await this.projectManagerService.saveInstallerConfig();
         if (r) {
             this.toastService.show('Success', 'success');
         }

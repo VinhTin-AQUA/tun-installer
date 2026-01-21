@@ -1,20 +1,20 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { WorkingConfigFileStore } from '../../shared/stores/working-config.store';
+import { ProjectStore } from '../stores/project-store';
 import { InstallerProperties, InstallerPropertyStore, RegistryKeyStore } from 'installer-core';
 import { form, required } from '@angular/forms/signals';
 import { TauriCommandService } from './tauri-command-service';
 import {
-    InstallerDocumentConfig,
-    SaveInstallerDocument,
+    InstallerConfig,
+    SaveInstallerConfig,
 } from '../models/tauri-payloads/save-Installer-document';
-import { Commands } from '../enums/commands';
-import { WorkingConfigFileState } from '../models/working-config-file-state';
+import { CreateTunInstallerProject } from '../models/tauri-payloads/create-tuninstaller-project';
+import { ProjectManagerCommands } from '../enums/commands';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FileStateConfigService {
-    workingConfigFileStore = inject(WorkingConfigFileStore);
+export class ProjectManagerService {
+    projectStore = inject(ProjectStore);
     installerPropertyStore = inject(InstallerPropertyStore);
     installerPropertyDataModel = signal<InstallerProperties>(this.installerPropertyStore.getData());
     registryKeyStore = inject(RegistryKeyStore);
@@ -37,7 +37,7 @@ export class FileStateConfigService {
         effect(() => {
             const projectDir = this.installerPropertyDataModel().comment;
 
-            this.workingConfigFileStore.update({
+            this.projectStore.updateValues({
                 isDirty: true,
             });
 
@@ -60,38 +60,13 @@ export class FileStateConfigService {
         });
     }
 
-    /* ====== private methods ====== */
-
-    /* ====== state ====== */
-
-    async getWorkingConfigFileState() {
-        const r = await this.tauriCommandService.invokeCommand<WorkingConfigFileState>(
-            Commands.LOAD_WORKING_CONFIG_COMMAND,
-            {},
-        );
-        return r;
-    }
-
-    async updateFileState(data: WorkingConfigFileState): Promise<boolean> {
-        const r = await this.tauriCommandService.invokeCommand<boolean>(
-            Commands.UPDATE_WORKING_CONFIG_COMMAND,
-            { data: data },
-        );
-        return r ?? false;
-    }
-
-    /* ====== content ====== */
-
     async init() {
-        const workingConfigFileState = await this.getWorkingConfigFileState();
-
-        if (!workingConfigFileState?.projectDir) {
+        if (!this.projectStore.projectDir) {
             return;
         }
 
-        this.workingConfigFileStore.update(workingConfigFileState);
         const installerDocumentConfig = await this.loadInstallerDocumentConfig(
-            this.workingConfigFileStore.configFile(),
+            this.projectStore.configFile(),
         );
 
         if (!installerDocumentConfig) {
@@ -159,10 +134,20 @@ export class FileStateConfigService {
         });
     }
 
-    async saveInstallerConfig(): Promise<boolean> {
-        const filePath = this.workingConfigFileStore.configFile();
+    async createNewProject(data: CreateTunInstallerProject) {
+        const r = await this.tauriCommandService.invokeCommand<boolean>(
+            ProjectManagerCommands.CREATE_TUNINSTALLER_PROJECT_COMMAND,
+            data,
+        );
+        return r;
+    }
 
-        const data: SaveInstallerDocument = {
+    async saveInstallerConfig(): Promise<boolean> {
+        const filePath = this.projectStore.configFile();
+
+        console.log(filePath);
+
+        const data: SaveInstallerConfig = {
             filePath: filePath,
             payload: {
                 properties: this.installerPropertyStore.getData(),
@@ -170,8 +155,10 @@ export class FileStateConfigService {
             },
         };
 
+        console.log(data);
+
         const r = await this.tauriCommandService.invokeCommand<boolean>(
-            Commands.SAVE_INSTALLER_CONFIG_COMMAND,
+            ProjectManagerCommands.SAVE_INSTALLER_CONFIG_COMMAND,
             data,
         );
 
@@ -179,17 +166,16 @@ export class FileStateConfigService {
             return false;
         }
 
-        this.workingConfigFileStore.update({
+        this.projectStore.updateValues({
             isDirty: false,
         });
 
-        const r2 = await this.updateFileState(this.workingConfigFileStore.getData());
         return true;
     }
 
     private async loadInstallerDocumentConfig(filePath: string) {
-        const r = await this.tauriCommandService.invokeCommand<InstallerDocumentConfig>(
-            Commands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
+        const r = await this.tauriCommandService.invokeCommand<InstallerConfig>(
+            ProjectManagerCommands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
             { filePath: filePath },
         );
         return r;

@@ -1,11 +1,11 @@
 import { InstallerProperties, RegistryKeys } from 'installer-core';
 
-export interface InstallerDocumentConfig {
+export interface InstallerConfig {
     properties: InstallerProperties;
     registryKeys: RegistryKeys;
 }
 
-export interface SaveInstallerDocument {
-    payload: InstallerDocumentConfig;
+export interface SaveInstallerConfig {
+    payload: InstallerConfig;
     filePath: string;
 }
