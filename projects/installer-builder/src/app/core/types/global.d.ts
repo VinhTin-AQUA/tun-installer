@@ -3,10 +3,12 @@ export {};
 declare global {
     interface Window {
         App: {
-            next: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
-            prev: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
-            save: (data: any) => Promise<void>;
+            navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
+            install: () => Promise<void>;
             logData: () => void;
+            data: any;
         };
+        initApp: () => void; // send initial data to HTML page
+        render: (data: any) => void; // send updated data to HTML page
     }
 }

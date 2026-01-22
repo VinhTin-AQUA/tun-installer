@@ -39,9 +39,9 @@
         >
             <!-- Header -->
             <div>
-                <h1 style="margin: 0; font-size: 36px; color: #111827">Test Installer</h1>
+                <h1 style="margin: 0; font-size: 36px; color: #111827">{{productName}}</h1>
 
-                <p style="margin-top: 8px; font-size: 16px; color: #6b7280">Version 1.0.0</p>
+                <p style="margin-top: 8px; font-size: 16px; color: #6b7280">Version {{productVersion}}</p>
             </div>
 
             <!-- Welcome Text -->
@@ -69,10 +69,17 @@
                     "
                     onmouseover="this.style.background = '#4338ca'"
                     onmouseout="this.style.background = '#4f46e5'"
+                    onclick="navigateToFolderDialog()"
                 >
                     Next →
                 </button>
             </div>
         </div>
+
+        <script>
+            function navigateToFolderDialog() {
+                window.App.navigateTo('2_folder-dialog.html', 'firstInstall');
+            }
+        </script>
     </body>
 </html>

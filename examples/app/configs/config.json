@@ -1,9 +1,9 @@
 {
   "properties": {
     "installationLocation": "C:/ProgramFiles",
-    "productName": "Test Installer",
+    "productName": "Noting",
     "icon": "icon.ico",
-    "productVersion": "1.0.0",
+    "productVersion": "3.2.4",
     "publisher": "Newtun",
     "supportLink": "https://example.com",
     "supportEmail": "example@gmail.com",
