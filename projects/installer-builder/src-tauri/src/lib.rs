@@ -4,6 +4,7 @@ mod helpers;
 mod models;
 mod services;
 mod states;
+mod events;
 use std::sync::Mutex;
 
 use commands::*;
