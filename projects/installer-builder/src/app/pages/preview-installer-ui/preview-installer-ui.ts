@@ -1,9 +1,11 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { InstallerPropertyStore } from 'installer-core';
 import { HtmlPage } from '../../core/models/html-page';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ProjectStore } from '../../core/stores/project-store';
+import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
+import { ApiReferences } from '../../core/api-references/api-references';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -17,34 +19,45 @@ export class PreviewInstallerUi {
     index = 0;
 
     installerPropertyStore = inject(InstallerPropertyStore);
-    projectStore = inject(ProjectStore)
+    projectStore = inject(ProjectStore);
 
-    installationLocation = this.installerPropertyStore.installationLocation();
-    productName = this.installerPropertyStore.productName();
-    icon = this.installerPropertyStore.icon();
-    productVersion = this.installerPropertyStore.productVersion();
-    publisher = this.installerPropertyStore.publisher();
-    supportLink = this.installerPropertyStore.supportLink();
-    supportEmail = this.installerPropertyStore.supportEmail();
-    comment = this.installerPropertyStore.comment();
-    launchFile = this.installerPropertyStore.launchFile();
-    runAsAdmin = this.installerPropertyStore.runAsAdmin();
-    launchApp = this.installerPropertyStore.launchApp();
+    data = {
+        installationLocation: this.installerPropertyStore.installationLocation(),
+        productName: this.installerPropertyStore.productName(),
+        icon: this.installerPropertyStore.icon(),
+        productVersion: this.installerPropertyStore.productVersion(),
+        publisher: this.installerPropertyStore.publisher(),
+        supportLink: this.installerPropertyStore.supportLink(),
+        supportEmail: this.installerPropertyStore.supportEmail(),
+        comment: this.installerPropertyStore.comment(),
+        launchFile: this.installerPropertyStore.launchFile(),
+        runAsAdmin: this.installerPropertyStore.runAsAdmin(),
+        launchApp: this.installerPropertyStore.launchApp(),
+        progress: signal<number>(0),
+    };
+
+    firstInstallPages = signal<HtmlPage[]>([]);
+    maintenancePages = signal<HtmlPage[]>([]);
 
     constructor(private tauriCommandService: TauriCommandService) {}
 
     async ngOnInit() {
+        // await this.loadPages();
+    }
+
+    async ngAfterViewInit() {
         await this.loadPages();
     }
 
-    ngAfterViewInit() {}
-
     async loadPages() {
-        const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
+        await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
+    }
+
+    private async loadFirstInstallPages() {
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
-            {
-                projectDir: this.projectStore.projectDir()
-            }
+            loadHtmlPage,
         );
 
         if (!pages) {
@@ -55,66 +68,110 @@ export class PreviewInstallerUi {
             page.content = this.propDataBindind(page.content);
         }
 
-        this.htmlPages = pages;
-        this.loadPage();
+        this.firstInstallPages.set(pages);
+        this.loadPage(pages[0].name, 'firstInstall');
     }
 
-    loadPage() {
+    private async loadMaintenancePages() {
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
+            HtmlEngineCommands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
+            loadHtmlPage,
+        );
+
+        if (!pages) {
+            return;
+        }
+
+        for (let page of pages) {
+            page.content = this.propDataBindind(page.content);
+        }
+
+        this.maintenancePages.set(pages);
+        // this.loadPage();
+    }
+
+    // async loadPages() {
+    //     const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
+    //         HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
+    //         {
+    //             projectDir: this.projectStore.projectDir()
+    //         }
+    //     );
+
+    //     if (!pages) {
+    //         return;
+    //     }
+
+    //     for (let page of pages) {
+    //         page.content = this.propDataBindind(page.content);
+    //     }
+
+    //     this.htmlPages = pages;
+    //     this.loadPage();
+    // }
+
+    loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
-            this.injectAppApi();
+            ApiReferences.injectAPIs(
+                this.iframe,
+                this.navigateTo.bind(this),
+                this.install.bind(this),
+                this.data
+            );
         };
 
-        iframeEl.srcdoc = this.htmlPages[this.index].content;
+        let page = null;
+        switch (type) {
+            case 'firstInstall':
+                page = this.firstInstallPages().find((x) => x.name === pageName);
+                break;
+            case 'maintenance':
+                page = this.maintenancePages().find((x) => x.name === pageName);
+                break;
+        }
+        if (!page) {
+            alert('no page found');
+            return;
+        }
+
+        iframeEl.srcdoc = page.content;
     }
 
-    injectAppApi() {
-        const win = this.iframe.nativeElement.contentWindow!;
-        win.App = {
-            next: () => this.next(),
-            prev: () => this.prev(),
+    /* ================ api implements ================= */
 
-            save: async (data: any) => {
-                console.log(data);
-                this.installerPropertyStore.update(data);
-            },
-            logData: () => {
-                console.log(this.installerPropertyStore.getData());
-            },
-        };
+    navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
+        this.index = Math.min(this.index + 1, this.firstInstallPages.length - 1);
+        this.loadPage(pageName, type);
     }
 
-    next() {
-        this.index = Math.min(this.index + 1, this.htmlPages.length - 1);
-        this.loadPage();
-    }
+    async install() {}
 
-    prev() {
-        this.index = Math.max(this.index - 1, 0);
-        this.loadPage();
-    }
+    /* ================================= */
 
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
-            '{{installationLocation}}': this.installationLocation,
-            '{{productName}}': this.productName,
-            '{{icon}}': this.icon,
-            '{{productVersion}}': this.productVersion,
-            '{{publisher}}': this.publisher,
-            '{{supportLink}}': this.supportLink,
-            '{{supportEmail}}': this.supportEmail,
-            '{{comment}}': this.comment,
-            '{{launchFile}}': this.launchFile,
-            '{{runAsAdmin}}': this.runAsAdmin ? 'true' : 'false',
-            '{{launchApp}}': this.launchApp ? 'true' : 'false',
+            '{{installationLocation}}': this.data.installationLocation,
+            '{{productName}}': this.data.productName,
+            '{{icon}}': this.data.icon,
+            '{{productVersion}}': this.data.productVersion,
+            '{{publisher}}': this.data.publisher,
+            '{{supportLink}}': this.data.supportLink,
+            '{{supportEmail}}': this.data.supportEmail,
+            '{{comment}}': this.data.comment,
+            '{{launchFile}}': this.data.launchFile,
+            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
+            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
+             '{{progress}}': this.data.progress().toString(),
         };
 
         const pattern = new RegExp(
             Object.keys(replacements)
                 .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // escape regex
                 .join('|'),
-            'g'
+            'g',
         );
 
         return text.replace(pattern, (match) => replacements[match]);

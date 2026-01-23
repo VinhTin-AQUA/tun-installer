@@ -79,11 +79,46 @@ project-names
 - runAsAdmin
 - lauchApp
 
+- su dung thuoc tinh
+
+    ```js
+    // get init value
+    window.initApp = function () {
+        console.log('Init:', window.App.data);
+
+        document.getElementById('process').innerText = window.App.data.progress + '%';
+    };
+
+    // get update value
+    window.render = function (data) {
+        console.log(data);
+
+        document.getElementById('process').innerText = data.progress + '%';
+    };
+    ```
+
+- tư tưởng lấy dữ liệu: khi onload thì gọi 1 hàm sự kiện đến html thuần để nhận data
+- tương tự cập nhật dữ liệu mới thì gọi 1 hàm sự kiện gửi đến html thuần mỗi khi có thay đổi về dữ liệu
+- có thể sử dụng cơ chế post postMessage để gửi dữ liệu mới đến HTML page
+
 ### methods
 
-- next
-- prev
+- navigateTo
 - save
+
+- Su dung ham
+
+    ```html
+    <button onclick="navigateToFolderDialog()">Next →</button>
+    ```
+
+    ```js
+    <script>
+        function navigateToFolderDialog() {
+            window.App.navigateTo('2_folder-dialog.html', 'firstInstall');
+        }
+    </script>
+    ```
 
 ### Pages folder
 

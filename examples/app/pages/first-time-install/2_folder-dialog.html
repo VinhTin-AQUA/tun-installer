@@ -141,10 +141,17 @@
                     "
                     onmouseover="this.style.background = '#4338ca'"
                     onmouseout="this.style.background = '#4f46e5'"
+                    onclick="navigateToVerifyDialog()"
                 >
                     Next →
                 </button>
             </div>
         </div>
+
+        <script>
+            function navigateToVerifyDialog() {
+                window.App.navigateTo('3_verify-dialog.html', 'firstInstall');
+            }
+        </script>
     </body>
 </html>

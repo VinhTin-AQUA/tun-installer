@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { HtmlPage } from '../../core/models/html-page';
 import { InstallerPropertyStore } from 'installer-core';
@@ -6,6 +6,7 @@ import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from '../../core/services/toast-service';
 import { ProjectStore } from '../../core/stores/project-store';
 import { HtmlEngineCommands } from '../../core/enums/commands';
+import { ApiReferences } from '../../core/api-references/api-references';
 
 @Component({
     selector: 'app-html-engine',
@@ -20,28 +21,42 @@ export class HtmlEngine {
     index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
 
-    installationLocation = this.installerPropertyStore.installationLocation();
-    productName = this.installerPropertyStore.productName();
-    icon = this.installerPropertyStore.icon();
-    productVersion = this.installerPropertyStore.productVersion();
-    publisher = this.installerPropertyStore.publisher();
-    supportLink = this.installerPropertyStore.supportLink();
-    supportEmail = this.installerPropertyStore.supportEmail();
-    comment = this.installerPropertyStore.comment();
-    launchFile = this.installerPropertyStore.launchFile();
-    runAsAdmin = this.installerPropertyStore.runAsAdmin();
-    launchApp = this.installerPropertyStore.launchApp();
+    progress = signal<number>(0);
 
-    iframeWidth = signal<number>(800);
-    iframeHeight = signal<number>(600);
+    data = {
+        installationLocation: this.installerPropertyStore.installationLocation(),
+        productName: this.installerPropertyStore.productName(),
+        icon: this.installerPropertyStore.icon(),
+        productVersion: this.installerPropertyStore.productVersion(),
+        publisher: this.installerPropertyStore.publisher(),
+        supportLink: this.installerPropertyStore.supportLink(),
+        supportEmail: this.installerPropertyStore.supportEmail(),
+        comment: this.installerPropertyStore.comment(),
+        launchFile: this.installerPropertyStore.launchFile(),
+        runAsAdmin: this.installerPropertyStore.runAsAdmin(),
+        launchApp: this.installerPropertyStore.launchApp(),
+        progress: this.progress(),
+    };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    workingConfigFileStore = inject(ProjectStore);
+    iframeWidth = signal<number>(800);
+    iframeHeight = signal<number>(600);
+    projectStore = inject(ProjectStore);
+
+    // test
+
+    private intervalId: any;
 
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
-    ) {}
+    ) {
+        effect(() => {
+            const progress = this.progress();
+
+            this.data.progress = progress;
+        });
+    }
 
     async ngOnInit() {
         // this.installerPropertyStore.update({
@@ -55,7 +70,7 @@ export class HtmlEngine {
     }
 
     private async loadFirstInstallPages() {
-        const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
             loadHtmlPage,
@@ -65,16 +80,12 @@ export class HtmlEngine {
             return;
         }
 
-        for (let page of pages) {
-            page.content = this.propDataBindind(page.content);
-        }
-
         this.firstInstallPages.set(pages);
         this.loadPage(pages[0].name, 'firstInstall');
     }
 
     private async loadMaintenancePages() {
-        const loadHtmlPage: LoadHtmlPage = { projectDir: this.workingConfigFileStore.projectDir() };
+        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
             HtmlEngineCommands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
             loadHtmlPage,
@@ -82,10 +93,6 @@ export class HtmlEngine {
 
         if (!pages) {
             return;
-        }
-
-        for (let page of pages) {
-            page.content = this.propDataBindind(page.content);
         }
 
         this.maintenancePages.set(pages);
@@ -100,7 +107,12 @@ export class HtmlEngine {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
-            this.injectAppApi();
+            ApiReferences.injectAPIs(
+                this.iframe,
+                this.navigateTo.bind(this),
+                this.install.bind(this),
+                this.data,
+            );
         };
 
         let page = null;
@@ -117,36 +129,28 @@ export class HtmlEngine {
             return;
         }
 
+        // iframeEl.srcdoc = this.propDataBindind(page.content);
         iframeEl.srcdoc = page.content;
     }
 
-    injectAppApi() {
-        const win = this.iframe.nativeElement.contentWindow!;
-        win.App = {
-            next: (pageName: string, type: 'firstInstall' | 'maintenance') =>
-                this.next(pageName, type),
-            prev: (pageName: string, type: 'firstInstall' | 'maintenance') =>
-                this.prev(pageName, type),
+    /* ================ api implements ================= */
 
-            save: async (data: any) => {
-                console.log(data);
-                this.installerPropertyStore.update(data);
-            },
-            logData: () => {
-                console.log(this.installerPropertyStore.getData());
-            },
-        };
-    }
-
-    next(pageName: string, type: 'firstInstall' | 'maintenance') {
-        this.index = Math.min(this.index + 1, this.firstInstallPages.length - 1);
+    navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
         this.loadPage(pageName, type);
     }
 
-    prev(pageName: string, type: 'firstInstall' | 'maintenance') {
-        this.index = Math.max(this.index - 1, 0);
-        this.loadPage(pageName, type);
+    async install() {
+        this.intervalId = setInterval(() => {
+            this.progress.update((x) => x + 5);
+            if (this.progress() > 100) {
+                this.progress.set(100);
+                clearInterval(this.intervalId);
+            }
+            ApiReferences.updateIframe(this.data);
+        }, 500);
     }
+
+    /* ================================= */
 
     async preview() {
         await this.tauriCommandService.invokeCommand(
@@ -172,19 +176,25 @@ export class HtmlEngine {
         this.iframeHeight.set(Number(value));
     }
 
+    reset() {
+        this.loadPages();
+        this.ngOnDestroy();
+    }
+
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
-            '{{installationLocation}}': this.installationLocation,
-            '{{productName}}': this.productName,
-            '{{icon}}': this.icon,
-            '{{productVersion}}': this.productVersion,
-            '{{publisher}}': this.publisher,
-            '{{supportLink}}': this.supportLink,
-            '{{supportEmail}}': this.supportEmail,
-            '{{comment}}': this.comment,
-            '{{launchFile}}': this.launchFile,
-            '{{runAsAdmin}}': this.runAsAdmin ? 'true' : 'false',
-            '{{launchApp}}': this.launchApp ? 'true' : 'false',
+            '{{installationLocation}}': this.data.installationLocation,
+            '{{productName}}': this.data.productName,
+            '{{icon}}': this.data.icon,
+            '{{productVersion}}': this.data.productVersion,
+            '{{publisher}}': this.data.publisher,
+            '{{supportLink}}': this.data.supportLink,
+            '{{supportEmail}}': this.data.supportEmail,
+            '{{comment}}': this.data.comment,
+            '{{launchFile}}': this.data.launchFile,
+            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
+            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
+            '{{progress}}': this.data.progress.toString(),
         };
 
         const pattern = new RegExp(
@@ -195,5 +205,10 @@ export class HtmlEngine {
         );
 
         return text.replace(pattern, (match) => replacements[match]);
+    }
+
+    ngOnDestroy() {
+        this.progress.set(0);
+        clearInterval(this.intervalId);
     }
 }

@@ -119,6 +119,7 @@
                         font-size: 16px;
                         cursor: pointer;
                     "
+                    onclick="navigateToFolderDialog()"
                 >
                     ← Back
                 </button>
@@ -136,10 +137,22 @@
                     "
                     onmouseover="this.style.background = '#4338ca'"
                     onmouseout="this.style.background = '#4f46e5'"
+                    onclick="install()"
                 >
                     Install
                 </button>
             </div>
         </div>
+
+        <script>
+            function navigateToFolderDialog() {
+                window.App.navigateTo('2_folder-dialog.html', 'firstInstall');
+            }
+
+            function install() {
+                window.App.navigateTo('4_progress-dialog.html', 'firstInstall');
+                window.App.install();
+            }
+        </script>
     </body>
 </html>
