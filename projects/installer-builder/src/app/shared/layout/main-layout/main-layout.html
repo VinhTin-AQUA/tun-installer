@@ -21,19 +21,21 @@
         <aside class="w-52 bg-gray-800 text-white shrink-0 overflow-y-auto">
             <nav class="p-4 space-y-2">
                 @for (navItem of navItems; track $index) {
-                <a
-                    class="block px-4 py-2 rounded hover:bg-gray-700"
-                    routerLinkActive="active"
-                    [routerLink]="navItem.url"
-                    >{{ navItem.name | translate }}</a
-                >
+                    <a
+                        class="block px-4 py-2 rounded hover:bg-gray-700"
+                        routerLinkActive="active"
+                        [routerLink]="navItem.url"
+                        >{{ navItem.name | translate }}</a
+                    >
                 }
             </nav>
         </aside>
 
         <!-- Main content (KHÔNG SCROLL) -->
         <main class="flex-1 min-h-0 h-[calc(100vh-50px)] overflow-hidden p-2">
-            <router-outlet></router-outlet>
+            <div class="p-6 overflow-y-scroll w-full h-full">
+                <router-outlet></router-outlet>
+            </div>
         </main>
     </div>
 </div>

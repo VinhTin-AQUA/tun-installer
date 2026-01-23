@@ -13,15 +13,15 @@
     "launchApp": false,
     "shortcutInDesktop": {
       "isCreated": true,
-      "runAsAdmin": true,
+      "runAsAdmin": false,
       "shortcutName": "Test Installer",
-      "runFile": "installer.exe"
+      "runFile": "app.txt"
     },
     "shortcutInApplicationShortcut": {
       "isCreated": true,
       "runAsAdmin": true,
       "shortcutName": "Test Installer",
-      "runFile": "installer.exe"
+      "runFile": "app.txt"
     }
   },
   "registryKeys": {

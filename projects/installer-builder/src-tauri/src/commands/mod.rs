@@ -12,3 +12,6 @@ pub use resource_folder_commands::*;
 
 pub mod project_mananager_command;
 pub use project_mananager_command::*;
+
+pub mod compress_commands;
+pub use compress_commands::*;

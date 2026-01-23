@@ -1,10 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { FolderNode, FileItem } from './models/directory-tree';
+import { FolderNode, FileItem } from '../../core/models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'installer-core';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
 import { ProjectStore } from '../../core/stores/project-store';
 import { ProjectManagerCommands } from '../../core/enums/commands';
+import { ResourceFiletore } from '../../core/stores/resource-file.store';
+import { ProjectManagerService } from '../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-files-and-folders',
@@ -36,15 +38,19 @@ export class FilesAndFolders {
     selectedFolderId: string = 'resources';
     openedMenuFileId?: string;
     installerProperties = inject(InstallerPropertyStore);
-    workingConfigFileStore = inject(ProjectStore);
+    projectStore = inject(ProjectStore);
+    resourceFiletore = inject(ResourceFiletore);
 
-    constructor(private tauriCommandService: TauriCommandService) {}
+    constructor(
+        private tauriCommandService: TauriCommandService,
+        private projectManagerService: ProjectManagerService,
+    ) {}
 
     async ngOnInit() {
         const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
             ProjectManagerCommands.READ_SUBFOLDERS_COMMAND,
             {
-                path: this.workingConfigFileStore.resourceDir(),
+                path: this.projectStore.resourceDir(),
             },
         );
         if (!resources) {
@@ -55,29 +61,35 @@ export class FilesAndFolders {
             x[0].children = resources;
             return x;
         });
-
         await this.getFilesInFolder('resources');
     }
 
-    async selectFolder(folder: FolderNode) {
+    async expandFolder(folder: FolderNode) {
         folder.expanded = !folder.expanded;
-        this.selectedFolderId = folder.id;
+
         this.openedMenuFileId = undefined;
     }
 
-    async getFilesInFolder(folder: string) {
+    async getFilesInFolder(folder: string): Promise<FileItem[]> {
+        this.selectedFolderId = folder;
         const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
             ProjectManagerCommands.READ_FILES_IN_FOLDER_COMMAND,
             {
-                path: `${this.workingConfigFileStore.projectDir()}/${folder}`,
+                path: `${this.projectStore.projectDir()}/${folder}`,
             },
         );
 
         if (!files) {
             this.files.set([]);
-            return;
+            return [];
         }
         this.files.set(files);
+        return files;
+    }
+
+    reset() {
+        this.getFilesInFolder(this.selectedFolderId);
+        this.projectManagerService.getResourceFiles();
     }
 
     // get filesInSelectedFolder(): FileItem[] {

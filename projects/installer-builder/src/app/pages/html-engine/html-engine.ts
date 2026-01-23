@@ -103,6 +103,8 @@ export class HtmlEngine {
         await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
     }
 
+    /* ================ api implements ================= */
+
     loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
         const iframeEl = this.iframe.nativeElement;
 
@@ -139,12 +141,16 @@ export class HtmlEngine {
         this.loadPage(pageName, type);
     }
 
-    async install() {
+    async install(afterInstallPage: string | null) {
         this.intervalId = setInterval(() => {
             this.progress.update((x) => x + 5);
             if (this.progress() > 100) {
                 this.progress.set(100);
                 clearInterval(this.intervalId);
+
+                if (afterInstallPage) {
+                    this.navigateTo(afterInstallPage, 'firstInstall');
+                }
             }
             ApiReferences.updateIframe(this.data);
         }, 500);

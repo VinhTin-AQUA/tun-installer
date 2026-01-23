@@ -5,4 +5,5 @@ export enum MainRoutes {
     FilesAndFolders = 'files-and-folders',
     Registry = 'registry',
     Settings = 'settings',
+    BuildInstaller = 'build-installer',
 }

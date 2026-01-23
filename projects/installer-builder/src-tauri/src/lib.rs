@@ -1,9 +1,9 @@
 mod commands;
 mod consts;
+mod helpers;
 mod models;
 mod services;
 mod states;
-mod helpers;
 use std::sync::Mutex;
 
 use commands::*;
@@ -38,7 +38,9 @@ pub fn run() {
             read_subfolders_command,
             read_files_in_folder_command,
             create_tuninstaller_project_command,
-            open_tuninstaller_project_command
+            open_tuninstaller_project_command,
+            compress_installer_command,
+            extract_installer_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

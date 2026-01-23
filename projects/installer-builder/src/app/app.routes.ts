@@ -7,6 +7,7 @@ import { Registry } from './pages/registry/registry';
 import { MainRoutes } from './core/enums/routes.enum';
 import { Settings } from './pages/settings/settings';
 import { PreviewInstallerUi } from './pages/preview-installer-ui/preview-installer-ui';
+import { BuildInstaller } from './pages/build-installer/build-installer';
 
 export const routes: Routes = [
     {
@@ -33,7 +34,10 @@ export const routes: Routes = [
                 path: MainRoutes.Settings,
                 component: Settings,
             },
-
+            {
+                path: MainRoutes.BuildInstaller,
+                component: BuildInstaller,
+            },
             { path: '', redirectTo: MainRoutes.ProductDetails, pathMatch: 'full' },
         ],
     },

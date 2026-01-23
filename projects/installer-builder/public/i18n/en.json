@@ -8,7 +8,8 @@
         "uiEditor": "UI Editor",
         "filesAndFolders": "Files And Folders",
         "registry": "Registry",
-        "htmlEngine": "Html Engine"
+        "htmlEngine": "Html Engine",
+        "buildInstaller": "Build Installer"
     },
     "product-details": {
         "input-config-file": "Input Config File Name"

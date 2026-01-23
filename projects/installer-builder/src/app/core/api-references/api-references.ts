@@ -6,7 +6,7 @@ export class ApiReferences {
     public static injectAPIs(
         iframe: ElementRef<HTMLIFrameElement>,
         navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void,
-        install: () => Promise<void>,
+        install: (afterInstallPage: string | null) => Promise<void>,
         data: any,
     ) {
         const win = iframe.nativeElement.contentWindow!;
@@ -16,8 +16,8 @@ export class ApiReferences {
             navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => {
                 navigateTo(pageName, type);
             },
-            install: async () => {
-                await install();
+            install: async (afterInstallPage: string | null) => {
+                await install(afterInstallPage);
             },
             logData: () => {
                 console.log('Test Install');

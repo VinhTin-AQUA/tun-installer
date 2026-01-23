@@ -5,7 +5,7 @@ import { filter } from 'rxjs';
 import { MainRoutes } from '../../../core/enums/routes.enum';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ProjectStore } from '../../../core/stores/project-store';
-import { TitleBar } from "../../components/title-bar/title-bar";
+import { TitleBar } from '../../components/title-bar/title-bar';
 
 @Component({
     selector: 'app-main-layout',
@@ -26,7 +26,7 @@ export class MainLayout {
                 name: 'menuSidebar.productDetails',
                 url: MainRoutes.ProductDetails,
             },
-             {
+            {
                 name: 'menuSidebar.htmlEngine',
                 url: MainRoutes.HtmlEngine,
             },
@@ -37,6 +37,10 @@ export class MainLayout {
             {
                 name: 'menuSidebar.registry',
                 url: MainRoutes.Registry,
+            },
+            {
+                name: 'menuSidebar.buildInstaller',
+                url: MainRoutes.BuildInstaller,
             },
             {
                 name: 'menuSidebar.settings',

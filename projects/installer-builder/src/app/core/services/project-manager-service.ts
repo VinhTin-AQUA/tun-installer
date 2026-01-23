@@ -10,6 +10,8 @@ import {
 import { CreateTunInstallerProject } from '../models/tauri-payloads/create-tuninstaller-project';
 import { ProjectManagerCommands } from '../enums/commands';
 import { TunInstallerProject } from '../models/tun-installer-project';
+import { ResourceFiletore } from '../stores/resource-file.store';
+import { FileItem, FolderNode } from '../models/directory-tree';
 
 @Injectable({
     providedIn: 'root',
@@ -19,6 +21,7 @@ export class ProjectManagerService {
     installerPropertyStore = inject(InstallerPropertyStore);
     installerPropertyDataModel = signal<InstallerProperties>(this.installerPropertyStore.getData());
     registryKeyStore = inject(RegistryKeyStore);
+    resourceFiletore = inject(ResourceFiletore);
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
@@ -133,6 +136,9 @@ export class ProjectManagerService {
             configRegistry: installerDocumentConfig.registryKeys.configRegistry,
             uninstallRegistry: installerDocumentConfig.registryKeys.uninstallRegistry,
         });
+
+        /* =========== get files in resources ==============  */
+        await this.getResourceFiles();
     }
 
     //========== project ===========
@@ -198,11 +204,64 @@ export class ProjectManagerService {
         return true;
     }
 
+    //========== resources ============
+
+    async getResourceFiles() {
+        const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
+            ProjectManagerCommands.READ_SUBFOLDERS_COMMAND,
+            {
+                path: this.projectStore.resourceDir(),
+            },
+        );
+
+        if (resources) {
+            this.resourceFiletore.setList([]);
+            const folders = signal<FolderNode[]>([
+                {
+                    id: 'resources',
+                    name: 'Resources',
+                    expanded: false,
+                    children: resources,
+                },
+            ]);
+
+            await this.traverseFolders(folders());
+        }
+    }
+
+    //========== private ============
+
     private async loadInstallerDocumentConfig(filePath: string) {
         const r = await this.tauriCommandService.invokeCommand<InstallerConfig>(
             ProjectManagerCommands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
             { filePath: filePath },
         );
         return r;
+    }
+
+    private async traverseFolders(nodes: FolderNode[]): Promise<void> {
+        for (const node of nodes) {
+            const list = await this.getFilesInFolder(node.id);
+
+            this.resourceFiletore.addList(list);
+
+            if (node.children?.length) {
+                await this.traverseFolders(node.children);
+            }
+        }
+    }
+
+    private async getFilesInFolder(folder: string): Promise<FileItem[]> {
+        const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
+            ProjectManagerCommands.READ_FILES_IN_FOLDER_COMMAND,
+            {
+                path: `${this.projectStore.projectDir()}/${folder}`,
+            },
+        );
+
+        if (!files) {
+            return [];
+        }
+        return files;
     }
 }

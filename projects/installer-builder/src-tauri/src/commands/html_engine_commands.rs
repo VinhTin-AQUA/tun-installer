@@ -46,7 +46,8 @@ pub async fn preview_installer_ui_command(app: AppHandle, width: f64, height: f6
     .always_on_top(false)
     .center()
     .visible(true)
-    .skip_taskbar(true)
+    .closable(true)
+    .minimizable(true)
     .build()
     .unwrap();
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { InstallerPropertyStore } from 'installer-core';
 import { HtmlPage } from '../../core/models/html-page';
 import { TauriCommandService } from '../../core/services/tauri-command-service';
@@ -6,6 +6,7 @@ import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ProjectStore } from '../../core/stores/project-store';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ApiReferences } from '../../core/api-references/api-references';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -14,12 +15,13 @@ import { ApiReferences } from '../../core/api-references/api-references';
     styleUrl: './preview-installer-ui.css',
 })
 export class PreviewInstallerUi {
-    @ViewChild('viewer', { static: true }) iframe!: ElementRef<HTMLIFrameElement>;
-    htmlPages: HtmlPage[] = [];
-    index = 0;
+    @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
 
+    // htmlPages: HtmlPage[] = [];
+    index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
-    projectStore = inject(ProjectStore);
+
+    progress = signal<number>(0);
 
     data = {
         installationLocation: this.installerPropertyStore.installationLocation(),
@@ -33,24 +35,38 @@ export class PreviewInstallerUi {
         launchFile: this.installerPropertyStore.launchFile(),
         runAsAdmin: this.installerPropertyStore.runAsAdmin(),
         launchApp: this.installerPropertyStore.launchApp(),
-        progress: signal<number>(0),
+        progress: this.progress(),
     };
-
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
+    iframeWidth = signal<number>(800);
+    iframeHeight = signal<number>(600);
+    projectStore = inject(ProjectStore);
 
-    constructor(private tauriCommandService: TauriCommandService) {}
+    // test
+
+    private intervalId: any;
+
+    constructor(
+        private tauriCommandService: TauriCommandService,
+        private toastService: ToastService,
+    ) {
+        effect(() => {
+            const progress = this.progress();
+
+            this.data.progress = progress;
+        });
+    }
 
     async ngOnInit() {
-        // await this.loadPages();
+        // this.installerPropertyStore.update({
+        //     productName: 'MyApp',
+        //     productVersion: '1.0.1',
+        // });
     }
 
     async ngAfterViewInit() {
         await this.loadPages();
-    }
-
-    async loadPages() {
-        await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
     }
 
     private async loadFirstInstallPages() {
@@ -62,10 +78,6 @@ export class PreviewInstallerUi {
 
         if (!pages) {
             return;
-        }
-
-        for (let page of pages) {
-            page.content = this.propDataBindind(page.content);
         }
 
         this.firstInstallPages.set(pages);
@@ -83,33 +95,15 @@ export class PreviewInstallerUi {
             return;
         }
 
-        for (let page of pages) {
-            page.content = this.propDataBindind(page.content);
-        }
-
         this.maintenancePages.set(pages);
         // this.loadPage();
     }
 
-    // async loadPages() {
-    //     const pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
-    //         HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
-    //         {
-    //             projectDir: this.projectStore.projectDir()
-    //         }
-    //     );
+    async loadPages() {
+        await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
+    }
 
-    //     if (!pages) {
-    //         return;
-    //     }
-
-    //     for (let page of pages) {
-    //         page.content = this.propDataBindind(page.content);
-    //     }
-
-    //     this.htmlPages = pages;
-    //     this.loadPage();
-    // }
+    /* ================ api implements ================= */
 
     loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
         const iframeEl = this.iframe.nativeElement;
@@ -119,7 +113,7 @@ export class PreviewInstallerUi {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
-                this.data
+                this.data,
             );
         };
 
@@ -137,19 +131,61 @@ export class PreviewInstallerUi {
             return;
         }
 
+        // iframeEl.srcdoc = this.propDataBindind(page.content);
         iframeEl.srcdoc = page.content;
     }
 
     /* ================ api implements ================= */
 
     navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
-        this.index = Math.min(this.index + 1, this.firstInstallPages.length - 1);
         this.loadPage(pageName, type);
     }
 
-    async install() {}
+    async install(afterInstallPage: string | null) {
+        this.intervalId = setInterval(() => {
+            this.progress.update((x) => x + 5);
+            if (this.progress() > 100) {
+                this.progress.set(100);
+                clearInterval(this.intervalId);
+
+                if (afterInstallPage) {
+                    this.navigateTo(afterInstallPage, 'firstInstall');
+                }
+            }
+            ApiReferences.updateIframe(this.data);
+        }, 500);
+    }
 
     /* ================================= */
+
+    async preview() {
+        await this.tauriCommandService.invokeCommand(
+            HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
+            {
+                width: this.iframeWidth() + 72,
+                height: this.iframeHeight() + 54,
+            },
+        );
+    }
+
+    updateFrameWidth(event: any) {
+        const value =
+            event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
+
+        this.iframeWidth.set(Number(value));
+    }
+
+    updateFrameHeight(event: any) {
+        const value =
+            event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
+
+        this.iframeHeight.set(Number(value));
+    }
+
+    reset() {
+        this.loadPages();
+        this.ngOnDestroy();
+    }
 
     private propDataBindind(text: string): string {
         const replacements: Record<string, string> = {
@@ -164,7 +200,7 @@ export class PreviewInstallerUi {
             '{{launchFile}}': this.data.launchFile,
             '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
             '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
-             '{{progress}}': this.data.progress().toString(),
+            '{{progress}}': this.data.progress.toString(),
         };
 
         const pattern = new RegExp(
@@ -175,5 +211,10 @@ export class PreviewInstallerUi {
         );
 
         return text.replace(pattern, (match) => replacements[match]);
+    }
+
+    ngOnDestroy() {
+        this.progress.set(0);
+        clearInterval(this.intervalId);
     }
 }

@@ -1,4 +1,4 @@
-<div class="overflow-y-scroll w-full h-full">
+<div class="">
     <div class="mx-auto p-6 bg-white rounded-xl shadow space-y-6">
         <h2 class="text-xl font-semibold text-gray-800">Installer Properties</h2>
 
@@ -199,11 +199,18 @@
                             />
 
                             <input
+                                list="listFiles"
                                 type="text"
                                 [field]="installerPropertyDataForm.shortcutInDesktop.runFile"
                                 placeholder="Run file path"
                                 class="input input-bordered w-full"
                             />
+
+                            <datalist id="listFiles">
+                                @for (n of resourceFiletore.getAll(); track $index) {
+                                    <option [value]="n.name">{{ n.name }}</option>
+                                }
+                            </datalist>
                         </div>
                     </div>
                 }
@@ -247,6 +254,7 @@
                             />
 
                             <input
+                                list="listFiles"
                                 type="text"
                                 [field]="
                                     installerPropertyDataForm.shortcutInApplicationShortcut.runFile

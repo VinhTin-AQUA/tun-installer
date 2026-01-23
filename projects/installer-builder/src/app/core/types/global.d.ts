@@ -4,7 +4,7 @@ declare global {
     interface Window {
         App: {
             navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
-            install: () => Promise<void>;
+            install: (afterInstallPage: string | null) => Promise<void>;
             logData: () => void;
             data: any;
         };

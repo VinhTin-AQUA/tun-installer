@@ -13,7 +13,7 @@
                         >
                             <div class="icon">
                                 @if (node.expanded) {
-                                    <span (click)="selectFolder(node)">
+                                    <span (click)="expandFolder(node)">
                                         <svg
                                             class="w-4 h-4"
                                             data-slot="icon"
@@ -32,7 +32,7 @@
                                         </svg>
                                     </span>
                                 } @else {
-                                    <span class="icon" (click)="selectFolder(node)">
+                                    <span class="icon" (click)="expandFolder(node)">
                                         <svg
                                             class="w-4 h-4"
                                             data-slot="icon"
@@ -96,6 +96,9 @@
 
     <!-- CONTENT -->
     <main class="content">
+        <div>
+            <button class="bg-green-400" (click)="reset()">Reset</button>
+        </div>
         <table class="file-table">
             <thead>
                 <tr>

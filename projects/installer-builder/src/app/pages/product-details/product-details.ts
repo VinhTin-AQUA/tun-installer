@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogStore } from '../../core/stores/dialog.store';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { ResourceFiletore } from '../../core/stores/resource-file.store';
 
 @Component({
     selector: 'app-product-details',
@@ -20,6 +21,7 @@ export class ProductDetails {
     installerPropertyDataForm = this.projectManagerService.installerPropertyDataForm;
 
     dialogStore = inject(DialogStore);
+    resourceFiletore = inject(ResourceFiletore);
 
     constructor(private toastService: ToastService) {}
 
