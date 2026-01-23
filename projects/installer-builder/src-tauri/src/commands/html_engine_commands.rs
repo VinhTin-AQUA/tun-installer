@@ -2,7 +2,7 @@ use crate::{
     models::HtmlPage,
     services::{load_html_first_time_install_pages, load_html_maintenance_pages},
 };
-use tauri::{AppHandle, LogicalSize, WebviewUrl, WebviewWindowBuilder, command};
+use tauri::{AppHandle, WebviewUrl, WebviewWindowBuilder, command};
 
 #[command]
 pub async fn load_html_first_time_install_pages_command(

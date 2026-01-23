@@ -115,4 +115,4 @@ project-names
 - toàn bộ nội dung bên trong không nên vượt quá kích thước của screen
 
 - thứ tự các màng hình sắp xếp theo thứ tự alphabet
-- bổ sung nút chọn folder và hiển thị vào input, bổ sung dung lượng khả dụng, dung lượng yêu cầu, dung lương còn lại sau khi cài đặt,  bổ sung thêm progress bar
+- bổ sung nút chọn folder và hiển thị vào input, bổ sung dung lượng khả dụng, dung lượng yêu cầu, dung lương còn lại sau khi cài đặt, bổ sung thêm progress bar
