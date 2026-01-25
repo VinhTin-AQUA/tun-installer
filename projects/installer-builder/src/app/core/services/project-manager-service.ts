@@ -2,7 +2,7 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import { ProjectStore } from '../stores/project-store';
 import { InstallerProperties, InstallerPropertyStore, RegistryKeyStore } from 'installer-core';
 import { form, required } from '@angular/forms/signals';
-import { TauriCommandService } from './tauri-command-service';
+import { TauriCommandService } from '../tauri/tauri-command-service';
 import {
     InstallerConfig,
     SaveInstallerConfig,

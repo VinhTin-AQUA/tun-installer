@@ -1,4 +1,8 @@
 import { Component, signal } from '@angular/core';
+import { TauriEventService } from '../../core/tauri/tauri-event-service';
+import { TauriCommandService } from '../../core/tauri/tauri-command-service';
+import { CompressCommands } from '../../core/enums/commands';
+import { Progress } from '../../core/models/progress';
 
 @Component({
     selector: 'app-build-installer',
@@ -11,62 +15,58 @@ export class BuildInstaller {
     isCompleted = signal<boolean>(false);
     logs = signal<string[]>([]);
     progress = signal<number>(0);
-
     outputPath = signal<string>(''); // đường dẫn lưu build
+    unlisten: any;
 
-    private buildInterval: any;
-    private step = 0;
-    private totalSteps = 10;
+    constructor(
+        private tauriEventService: TauriEventService,
+        private tauriCommandService: TauriCommandService,
+    ) {}
 
-    startBuild() {
+    ngOnInit() {}
+
+    async startBuild() {
         this.isBuilding.set(true);
         this.isCompleted.set(false);
         this.logs.set([]);
         this.progress.set(0);
         this.outputPath.set('');
-        this.step = 0;
 
         this.logs.update((x) => {
             return [...x, '🚀 Build started...'];
         });
 
-        this.buildInterval = setInterval(() => {
-            this.step++;
-            this.progress.set(Math.round((this.step / this.totalSteps) * 100));
-            this.logs.update((x) => {
-                return [
-                    ...x,
-                    `⚙️ Building step ${this.step}/${this.totalSteps} (${this.progress}%)`,
-                ];
-            });
+        this.unlisten = await this.tauriEventService.listenEvent<Progress>(
+            'compress-progress',
+            (event) => {
+                console.log(event.payload);
+                const progress = event.payload;
 
-            if (this.step >= this.totalSteps) {
-                this.progress.set(100);
-                this.completeBuild();
-            }
-        }, 800);
-    }
+                this.progress.set(Math.round(progress.percent * 100) / 100);
+                this.logs.update((x) => {
+                    return [...x, progress.message];
+                });
+            },
+        );
 
-    completeBuild() {
-        this.clearInterval();
-
-        this.isBuilding.set(false);
-        this.isCompleted.set(true);
-        this.outputPath.set(`/dist/build_${Date.now()}`);
+        await this.tauriCommandService.invokeCommand<boolean>(
+            CompressCommands.COMPRESS_INSTALLER_COMMAND,
+            {},
+        );
 
         this.logs.update((x) => {
-            return [...x, `✅ Build completed successfully!`];
-        });
-
-        this.logs.update((x) => {
-            return [...x, `📦 Output saved at: ${this.outputPath}`];
+            return [...x, 'Done !!'];
         });
     }
 
-    stopBuild() {
-        if (!this.isBuilding) return;
+    async stopBuild() {
+        console.log(123);
+        
+        // this.unlisten();
+        await this.tauriCommandService.invokeCommand(CompressCommands.CANCEL_COMPRESS_COMMAND, {});
+        console.log(345);
+        
 
-        this.clearInterval();
         this.logs.update((x) => {
             return [...x, `⛔ Build stopped at ${this.progress}%`];
         });
@@ -74,14 +74,9 @@ export class BuildInstaller {
         this.isBuilding.set(false);
     }
 
-    private clearInterval() {
-        if (this.buildInterval) {
-            clearInterval(this.buildInterval);
-            this.buildInterval = null;
-        }
-    }
-
     ngOnDestroy() {
-        this.clearInterval();
+        if (this.unlisten) {
+            this.unlisten();
+        }
     }
 }

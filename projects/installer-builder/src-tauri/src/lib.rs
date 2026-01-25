@@ -1,16 +1,21 @@
+mod adapters;
 mod commands;
 mod consts;
 mod helpers;
 mod models;
 mod services;
 mod states;
-mod events;
-use std::sync::Mutex;
+use std::sync::{Arc};
+
 
 use commands::*;
 use tauri::Manager;
 
-use crate::states::ProjectState;
+use crate::{
+    adapters::TauriProgressReporter,
+    services::Compressor,
+    states::{AppState, ProjectState},
+};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -24,7 +29,14 @@ pub fn run() {
                         .build(),
                 )?;
             }
-            app.manage(Mutex::new(ProjectState::default()));
+            app.manage(std::sync::Mutex::new(ProjectState::default()));
+
+            let reporter = TauriProgressReporter::new(app.handle().clone());
+            let compressor = Arc::new(tokio::sync::Mutex::new(Compressor::new(reporter)));
+            let app_state = AppState { compressor };
+
+            app.manage(Arc::new(app_state));
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -41,7 +53,9 @@ pub fn run() {
             create_tuninstaller_project_command,
             open_tuninstaller_project_command,
             compress_installer_command,
-            extract_installer_command
+            // extract_installer_command,
+            cancel_compress_command,
+            // cancel_extract_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

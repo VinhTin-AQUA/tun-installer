@@ -1,7 +1,7 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { InstallerPropertyStore } from 'installer-core';
 import { HtmlPage } from '../../core/models/html-page';
-import { TauriCommandService } from '../../core/services/tauri-command-service';
+import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ProjectStore } from '../../core/stores/project-store';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';

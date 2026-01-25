@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FolderNode, FileItem } from '../../core/models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'installer-core';
-import { TauriCommandService } from '../../core/services/tauri-command-service';
+import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { ProjectStore } from '../../core/stores/project-store';
 import { ProjectManagerCommands } from '../../core/enums/commands';
 import { ResourceFiletore } from '../../core/stores/resource-file.store';
