@@ -44,22 +44,14 @@ impl<R: CompressProgressReporter> Compressor<R> {
         }
     }
 
-    pub fn compress_installer(&self, folders: Vec<String>) -> Result<bool> {
-        _ = self.un_cancel();
-
-        // let exe = std::env::current_exe()?;
-        let exe = PathBuf::from(
-            "C:/Users/tinhv/Desktop/f/tun-installer/examples/app/template.exe",
-        );
-        let folders: Vec<PathBuf> = folders.iter().map(|p| p.into()).collect();
-
-        let r = self.embed_folders_into_exe(&exe, &folders);
-
+    pub fn compress_installer(&self, paths: Vec<PathBuf>, exe: PathBuf) -> Result<bool> {
+        _ = self.uncancel();
+        let r = self.embed_folders_into_exe(&exe, &paths);
         r
     }
 
     pub fn extract_installer(&self, output: String, folders: Vec<String>) -> Result<bool> {
-        _ = self.un_cancel();
+        _ = self.uncancel();
 
         // let exe = std::env::current_exe()?;
         let exe = PathBuf::from("data/exe_template.exe");
@@ -81,7 +73,7 @@ impl<R: CompressProgressReporter> Compressor<R> {
         Ok(())
     }
 
-    pub fn un_cancel(&self) -> Result<()> {
+    pub fn uncancel(&self) -> Result<()> {
         self.cancelled.store(false, Ordering::SeqCst);
         Ok(())
     }

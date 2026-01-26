@@ -9,6 +9,7 @@ use std::sync::Arc;
 
 use commands::*;
 use tauri::Manager;
+use tokio::sync::Mutex;
 
 use crate::{
     adapters::TauriProgressReporter,
@@ -28,12 +29,12 @@ pub fn run() {
                         .build(),
                 )?;
             }
-            app.manage(std::sync::Mutex::new(ProjectState::default()));
-            
+            app.manage(Mutex::new(ProjectState::default()));
+
             let reporter = TauriProgressReporter::new(app.handle().clone());
             let compressor = Arc::new(Compressor::new(reporter));
             let app_state = AppState { compressor };
-            app.manage(Arc::new(app_state));
+            app.manage(app_state);
 
             Ok(())
         })
@@ -51,9 +52,10 @@ pub fn run() {
             create_tuninstaller_project_command,
             open_tuninstaller_project_command,
             compress_installer_command,
-            // extract_installer_command,
+            extract_installer_command,
             cancel_compress_command,
-            // cancel_extract_command
+            cancel_extract_command,
+            is_cancelled_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
