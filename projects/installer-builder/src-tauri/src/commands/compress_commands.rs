@@ -19,7 +19,7 @@ pub async fn compress_installer_command(
     paths.push(PathBuf::from(project_state.resource_dir.clone()));
 
     // let exe = std::env::current_exe()?;
-    let exe = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/app/template.exe");
+    let exe = PathBuf::from(project_state.project_dir.clone()).join("template.exe");
 
     tauri::async_runtime::spawn_blocking(move || compressor.compress_installer(paths, exe))
         .await
