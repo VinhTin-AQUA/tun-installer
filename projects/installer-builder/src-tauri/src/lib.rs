@@ -5,8 +5,7 @@ mod helpers;
 mod models;
 mod services;
 mod states;
-use std::sync::{Arc};
-
+use std::sync::Arc;
 
 use commands::*;
 use tauri::Manager;
@@ -30,11 +29,10 @@ pub fn run() {
                 )?;
             }
             app.manage(std::sync::Mutex::new(ProjectState::default()));
-
+            
             let reporter = TauriProgressReporter::new(app.handle().clone());
-            let compressor = Arc::new(tokio::sync::Mutex::new(Compressor::new(reporter)));
+            let compressor = Arc::new(Compressor::new(reporter));
             let app_state = AppState { compressor };
-
             app.manage(Arc::new(app_state));
 
             Ok(())

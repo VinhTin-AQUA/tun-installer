@@ -8,27 +8,19 @@ use crate::{adapters::TauriProgressReporter, services::Compressor, states::AppSt
 pub async fn compress_installer_command(
     app_state: State<'_, Arc<AppState>>,
 ) -> Result<bool, String> {
-    let compressor = &app_state.compressor;
+    let compressor = app_state.compressor.clone();
 
-    let folders: Vec<String> = vec![
-        "/media/newtun/Data/Dev/custom installer/tun-installer/examples/app/configs".to_string(),
-        "/media/newtun/Data/Dev/custom installer/tun-installer/examples/app/pages".to_string(),
-        "/media/newtun/Data/Dev/custom installer/tun-installer/examples/app/prerequisites"
-            .to_string(),
-        "/media/newtun/Data/Dev/custom installer/tun-installer/examples/app/resources".to_string(),
+    let folders = vec![
+        "C:/Users/tinhv/Desktop/f/tun-installer/examples/app/configs".to_string(),
+        "C:/Users/tinhv/Desktop/f/tun-installer/examples/app/pages".to_string(),
+        "C:/Users/tinhv/Desktop/f/tun-installer/examples/app/prerequisites".to_string(),
+        "C:/Users/tinhv/Desktop/f/tun-installer/examples/app/resources".to_string(),
     ];
 
-    // let r = compressor
-    //     .compress_installer(folders)
-    //     .map_err(|e| e.to_string());
-    // r
-
-    let r = compressor
-        .lock()
+    tauri::async_runtime::spawn_blocking(move || compressor.compress_installer(folders))
         .await
-        .compress_installer(folders)
-        .map_err(|e| e.to_string());
-    r
+        .map_err(|e| e.to_string())?
+        .map_err(|e| e.to_string())
 }
 
 // #[command]
@@ -53,10 +45,7 @@ pub async fn compress_installer_command(
 
 #[command]
 pub async fn cancel_compress_command(app_state: State<'_, Arc<AppState>>) -> Result<(), String> {
-    let compressor = &app_state.compressor;
-
-    let r = compressor.lock().await.cancel().map_err(|e| e.to_string());
-    r
+    app_state.compressor.cancel().map_err(|e| e.to_string())
 }
 
 // #[command]

@@ -61,11 +61,10 @@ export class BuildInstaller {
 
     async stopBuild() {
         console.log(123);
-        
+
         // this.unlisten();
         await this.tauriCommandService.invokeCommand(CompressCommands.CANCEL_COMPRESS_COMMAND, {});
         console.log(345);
-        
 
         this.logs.update((x) => {
             return [...x, `⛔ Build stopped at ${this.progress}%`];
