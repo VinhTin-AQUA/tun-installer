@@ -26,11 +26,6 @@ pub async fn load_html_maintenance_pages_command(
 
 #[command]
 pub async fn preview_installer_ui_command(app: AppHandle, width: f64, height: f64) {
-
-    println!("width = {:?}", width);
-    println!("height = {:?}", height);
-
-
     // let webview_window =
     WebviewWindowBuilder::new(
         &app,
