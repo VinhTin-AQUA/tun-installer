@@ -1,6 +1,5 @@
-use std::{path::PathBuf};
-
-use crate::states::{AppState, ProjectState};
+use crate::states::{app_state::AppState, ProjectState};
+use std::path::PathBuf;
 use tauri::{command, State};
 use tokio::sync::Mutex;
 
@@ -12,7 +11,7 @@ pub async fn compress_installer_command(
     let compressor = app_state.compressor.clone();
     let mut paths: Vec<PathBuf> = Vec::new();
     let project_state = project_state.lock().await;
-    
+
     paths.push(PathBuf::from(project_state.config_dir.clone()));
     paths.push(PathBuf::from(project_state.page_dir.clone()));
     paths.push(PathBuf::from(project_state.prerequisite_dir.clone()));
@@ -30,15 +29,19 @@ pub async fn compress_installer_command(
 #[command]
 pub async fn extract_installer_command(
     app_state: State<'_, AppState>,
+    project_state: State<'_, Mutex<ProjectState>>,
     folders: Vec<String>,
 ) -> Result<bool, String> {
-    let compressor = app_state.compressor.clone();
+    let project_state = project_state.lock().await;
 
+    let compressor = app_state.compressor.clone();
     let output: String = String::from("output");
+    // let exe = std::env::current_exe()?;
+    let exe = PathBuf::from(project_state.project_dir.clone()).join("template.exe");
 
     tauri::async_runtime::spawn_blocking(move || {
         let r = compressor
-            .extract_installer(output, folders)
+            .extract_installer(output, folders, exe)
             .map_err(|e| e.to_string());
         r
     })

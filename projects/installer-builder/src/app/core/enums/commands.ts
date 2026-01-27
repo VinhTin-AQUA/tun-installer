@@ -13,7 +13,6 @@ export enum ProjectManagerCommands {
 }
 
 export enum CompressCommands {
-    WRITE_DATA_TO_EXE_COMMAND = 'write_data_to_exe_command',
     COMPRESS_INSTALLER_COMMAND = 'compress_installer_command',
     CANCEL_COMPRESS_COMMAND = 'cancel_compress_command',
     CANCEL_EXTRACT_COMMAND = 'cancel_extract_command',

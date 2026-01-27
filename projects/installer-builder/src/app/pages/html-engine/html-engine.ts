@@ -1,12 +1,13 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { HtmlPage } from '../../core/models/html-page';
-import { InstallerPropertyStore } from 'installer-core';
+import { InstallerPropertyStore, WindowInfoStore } from 'installer-core';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from '../../core/services/toast-service';
 import { ProjectStore } from '../../core/stores/project-store';
 import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ApiReferences } from '../../core/api-references/api-references';
+import { ProjectManagerService } from '../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-html-engine',
@@ -39,8 +40,14 @@ export class HtmlEngine {
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    iframeWidth = signal<number>(800);
-    iframeHeight = signal<number>(600);
+    // iframeWidth = signal<number>(800);
+    // iframeHeight = signal<number>(600);
+    // windowTitle = signal<string>('Window title');
+    // startPage = signal<string>('');
+    // alwaysOnTop = signal<boolean>(false);
+
+    windowInfoStore = inject(WindowInfoStore);
+
     projectStore = inject(ProjectStore);
 
     // test
@@ -50,6 +57,7 @@ export class HtmlEngine {
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
+        private projectManagerService: ProjectManagerService,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -76,12 +84,13 @@ export class HtmlEngine {
             loadHtmlPage,
         );
 
-        if (!pages) {
+        if (!pages || pages.length == 0) {
             return;
         }
 
         this.firstInstallPages.set(pages);
         this.loadPage(pages[0].name, 'firstInstall');
+        this.windowInfoStore.updateValue({ title: pages[0].name });
     }
 
     private async loadMaintenancePages() {
@@ -162,8 +171,8 @@ export class HtmlEngine {
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
-                width: this.iframeWidth() + 72,
-                height: this.iframeHeight() + 54,
+                width: this.windowInfoStore.getData().width + 72,
+                height: this.windowInfoStore.getData().height + 54,
             },
         );
     }
@@ -171,15 +180,35 @@ export class HtmlEngine {
     updateFrameWidth(event: any) {
         const value =
             event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
-
-        this.iframeWidth.set(Number(value));
+        this.windowInfoStore.updateValue({ width: Number(value) });
     }
 
     updateFrameHeight(event: any) {
         const value =
             event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
+        this.windowInfoStore.updateValue({ height: Number(value) });
+    }
 
-        this.iframeHeight.set(Number(value));
+    updateWindowTitle(event: any) {
+        const value = event.target.value;
+        this.windowInfoStore.updateValue({ title: value });
+    }
+
+    updateStartPage(event: any) {
+        const value = event.target.value;
+        this.windowInfoStore.updateValue({
+            startPage: value,
+        });
+    }
+
+    updateAlwaysOnTop(event: any) {
+        const checked = (event.target as HTMLInputElement).checked;
+
+        console.log(checked); // true / false
+
+        this.windowInfoStore.updateValue({
+            alwaysOnTop: checked,
+        });
     }
 
     reset() {
@@ -211,6 +240,16 @@ export class HtmlEngine {
         );
 
         return text.replace(pattern, (match) => replacements[match]);
+    }
+
+    async save() {
+        const r = await this.projectManagerService.saveInstallerConfig();
+        if (!r) {
+            this.toastService.show('Something error', 'error');
+            return;
+        }
+
+        this.toastService.show('Save', 'success');
     }
 
     ngOnDestroy() {

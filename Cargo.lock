@@ -1624,10 +1624,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "installer"
-version = "0.1.0"
-
-[[package]]
 name = "installer_builder"
 version = "0.1.0"
 dependencies = [
@@ -1636,10 +1632,10 @@ dependencies = [
  "bincode",
  "chrono",
  "log",
- "metadata",
  "quick-xml 0.31.0",
  "serde",
  "serde_json",
+ "shared-lib",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
@@ -1654,9 +1650,9 @@ name = "installer_template"
 version = "0.1.0"
 dependencies = [
  "log",
- "metadata",
  "serde",
  "serde_json",
+ "shared-lib",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
@@ -1926,15 +1922,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "488016bfae457b036d996092f6cb448677611ce4449e970ceaf42695203f218a"
 dependencies = [
  "autocfg",
-]
-
-[[package]]
-name = "metadata"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
- "tokio",
 ]
 
 [[package]]
@@ -3247,6 +3234,18 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "digest",
+]
+
+[[package]]
+name = "shared-lib"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bincode",
+ "serde",
+ "serde_json",
+ "walkdir",
+ "zstd",
 ]
 
 [[package]]

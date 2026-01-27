@@ -3,6 +3,7 @@ import { TauriEventService } from '../../core/tauri/tauri-event-service';
 import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { CompressCommands } from '../../core/enums/commands';
 import { Progress } from '../../core/models/progress';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
     selector: 'app-build-installer',
@@ -21,6 +22,7 @@ export class BuildInstaller {
     constructor(
         private tauriEventService: TauriEventService,
         private tauriCommandService: TauriCommandService,
+        private toastService: ToastService,
     ) {}
 
     ngOnInit() {}
@@ -54,13 +56,15 @@ export class BuildInstaller {
             {},
         );
 
+        this.toastService.show('Build success fully', 'success');
+
         this.logs.update((x) => {
             return [...x, 'Done !!'];
         });
     }
 
     async stopBuild() {
-        console.log(123);
+        this.toastService.show('Stop', 'warning');
 
         // this.unlisten();
         await this.tauriCommandService.invokeCommand(CompressCommands.CANCEL_COMPRESS_COMMAND, {});

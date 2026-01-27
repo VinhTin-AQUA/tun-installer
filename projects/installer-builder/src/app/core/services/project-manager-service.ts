@@ -1,6 +1,11 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { ProjectStore } from '../stores/project-store';
-import { InstallerProperties, InstallerPropertyStore, RegistryKeyStore } from 'installer-core';
+import {
+    InstallerProperties,
+    InstallerPropertyStore,
+    RegistryKeyStore,
+    WindowInfoStore,
+} from 'installer-core';
 import { form, required } from '@angular/forms/signals';
 import { TauriCommandService } from '../tauri/tauri-command-service';
 import {
@@ -22,6 +27,7 @@ export class ProjectManagerService {
     installerPropertyDataModel = signal<InstallerProperties>(this.installerPropertyStore.getData());
     registryKeyStore = inject(RegistryKeyStore);
     resourceFiletore = inject(ResourceFiletore);
+    windowInfoStore = inject(WindowInfoStore);
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
@@ -137,6 +143,8 @@ export class ProjectManagerService {
             uninstallRegistry: installerDocumentConfig.registryKeys.uninstallRegistry,
         });
 
+        this.windowInfoStore.updateValue(installerDocumentConfig.windowInfo);
+
         /* =========== get files in resources ==============  */
         await this.getResourceFiles();
     }
@@ -171,7 +179,7 @@ export class ProjectManagerService {
         return r;
     }
 
-    //========== config ============
+    //========== installer config ============
 
     async saveInstallerConfig(): Promise<boolean> {
         const filePath = this.projectStore.configFile();
@@ -183,6 +191,7 @@ export class ProjectManagerService {
             payload: {
                 properties: this.installerPropertyStore.getData(),
                 registryKeys: this.registryKeyStore.getData(),
+                windowInfo: this.windowInfoStore.getData(),
             },
         };
 

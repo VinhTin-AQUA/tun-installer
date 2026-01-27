@@ -1,13 +1,12 @@
+use crate::helpers::to_pretty_xml;
+use crate::models::TunInstallerProject;
 use anyhow::{anyhow, bail};
 use chrono::Local;
 use quick_xml::de::from_str;
+use shared_lib::CONFIG_DIR;
 use std::fs::{self, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
-
-use crate::consts::CONFIG_DIR;
-use crate::helpers::to_pretty_xml;
-use crate::models::TunInstallerProject;
 
 pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> anyhow::Result<bool> {
     let base_path = Path::new(base_dir.as_str()).join(project_name.clone());
@@ -35,7 +34,7 @@ pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> an
     let project = TunInstallerProject {
         name: project_name.clone(),
         created_date: Local::now().to_rfc3339(),
-        project_dir: "./".to_string()
+        project_dir: "./".to_string(),
     };
 
     // Serialize sang XML
@@ -58,11 +57,14 @@ pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> an
     Ok(true)
 }
 
-pub async fn open_tuninstaller_project(project_path: String) -> anyhow::Result<TunInstallerProject> {
-
+pub async fn open_tuninstaller_project(
+    project_path: String,
+) -> anyhow::Result<TunInstallerProject> {
     let project_path = PathBuf::from(project_path.as_str());
 
-    let parent = project_path.parent().ok_or_else(|| anyhow!("no parent directory"))?;
+    let parent = project_path
+        .parent()
+        .ok_or_else(|| anyhow!("no parent directory"))?;
 
     let xml_content = tokio::fs::read_to_string(&project_path).await?;
     let mut project: TunInstallerProject = from_str(&xml_content)?;

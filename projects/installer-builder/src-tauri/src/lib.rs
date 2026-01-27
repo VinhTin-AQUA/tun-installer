@@ -1,21 +1,17 @@
-mod adapters;
 mod commands;
-mod consts;
 mod helpers;
 mod models;
 mod services;
 mod states;
+mod adapters;
 use std::sync::Arc;
 
 use commands::*;
+use shared_lib::Compressor;
 use tauri::Manager;
 use tokio::sync::Mutex;
 
-use crate::{
-    adapters::TauriProgressReporter,
-    services::Compressor,
-    states::{AppState, ProjectState},
-};
+use crate::{adapters::TauriProgressReporter, states::{ProjectState, app_state::AppState}};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -39,7 +35,6 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            write_data_to_exe_command,
             preview_installer_ui_command,
             save_installer_config_command,
             update_project_state_command,

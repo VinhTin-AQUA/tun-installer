@@ -1,0 +1,46 @@
+{
+  "properties": {
+    "installationLocation": "C:/ProgramFiles",
+    "productName": "First App",
+    "icon": "icon.ico",
+    "productVersion": "1.0.0",
+    "publisher": "My Company",
+    "supportLink": "https://example.com",
+    "supportEmail": "example@gmail.com",
+    "comment": "Welcome to my app",
+    "launchFile": "FirstApp.exe",
+    "runAsAdmin": true,
+    "launchApp": false,
+    "shortcutInDesktop": {
+      "isCreated": true,
+      "runAsAdmin": true,
+      "shortcutName": "First App",
+      "runFile": "FirstApp.exe"
+    },
+    "shortcutInApplicationShortcut": {
+      "isCreated": false,
+      "runAsAdmin": false,
+      "shortcutName": "",
+      "runFile": ""
+    }
+  },
+  "registryKeys": {
+    "configRegistry": {
+      "name": "",
+      "path": "",
+      "values": []
+    },
+    "uninstallRegistry": {
+      "name": "",
+      "path": "",
+      "values": []
+    }
+  },
+  "windowInfo": {
+    "title": "My App",
+    "width": 800.0,
+    "height": 600.0,
+    "startPage": "welcome.html",
+    "alwaysOnTop": false
+  }
+}

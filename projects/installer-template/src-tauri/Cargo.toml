@@ -24,6 +24,7 @@ log = "0.4"
 tauri = { version = "2.9.5", features = [] }
 tauri-plugin-log = "2"
 tokio = "1"
-
-metadata = { path = "../../../tauri-libs/metadata" }
 tauri-plugin-dialog = "2"
+
+shared-lib = { path = "../../../tauri-libs/shared-lib" }
+

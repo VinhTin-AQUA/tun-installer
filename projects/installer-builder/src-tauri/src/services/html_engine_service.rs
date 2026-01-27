@@ -1,9 +1,8 @@
-use std::path::PathBuf;
-
+use crate::models::HtmlPage;
 use anyhow::bail;
+use shared_lib::{HTML_FIRST_TIME_INSTALL_DIR, HTML_MAINTENANCE_DIR, HTML_PAGE_DIR};
+use std::path::PathBuf;
 use tokio::fs;
-
-use crate::{consts, models::HtmlPage};
 
 // pub struct HtmlEngine {}
 
@@ -53,8 +52,8 @@ pub async fn load_html_first_time_install_pages(
     // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
     let mut page_dir = PathBuf::from(project_dir);
-    page_dir.push(consts::HTML_PAGE_DIR);
-    page_dir.push(consts::HTML_FIRST_TIME_INSTALL_DIR);
+    page_dir.push(HTML_PAGE_DIR);
+    page_dir.push(HTML_FIRST_TIME_INSTALL_DIR);
 
     // let page_dir = Path::new(&page_dir);
 
@@ -96,8 +95,8 @@ pub async fn load_html_maintenance_pages(
     // let folder_path = "/media/newtun/Data/Dev/custom installer/pages";
 
     let mut page_dir = PathBuf::from(project_dir);
-    page_dir.push(consts::HTML_PAGE_DIR);
-    page_dir.push(consts::HTML_MAINTENANCE_DIR);
+    page_dir.push(HTML_PAGE_DIR);
+    page_dir.push(HTML_MAINTENANCE_DIR);
 
     // let page_dir = Path::new(&page_dir);
 
