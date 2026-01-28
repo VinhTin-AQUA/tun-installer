@@ -25,6 +25,7 @@ tauri = { version = "2.9.5", features = [] }
 tauri-plugin-log = "2"
 tokio = "1"
 tauri-plugin-dialog = "2"
+anyhow = "1.0.100"
 
 shared-lib = { path = "../../../tauri-libs/shared-lib" }
 

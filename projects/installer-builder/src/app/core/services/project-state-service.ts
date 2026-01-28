@@ -13,9 +13,9 @@ export class ProjectStateService {
     constructor(private tauriCommandService: TauriCommandService) {}
 
     async getProjectState() {
-        const r = await this.tauriCommandService.invokeCommand<ProjectState>(
+        const r = await this.tauriCommandService.invokeCommand<ProjectState, undefined>(
             ProjectStateCommands.LOAD_PROJECT_STATE_COMMAND,
-            {},
+            undefined,
         );
         if (!r) {
             return null;
@@ -28,7 +28,7 @@ export class ProjectStateService {
     async updateProjectState(baseDir: string, projectName: string) {
         this.projectStore.updateDir(baseDir, projectName);
 
-        const r = await this.tauriCommandService.invokeCommand<boolean>(
+        const r = await this.tauriCommandService.invokeCommand<boolean, object>(
             ProjectStateCommands.UPDATE_PROJECT_STATE_COMMAND,
             { data: this.projectStore.getData() },
         );

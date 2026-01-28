@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { invoke } from '@tauri-apps/api/core';
+import { invoke, InvokeArgs } from '@tauri-apps/api/core';
 import { ToastService } from '../services/toast-service';
 import {
     CompressCommands,
@@ -14,16 +14,16 @@ import {
 export class TauriCommandService {
     constructor(private toastService: ToastService) {}
 
-    async invokeCommand<T>(
+    async invokeCommand<T, P extends object | undefined>(
         command:
-            | ProjectStateCommands
-            | ProjectManagerCommands
             | CompressCommands
-            | HtmlEngineCommands,
-        params: any,
+            | HtmlEngineCommands
+            | ProjectManagerCommands
+            | ProjectStateCommands,
+        params: P,
     ): Promise<T | null> {
         try {
-            const initOk = await invoke<T>(command, params);
+            const initOk = await invoke<T>(command, params as InvokeArgs | undefined);
             return initOk;
         } catch (e: any) {
             this.toastService.show(e.toString(), 'error');

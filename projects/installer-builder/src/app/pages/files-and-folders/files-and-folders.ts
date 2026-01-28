@@ -47,7 +47,7 @@ export class FilesAndFolders {
     ) {}
 
     async ngOnInit() {
-        const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
+        const resources = await this.tauriCommandService.invokeCommand<FolderNode[], object>(
             ProjectManagerCommands.READ_SUBFOLDERS_COMMAND,
             {
                 path: this.projectStore.resourceDir(),
@@ -72,7 +72,7 @@ export class FilesAndFolders {
 
     async getFilesInFolder(folder: string): Promise<FileItem[]> {
         this.selectedFolderId = folder;
-        const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
+        const files = await this.tauriCommandService.invokeCommand<FileItem[], object>(
             ProjectManagerCommands.READ_FILES_IN_FOLDER_COMMAND,
             {
                 path: `${this.projectStore.projectDir()}/${folder}`,

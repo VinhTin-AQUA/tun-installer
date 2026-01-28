@@ -1,0 +1,14 @@
+pub mod installer_document;
+pub use installer_document::*;
+
+pub mod installer_properties;
+pub use installer_properties::*;
+
+pub mod window_info;
+pub use window_info::*;
+
+pub mod registry;
+pub use registry::*;
+
+pub mod html_page;
+pub use html_page::*;

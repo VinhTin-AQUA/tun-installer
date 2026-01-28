@@ -1,8 +1,8 @@
 pub mod html_page;
 pub use html_page::*;
 
-pub mod installer_config;
-pub use installer_config::*;
+pub mod installer_document;
+pub use installer_document::*;
 
 pub mod resource_folder;
 pub use resource_folder::*;

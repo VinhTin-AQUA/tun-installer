@@ -51,9 +51,9 @@ export class BuildInstaller {
             },
         );
 
-        await this.tauriCommandService.invokeCommand<boolean>(
+        await this.tauriCommandService.invokeCommand<boolean, undefined>(
             CompressCommands.COMPRESS_INSTALLER_COMMAND,
-            {},
+            undefined,
         );
 
         this.toastService.show('Build success fully', 'success');

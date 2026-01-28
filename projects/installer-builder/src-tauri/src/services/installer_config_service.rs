@@ -1,11 +1,11 @@
-use crate::models::InstallerDocumentConfig;
+use crate::models::InstallerDocument;
 use anyhow::{bail, Result};
 use std::path::Path;
 use tokio::fs;
 
 pub async fn save_installer_config(
     file_path: String,
-    payload: InstallerDocumentConfig,
+    payload: InstallerDocument,
 ) -> Result<Option<bool>> {
     let path = Path::new(&file_path);
 
@@ -25,7 +25,7 @@ pub async fn save_installer_config(
 
 pub async fn load_installer_document_config(
     file_path: String,
-) -> Result<Option<InstallerDocumentConfig>> {
+) -> Result<Option<InstallerDocument>> {
     let path = Path::new(&file_path);
 
     if !path.exists() {
@@ -36,7 +36,7 @@ pub async fn load_installer_document_config(
             await
             .map_err(|e| anyhow::anyhow!("Không thể đọc file: {}", e))?;
 
-    let data:InstallerDocumentConfig = serde_json::from_str(&content)?;
+    let data:InstallerDocument = serde_json::from_str(&content)?;
 
     Ok(Some(data))
 }

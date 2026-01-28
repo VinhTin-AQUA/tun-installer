@@ -152,7 +152,7 @@ export class ProjectManagerService {
     //========== project ===========
 
     async createNewProject(data: CreateTunInstallerProject) {
-        const r = await this.tauriCommandService.invokeCommand<boolean>(
+        const r = await this.tauriCommandService.invokeCommand<boolean, CreateTunInstallerProject>(
             ProjectManagerCommands.CREATE_TUNINSTALLER_PROJECT_COMMAND,
             data,
         );
@@ -160,7 +160,7 @@ export class ProjectManagerService {
     }
 
     async openProject(projectPath: string) {
-        const r = await this.tauriCommandService.invokeCommand<TunInstallerProject>(
+        const r = await this.tauriCommandService.invokeCommand<TunInstallerProject, object>(
             ProjectManagerCommands.OPEN_TUNINSTALLER_PROJECT_COMMAND,
             {
                 projectPath: projectPath,
@@ -197,7 +197,7 @@ export class ProjectManagerService {
 
         console.log(data);
 
-        const r = await this.tauriCommandService.invokeCommand<boolean>(
+        const r = await this.tauriCommandService.invokeCommand<boolean, SaveInstallerConfig>(
             ProjectManagerCommands.SAVE_INSTALLER_CONFIG_COMMAND,
             data,
         );
@@ -216,7 +216,7 @@ export class ProjectManagerService {
     //========== resources ============
 
     async getResourceFiles() {
-        const resources = await this.tauriCommandService.invokeCommand<FolderNode[]>(
+        const resources = await this.tauriCommandService.invokeCommand<FolderNode[], object>(
             ProjectManagerCommands.READ_SUBFOLDERS_COMMAND,
             {
                 path: this.projectStore.resourceDir(),
@@ -241,7 +241,7 @@ export class ProjectManagerService {
     //========== private ============
 
     private async loadInstallerDocumentConfig(filePath: string) {
-        const r = await this.tauriCommandService.invokeCommand<InstallerConfig>(
+        const r = await this.tauriCommandService.invokeCommand<InstallerConfig, object>(
             ProjectManagerCommands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
             { filePath: filePath },
         );
@@ -261,7 +261,7 @@ export class ProjectManagerService {
     }
 
     private async getFilesInFolder(folder: string): Promise<FileItem[]> {
-        const files = await this.tauriCommandService.invokeCommand<FileItem[]>(
+        const files = await this.tauriCommandService.invokeCommand<FileItem[], object>(
             ProjectManagerCommands.READ_FILES_IN_FOLDER_COMMAND,
             {
                 path: `${this.projectStore.projectDir()}/${folder}`,

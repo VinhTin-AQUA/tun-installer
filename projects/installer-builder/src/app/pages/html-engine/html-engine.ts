@@ -79,7 +79,7 @@ export class HtmlEngine {
 
     private async loadFirstInstallPages() {
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
-        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], LoadHtmlPage>(
             HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
             loadHtmlPage,
         );
@@ -95,7 +95,7 @@ export class HtmlEngine {
 
     private async loadMaintenancePages() {
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
-        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[]>(
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], LoadHtmlPage>(
             HtmlEngineCommands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
             loadHtmlPage,
         );

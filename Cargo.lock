@@ -1649,6 +1649,7 @@ dependencies = [
 name = "installer_template"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "log",
  "serde",
  "serde_json",
