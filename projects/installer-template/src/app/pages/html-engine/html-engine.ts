@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore } from 'installer-core';
+import { InstallerPropertyStore, WindowInfoStore } from 'installer-core';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/store/project-store';
 import { TauriCommandService } from '../../core/tauri/tauri-command-service';
@@ -7,6 +7,11 @@ import { ToastService } from '../../core/services/toast-service';
 import { LoadHtmlPage } from '../../core/models/load-html-pages';
 import { HtmlEngineCommands } from '../../core/enums/tauri-commands';
 import { ApiReferences } from '../../core/api-references/api-references';
+import { CompressService } from '../../core/services/compress-service';
+import { join } from '@tauri-apps/api/path';
+import { ProjectFolders } from '../../core/consts/folder.const';
+import { TauriEventService } from '../../core/tauri/tauri-event-service';
+import { Progress } from '../../core/models/progress';
 
 @Component({
     selector: 'app-html-engine',
@@ -20,7 +25,7 @@ export class HtmlEngine {
     // htmlPages: HtmlPage[] = [];
     index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
-
+    windowInfoStore = inject(WindowInfoStore);
     progress = signal<number>(0);
 
     data = {
@@ -39,19 +44,19 @@ export class HtmlEngine {
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    iframeWidth = signal<number>(800);
-    iframeHeight = signal<number>(600);
-    projectStore = inject(ProjectStore);
 
-    // test
+    projectStore = inject(ProjectStore);
+    unlisten: any;
 
     private intervalId: any;
 
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
+        private compressService: CompressService,
+        private tauriEventService: TauriEventService,
     ) {
-        effect(() => {
+         effect(() => {
             const progress = this.progress();
 
             this.data.progress = progress;
@@ -135,86 +140,54 @@ export class HtmlEngine {
         iframeEl.srcdoc = page.content;
     }
 
-    /* ================ api implements ================= */
-
     navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
         this.loadPage(pageName, type);
     }
 
     async install(afterInstallPage: string | null) {
-        this.intervalId = setInterval(() => {
-            this.progress.update((x) => x + 5);
-            if (this.progress() > 100) {
-                this.progress.set(100);
-                clearInterval(this.intervalId);
+        // this.intervalId = setInterval(() => {
+        //     this.progress.update((x) => x + 5);
+        //     if (this.progress() > 100) {
+        //         this.progress.set(100);
+        //         clearInterval(this.intervalId);
 
-                if (afterInstallPage) {
-                    this.navigateTo(afterInstallPage, 'firstInstall');
-                }
-            }
-            ApiReferences.updateIframe(this.data);
-        }, 500);
+        //         if (afterInstallPage) {
+        //             this.navigateTo(afterInstallPage, 'firstInstall');
+        //         }
+        //     }
+        //     ApiReferences.updateIframe(this.data);
+        // }, 500);
+
+        this.unlisten = await this.tauriEventService.listenEvent<Progress>(
+            'extract-progress',
+            (event) => {
+                console.log(event.payload);
+                const progress = event.payload;
+
+                this.progress.set(Math.round(progress.percent * 100) / 100);
+                // this.logs.update((x) => {
+                //     return [...x, progress.message];
+                // });
+
+
+                ApiReferences.updateIframe(this.data);
+
+            },
+        );
+
+        const r = await this.compressService.extractResourcesAndPrerequsistes([
+            ProjectFolders.resources,
+            ProjectFolders.prerequisites,
+        ]);
     }
 
     /* ================================= */
 
-    async preview() {
-        await this.tauriCommandService.invokeCommand(
-            HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
-            {
-                width: this.iframeWidth() + 72,
-                height: this.iframeHeight() + 54,
-            },
-        );
-    }
-
-    updateFrameWidth(event: any) {
-        const value =
-            event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
-
-        this.iframeWidth.set(Number(value));
-    }
-
-    updateFrameHeight(event: any) {
-        const value =
-            event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
-
-        this.iframeHeight.set(Number(value));
-    }
-
-    reset() {
-        this.loadPages();
-        this.ngOnDestroy();
-    }
-
-    private propDataBindind(text: string): string {
-        const replacements: Record<string, string> = {
-            '{{installationLocation}}': this.data.installationLocation,
-            '{{productName}}': this.data.productName,
-            '{{icon}}': this.data.icon,
-            '{{productVersion}}': this.data.productVersion,
-            '{{publisher}}': this.data.publisher,
-            '{{supportLink}}': this.data.supportLink,
-            '{{supportEmail}}': this.data.supportEmail,
-            '{{comment}}': this.data.comment,
-            '{{launchFile}}': this.data.launchFile,
-            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
-            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
-            '{{progress}}': this.data.progress.toString(),
-        };
-
-        const pattern = new RegExp(
-            Object.keys(replacements)
-                .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // escape regex
-                .join('|'),
-            'g',
-        );
-
-        return text.replace(pattern, (match) => replacements[match]);
-    }
-
     ngOnDestroy() {
         this.progress.set(0);
-        clearInterval(this.intervalId);
+        if (this.unlisten) {
+            this.unlisten();
+        }
+        // clearInterval(this.intervalId);
     }
 }

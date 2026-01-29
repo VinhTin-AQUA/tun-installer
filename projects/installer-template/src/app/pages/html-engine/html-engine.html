@@ -1,2 +1,11 @@
 <!-- <p>html-engine works!</p> -->
-<iframe #viewer class="viewer"></iframe>
+<!-- <iframe #viewer class="viewer"></iframe> -->
+
+<iframe
+    id="viewer"
+    #viewer
+    class="border border-gray-500 rounded-md"
+    [style.width.px]="windowInfoStore.width()"
+    [style.height.px]="windowInfoStore.height()"
+    scrolling="no"
+></iframe>

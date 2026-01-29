@@ -41,9 +41,7 @@ export class BuildInstaller {
         this.unlisten = await this.tauriEventService.listenEvent<Progress>(
             'compress-progress',
             (event) => {
-                console.log(event.payload);
                 const progress = event.payload;
-
                 this.progress.set(Math.round(progress.percent * 100) / 100);
                 this.logs.update((x) => {
                     return [...x, progress.message];

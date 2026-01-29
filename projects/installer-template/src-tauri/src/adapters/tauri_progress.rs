@@ -13,6 +13,6 @@ impl TauriProgressReporter {
 
 impl CompressProgressReporter for TauriProgressReporter {
     fn report(&self, percent: Progress) {
-        let _ = self.app.emit("compress-progress", percent);
+        let _ = self.app.emit("extract-progress", percent);
     }
 }

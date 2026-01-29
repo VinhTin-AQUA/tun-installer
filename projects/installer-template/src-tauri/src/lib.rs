@@ -56,7 +56,7 @@ pub fn run() {
             }));
 
             // let webview_window =
-            WebviewWindowBuilder::new(app.handle(), "installer", WebviewUrl::App("/".into()))
+            WebviewWindowBuilder::new(app.handle(), "main", WebviewUrl::App("/".into()))
                 .title(installer_document.window_info.title)
                 .inner_size(
                     installer_document.window_info.width,
@@ -84,7 +84,10 @@ pub fn run() {
             get_installer_document_command,
             load_html_first_time_install_pages_command,
             load_html_maintenance_pages_command,
-            preview_installer_ui_command
+            preview_installer_ui_command,
+            extract_installer_command,
+            cancel_extract_command,
+            is_cancelled_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

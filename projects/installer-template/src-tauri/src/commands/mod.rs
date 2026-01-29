@@ -6,3 +6,6 @@ pub use project_state_commands::*;
 
 pub mod html_engine_commands;
 pub use html_engine_commands::*;
+
+pub mod compress_commands;
+pub use compress_commands::*;
