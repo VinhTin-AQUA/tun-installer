@@ -3,6 +3,7 @@ import { invoke, InvokeArgs } from '@tauri-apps/api/core';
 import {
     CompressCommands,
     HtmlEngineCommands,
+    InstallCommands,
     InstallerDocumentCommands,
     ProjectStateCommands,
 } from '../enums/tauri-commands';
@@ -19,7 +20,8 @@ export class TauriCommandService {
             | InstallerDocumentCommands
             | ProjectStateCommands
             | HtmlEngineCommands
-            | CompressCommands,
+            | CompressCommands
+            | InstallCommands,
         params: P,
     ): Promise<T | null> {
         try {

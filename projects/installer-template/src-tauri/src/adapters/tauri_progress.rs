@@ -1,6 +1,8 @@
 use shared_lib::{CompressProgressReporter, Progress};
 use tauri::{AppHandle, Emitter};
 
+use crate::consts::event_consts;
+
 pub struct TauriProgressReporter {
     app: AppHandle,
 }
@@ -13,6 +15,6 @@ impl TauriProgressReporter {
 
 impl CompressProgressReporter for TauriProgressReporter {
     fn report(&self, percent: Progress) {
-        let _ = self.app.emit("extract-progress", percent);
+        let _ = self.app.emit(event_consts::INSTALL, percent);
     }
 }

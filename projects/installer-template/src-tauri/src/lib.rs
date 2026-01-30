@@ -4,6 +4,9 @@ mod commands;
 mod models;
 mod states;
 mod services;
+mod events;
+mod consts;
+mod helpers;
 
 use commands::*;
 use shared_lib::Compressor;
@@ -87,7 +90,8 @@ pub fn run() {
             preview_installer_ui_command,
             extract_installer_command,
             cancel_extract_command,
-            is_cancelled_command
+            is_cancelled_command,
+            install
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

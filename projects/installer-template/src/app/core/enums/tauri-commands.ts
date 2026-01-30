@@ -17,3 +17,8 @@ export enum CompressCommands {
     CANCEL_EXTRACT_COMMAND = 'cancel_extract_command',
     IS_CANCELLED_COMMAND = 'is_cancelled_command',
 }
+
+
+export enum InstallCommands {
+    INSTALL = 'install',
+}

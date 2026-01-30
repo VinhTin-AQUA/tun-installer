@@ -12,6 +12,8 @@ import { join } from '@tauri-apps/api/path';
 import { ProjectFolders } from '../../core/consts/folder.const';
 import { TauriEventService } from '../../core/tauri/tauri-event-service';
 import { Progress } from '../../core/models/progress';
+import { InstallerService } from '../../core/services/installer-service';
+import { Events as EventSystemConsts } from '../../core/consts/event.const';
 
 @Component({
     selector: 'app-html-engine',
@@ -41,6 +43,7 @@ export class HtmlEngine {
         runAsAdmin: this.installerPropertyStore.runAsAdmin(),
         launchApp: this.installerPropertyStore.launchApp(),
         progress: this.progress(),
+        message: ""
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
@@ -53,10 +56,10 @@ export class HtmlEngine {
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
-        private compressService: CompressService,
+        private installerService: InstallerService,
         private tauriEventService: TauriEventService,
     ) {
-         effect(() => {
+        effect(() => {
             const progress = this.progress();
 
             this.data.progress = progress;
@@ -68,6 +71,10 @@ export class HtmlEngine {
         //     productName: 'MyApp',
         //     productVersion: '1.0.1',
         // });
+
+        console.log(this.windowInfoStore.width());
+        console.log(this.windowInfoStore.height());
+        
     }
 
     async ngAfterViewInit() {
@@ -159,23 +166,22 @@ export class HtmlEngine {
         // }, 500);
 
         this.unlisten = await this.tauriEventService.listenEvent<Progress>(
-            'extract-progress',
+            EventSystemConsts.install,
             (event) => {
-                console.log(event.payload);
+                // console.log(event.payload);
                 const progress = event.payload;
 
                 this.progress.set(Math.round(progress.percent * 100) / 100);
+                this.data.message = progress.message
                 // this.logs.update((x) => {
                 //     return [...x, progress.message];
                 // });
 
-
                 ApiReferences.updateIframe(this.data);
-
             },
         );
 
-        const r = await this.compressService.extractResourcesAndPrerequsistes([
+        const r = await this.installerService.install([
             ProjectFolders.resources,
             ProjectFolders.prerequisites,
         ]);

@@ -15,7 +15,7 @@ pub async fn extract_installer_command(
     let compressor = app_state.compressor.clone();
 
        let base_dir: PathBuf =
-        PathBuf::from("C:/Users/tinhv/Desktop/f/tun-installer/examples/first-app");
+        PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app");
     // let exe_path_buf = std::env::current_exe()?;
     let exe_path_buf = base_dir.join("template.exe");
     let output_path_buf = base_dir.join(EXTRACT_DIR);

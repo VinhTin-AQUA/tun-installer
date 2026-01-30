@@ -116,7 +116,8 @@
                     return;
                 }
 
-                el.innerText = `Copying files... ${data.progress}%`;
+                // el.innerText = `Copying files... ${data.progress}%`;
+                el.innerText = `Copying files... ${data.message}%`;
 
                 const process = document.getElementById('process');
                 process.style.width = `${data.progress}%`;

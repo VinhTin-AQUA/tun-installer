@@ -151,3 +151,6 @@ project-names
 
 - thứ tự các màng hình sắp xếp theo thứ tự alphabet
 - bổ sung nút chọn folder và hiển thị vào input, bổ sung dung lượng khả dụng, dung lượng yêu cầu, dung lương còn lại sau khi cài đặt, bổ sung thêm progress bar
+
+// /media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app
+// C:/Users/tinhv/Desktop/f/tun-installer/examples/first-app

@@ -246,7 +246,7 @@ impl<R: CompressProgressReporter> Compressor<R> {
                 std::fs::create_dir_all(p)?;
             }
 
-            let mut out = File::create(out_path)?;
+            let mut out = File::create(out_path.clone())?;
             let copied = io::copy(&mut reader.by_ref().take(size), &mut out)?;
 
             file_sizes += copied;
@@ -255,7 +255,7 @@ impl<R: CompressProgressReporter> Compressor<R> {
                     &target_root.to_string(),
                     &file_sizes,
                     &total_uncompressed_size,
-                    format!("Extracting {}...", target_root),
+                    format!("Extracting {}...", rel_path),
                 );
                 file_size_threshold += 1;
             }
