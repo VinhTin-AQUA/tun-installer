@@ -138,18 +138,18 @@
         },
         "installer-core": {
             "projectType": "library",
-            "root": "projects/installer-core",
-            "sourceRoot": "projects/installer-core/src",
+            "root": "libs/angular/installer-core",
+            "sourceRoot": "libs/angular/installer-core/src",
             "prefix": "lib",
             "architect": {
                 "build": {
                     "builder": "@angular/build:ng-packagr",
                     "configurations": {
                         "production": {
-                            "tsConfig": "projects/installer-core/tsconfig.lib.prod.json"
+                            "tsConfig": "libs/angular/installer-core/tsconfig.lib.prod.json"
                         },
                         "development": {
-                            "tsConfig": "projects/installer-core/tsconfig.lib.json"
+                            "tsConfig": "libs/angular/installer-core/tsconfig.lib.json"
                         }
                     },
                     "defaultConfiguration": "production"
@@ -157,7 +157,7 @@
                 "test": {
                     "builder": "@angular/build:unit-test",
                     "options": {
-                        "tsConfig": "projects/installer-core/tsconfig.spec.json"
+                        "tsConfig": "libs/angular/installer-core/tsconfig.spec.json"
                     }
                 }
             }

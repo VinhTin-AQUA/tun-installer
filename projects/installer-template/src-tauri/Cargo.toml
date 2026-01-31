@@ -8,6 +8,11 @@ repository = ""
 edition = "2021"
 rust-version = "1.77.2"
 
+[[bin]]
+name = "installer_template"
+path = "src/main.rs"
+
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
@@ -27,6 +32,16 @@ tokio = "1"
 tauri-plugin-dialog = "2"
 anyhow = "1.0.100"
 async-recursion = "1"
+shlex = "1"
 
-shared-lib = { path = "../../../tauri-libs/shared-lib" }
 
+
+shared-lib = { path = "../../../libs/rust/shared-lib" }
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.52"
+windows = { version = "0.56", features = [
+    "Win32_UI_Shell",
+    "Win32_System_Com",
+    "Win32_Foundation",
+] }

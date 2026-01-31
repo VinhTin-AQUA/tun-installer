@@ -1,44 +1,36 @@
 use crate::{
-    consts::event_consts,
-    events::send_progress_event,
-    helpers::copy_dir_all,
-    states::{app_state::AppState, ProjectState},
+    consts::event_consts, events::send_progress_event, helpers::copy_dir_all, models::InstallerDocument, states::{ProjectState, app_state::AppState}
 };
 use shared_lib::{Progress, RESOURCES_DIR};
-use std::path::PathBuf;
+use std::{env, path::{Path, PathBuf}};
 use tauri::{command, AppHandle, State};
 use tokio::sync::Mutex;
-
-const EXTRACT_DIR: &str = "output";
 
 #[command]
 pub async fn install(
     app: AppHandle,
     app_state: State<'_, AppState>,
-    project_state: State<'_, Mutex<ProjectState>>,
+    installer_document_state: State<'_, Mutex<InstallerDocument>>,
     folders: Vec<String>,
 ) -> Result<bool, String> {
-    let project_state = project_state.lock().await;
+    let installer_document = installer_document_state.lock().await;
     let compressor = app_state.compressor.clone();
 
-    let base_dir: PathBuf =
-        PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app");
+    // let base_dir: PathBuf =
+    //     PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app");
+
+    let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
 
     // let exe_path_buf = std::env::current_exe()?;
-    let exe_path_buf = base_dir.join("template.exe");
-    let output_path_buf = base_dir.join(EXTRACT_DIR);
-    let output_path_buf_2 = output_path_buf.clone().join(RESOURCES_DIR);
+    let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
 
-    println!(
-        "exe_path_buf = {:?}",
-        exe_path_buf.to_string_lossy().to_string()
-    );
+    let resource_path_buf = exe_path_buf.clone().join(RESOURCES_DIR);
 
     // extract
     _ = tauri::async_runtime::spawn_blocking(move || {
         let r = compressor
             .extract_installer(
-                output_path_buf.to_string_lossy().to_string(),
+                temp_app_dir.to_string_lossy().to_string(),
                 folders,
                 exe_path_buf,
             )
@@ -57,10 +49,77 @@ pub async fn install(
             percent: 100.0,
         },
     );
-    let app_folder = base_dir.join("app_folder");
-    _ = copy_dir_all(&output_path_buf_2, &app_folder)
+
+    // copy to installation_location
+    let installation_location = PathBuf::from(installer_document.properties.installation_location.clone());
+    _ = copy_dir_all(&resource_path_buf, &installation_location)
         .await
         .map_err(|e| e.to_string());
 
+    // installer prerequisites
+    // run_installer(
+    //     "C:/Users/tinhv/Downloads/exe_template.exe",
+    //     "/S",
+    //     true,
+    // )?;
+
+    // registering registry
+    // create_registry();
+
+    // create shortcut
+    // create_shortcuts(
+    //     "AppName",                                      // tên shortcut
+    //     r"C:\Users\tinhv\Downloads\exe_template.exe", // file chạy
+    //     None,                                         // arguments
+    //     Some(r"C:\Users\tinhv\Downloads\exe_template.exe"), // icon
+    //                                                   // Some(r"C:\Users\tinhv\Desktop\labtest-offline-setup\build\out\icon.ico") // icon
+    // )?;
+
+    // call clean.exe to clean temp
+
     Ok(true)
+}
+
+//====================================================
+
+// nguyên tắt args giống với nhập cmd: /install /quiet /norestart /D="C:\Program Files\App"
+// crate: shlex = "1"
+#[cfg(target_os = "windows")]
+fn run_installer(
+    path: &str,
+    arg_input: &str,
+    run_as_admin: bool,
+) -> Result<bool, String> {
+    let args = parse_args(arg_input);
+
+    if run_as_admin {
+        let arg_list = args.join(" ");
+
+        Command::new("powershell")
+            .args([
+                "-Command",
+                &format!(
+                    "Start-Process '{}' -ArgumentList '{}' -Verb runAs",
+                    path, arg_list
+                ),
+            ])
+            .spawn()
+            .map_err(|e| e.to_string())?
+            .wait()
+            .map_err(|e| e.to_string())?;
+    } else {
+        Command::new(path)
+            .args(args)
+            .spawn()
+            .map_err(|e| e.to_string())?
+            .wait()
+            .map_err(|e| e.to_string())?;
+    }
+
+    Ok(true)
+}
+
+// parse input args
+fn parse_args(input: &str) -> Vec<String> {
+    shlex::split(input).unwrap_or_default()
 }

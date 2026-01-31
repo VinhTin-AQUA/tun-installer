@@ -1,63 +1,65 @@
 {
-  "name": "tun-installer",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "dev:installer:builder": "ng s installer-builder",
-    "build:installer:builder": "ng build installer-builder",
-    "dev:installer:template": "ng s installer-template",
-    "build:installer:template": "ng build installer-template",
-    "tauri": "tauri",
-    "tauri:builder:dev": "cd projects/installer-builder/src-tauri && npx tauri dev",
-    "tauri:template:dev": "cd projects/installer-template/src-tauri && npx tauri dev",
-    "tauri:builder:build:win": "cd projects/installer-builder/src-tauri && npx tauri build --no-bundle --target x86_64-pc-windows-msvc",
-    "tauri:template:build:win": "cd projects/installer-template/src-tauri && npx tauri build --no-bundle --target x86_64-pc-windows-msvc"
-  },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular"
-        }
-      }
-    ]
-  },
-  "private": true,
-  "packageManager": "npm@11.6.1",
-  "dependencies": {
-    "@angular/common": "^21.0.0",
-    "@angular/compiler": "^21.0.0",
-    "@angular/core": "^21.0.0",
-    "@angular/forms": "^21.0.0",
-    "@angular/platform-browser": "^21.0.0",
-    "@angular/router": "^21.0.0",
-    "@ngrx/signals": "^21.0.1",
-    "@ngx-translate/core": "^17.0.0",
-    "@ngx-translate/http-loader": "^17.0.0",
-    "@tauri-apps/api": "^2.9.1",
-    "@tauri-apps/plugin-dialog": "^2.5.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
-  },
-  "devDependencies": {
-    "@angular/build": "^21.0.4",
-    "@angular/cli": "^21.0.4",
-    "@angular/compiler-cli": "^21.0.0",
-    "@tailwindcss/postcss": "^4.1.12",
-    "@tauri-apps/cli": "^2.9.6",
-    "concurrently": "^9.2.1",
-    "jsdom": "^27.1.0",
-    "ng-packagr": "^21.0.0",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.12",
-    "typescript": "~5.9.2",
-    "vitest": "^4.0.8"
-  }
+    "name": "tun-installer",
+    "version": "0.0.0",
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve",
+        "build": "ng build",
+        "watch": "ng build --watch --configuration development",
+        "test": "ng test",
+        "dev:installer:builder": "ng s installer-builder",
+        "build:installer:builder": "ng build installer-builder",
+        "dev:installer:template": "ng s installer-template",
+        "build:installer:template": "ng build installer-template",
+        "tauri": "tauri",
+        "tauri:dev:builder": "tauri dev --config projects/installer-builder/src-tauri/tauri.conf.json -- --package installer_builder --bin installer_builder",
+        "tauri:dev:template": "tauri dev --config projects/installer-template/src-tauri/tauri.conf.json -- --package installer_template --bin installer_template",
+        "tauri:build:builder": "tauri build --no-bundle --config projects/installer-builder/src-tauri/tauri.conf.json -- --target x86_64-pc-windows-msvc --package installer_builder --bin installer_builder",
+        "tauri:build:template": "tauri build --no-bundle --config projects/installer-template/src-tauri/tauri.conf.json -- --target x86_64-pc-windows-msvc --package installer_template --bin installer_template",
+        "cargo:build:builder": "cargo build -p installer_builder --bin installer_builder",
+        "cargo:build:template": "cargo build -p installer_template --bin installer_template"
+    },
+    "prettier": {
+        "printWidth": 100,
+        "singleQuote": true,
+        "overrides": [
+            {
+                "files": "*.html",
+                "options": {
+                    "parser": "angular"
+                }
+            }
+        ]
+    },
+    "private": true,
+    "packageManager": "npm@11.6.1",
+    "dependencies": {
+        "@angular/common": "^21.0.0",
+        "@angular/compiler": "^21.0.0",
+        "@angular/core": "^21.0.0",
+        "@angular/forms": "^21.0.0",
+        "@angular/platform-browser": "^21.0.0",
+        "@angular/router": "^21.0.0",
+        "@ngrx/signals": "^21.0.1",
+        "@ngx-translate/core": "^17.0.0",
+        "@ngx-translate/http-loader": "^17.0.0",
+        "@tauri-apps/api": "^2.9.1",
+        "@tauri-apps/plugin-dialog": "^2.5.0",
+        "rxjs": "~7.8.0",
+        "tslib": "^2.3.0"
+    },
+    "devDependencies": {
+        "@angular/build": "^21.0.4",
+        "@angular/cli": "^21.0.4",
+        "@angular/compiler-cli": "^21.0.0",
+        "@tailwindcss/postcss": "^4.1.12",
+        "@tauri-apps/cli": "^2.9.6",
+        "concurrently": "^9.2.1",
+        "jsdom": "^27.1.0",
+        "ng-packagr": "^21.0.0",
+        "postcss": "^8.5.3",
+        "tailwindcss": "^4.1.12",
+        "typescript": "~5.9.2",
+        "vitest": "^4.0.8"
+    }
 }
