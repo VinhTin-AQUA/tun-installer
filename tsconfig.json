@@ -38,11 +38,11 @@
         {
             "path": "./projects/installer-builder/tsconfig.spec.json"
         },
-        {
-            "path": "./projects/installer-core/tsconfig.lib.json"
-        },
-        {
-            "path": "./projects/installer-core/tsconfig.spec.json"
-        }
+      {
+    "path": "./libs/angular/installer-core/tsconfig.lib.json"
+  },
+  {
+    "path": "./libs/angular/installer-core/tsconfig.spec.json"
+  }
     ]
 }

@@ -61,7 +61,12 @@ impl<R: CompressProgressReporter> Compressor<R> {
         r
     }
 
-    pub fn extract_installer(&self, output: String, folders: Vec<String>, exe: PathBuf) -> Result<bool> {
+    pub fn extract_installer(
+        &self,
+        output: String,
+        folders: Vec<String>,
+        exe: PathBuf,
+    ) -> Result<bool> {
         _ = self.uncancel();
 
         // ======= AUTO EXTRACT =======
@@ -88,6 +93,60 @@ impl<R: CompressProgressReporter> Compressor<R> {
 
     pub fn is_cancelled(&self) -> bool {
         self.cancelled.load(Ordering::SeqCst)
+    }
+
+    pub fn read_data_from_installer<F, T>(
+        &self,
+        exe_path: &Path,
+        root: &str,
+        file_path: &str,
+        parser: F,
+    ) -> Result<T>
+    where
+        F: FnOnce(Vec<u8>) -> Result<T>,
+    {
+        let index = self.read_index_from_exe(exe_path)?;
+
+        let stream = index
+            .streams
+            .iter()
+            .find(|s| s.root == root)
+            .context("stream not found")?;
+
+        let mut exe = File::open(exe_path)?;
+        exe.seek(SeekFrom::Start(stream.offset))?;
+        let compressed = exe.take(stream.compressed_size);
+
+        let decoder = Decoder::new(compressed)?;
+        let mut reader = BufReader::new(decoder);
+
+        let target_path = format!("{}/{}", root, file_path).replace('\\', "/");
+
+        loop {
+            let mut len_buf = [0u8; 4];
+            if reader.read_exact(&mut len_buf).is_err() {
+                break;
+            }
+
+            let path_len = u32::from_le_bytes(len_buf) as usize;
+            let mut path_buf = vec![0u8; path_len];
+            reader.read_exact(&mut path_buf)?;
+            let rel_path = String::from_utf8_lossy(&path_buf).to_string();
+
+            let mut size_buf = [0u8; 8];
+            reader.read_exact(&mut size_buf)?;
+            let size = u64::from_le_bytes(size_buf);
+
+            if rel_path == target_path {
+                let mut data = vec![0u8; size as usize];
+                reader.read_exact(&mut data)?;
+                return parser(data);
+            } else {
+                io::copy(&mut reader.by_ref().take(size), &mut io::sink())?;
+            }
+        }
+
+        Err(anyhow!("File not found in installer: {}", target_path))
     }
 
     //====================

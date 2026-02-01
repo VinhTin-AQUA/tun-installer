@@ -1,8 +1,12 @@
 use crate::{
-    consts::event_consts, events::send_progress_event, helpers::copy_dir_all, models::InstallerDocument, states::{ProjectState, app_state::AppState}
+    consts::event_consts,
+    events::send_progress_event,
+    helpers::copy_dir_all,
+    models::InstallerDocument,
+    states::{app_state::AppState},
 };
 use shared_lib::{Progress, RESOURCES_DIR};
-use std::{env, path::{Path, PathBuf}};
+use std::{env, path::PathBuf};
 use tauri::{command, AppHandle, State};
 use tokio::sync::Mutex;
 
@@ -21,8 +25,8 @@ pub async fn install(
 
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
 
-    // let exe_path_buf = std::env::current_exe()?;
-    let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
+    let exe_path_buf = std::env::current_exe().map_err(|e| e.to_string())?;
+    // let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
 
     let resource_path_buf = exe_path_buf.clone().join(RESOURCES_DIR);
 
@@ -51,7 +55,8 @@ pub async fn install(
     );
 
     // copy to installation_location
-    let installation_location = PathBuf::from(installer_document.properties.installation_location.clone());
+    let installation_location =
+        PathBuf::from(installer_document.properties.installation_location.clone());
     _ = copy_dir_all(&resource_path_buf, &installation_location)
         .await
         .map_err(|e| e.to_string());
@@ -82,14 +87,10 @@ pub async fn install(
 
 //====================================================
 
-// nguyên tắt args giống với nhập cmd: /install /quiet /norestart /D="C:\Program Files\App"
+// cmd: /install /quiet /norestart /D="C:\Program Files\App"
 // crate: shlex = "1"
 #[cfg(target_os = "windows")]
-fn run_installer(
-    path: &str,
-    arg_input: &str,
-    run_as_admin: bool,
-) -> Result<bool, String> {
+fn run_exe_installer_file(path: &str, arg_input: &str, run_as_admin: bool) -> Result<bool, String> {
     let args = parse_args(arg_input);
 
     if run_as_admin {

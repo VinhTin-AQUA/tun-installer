@@ -1,12 +1,12 @@
 mod adapters;
 mod bootstrapper;
 mod commands;
-mod models;
-mod states;
-mod services;
-mod events;
 mod consts;
+mod events;
 mod helpers;
+mod models;
+mod services;
+mod states;
 
 use commands::*;
 use shared_lib::Compressor;
@@ -18,7 +18,7 @@ use crate::{
     adapters::TauriProgressReporter,
     bootstrapper::{extract_data_inner, init_project_state},
     models::InstallerDocument,
-    states::{app_state::AppState},
+    states::app_state::AppState,
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -41,22 +41,22 @@ pub fn run() {
             let start = std::time::Instant::now();
             println!("START");
 
-            let project_state = init_project_state();
-            app.manage(Mutex::new(project_state));
-
             let reporter = TauriProgressReporter::new(app.handle().clone());
             let compressor = Arc::new(Compressor::new(reporter));
             let app_state = AppState { compressor };
             app.manage(app_state);
 
             let state = app.state::<AppState>();
-            let installer_document = extract_data_inner(&state);
+            let installer_document = extract_data_inner(&state)?;
 
             app.manage(Mutex::new(InstallerDocument {
                 properties: installer_document.properties.clone(),
                 registry_keys: installer_document.registry_keys.clone(),
                 window_info: installer_document.window_info.clone(),
             }));
+
+            let project_state = init_project_state(&state)?;
+            app.manage(Mutex::new(project_state));
 
             // let webview_window =
             WebviewWindowBuilder::new(app.handle(), "main", WebviewUrl::App("/".into()))

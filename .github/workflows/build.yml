@@ -24,10 +24,13 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Setup GitHub CLI
-              run: |
-                  choco install gh --version=2.83.2 -y
-              shell: powershell
+            # - name: Setup GitHub CLI
+            #   run: |
+            #       choco install gh --version=2.83.2 -y
+            #   shell: powershell
+
+            - name: Check GitHub CLI
+              run: gh --version
 
             - name: setup node
               uses: actions/setup-node@v4
@@ -59,7 +62,7 @@ jobs:
               run: ng build installer-core
 
             - name: Build exe template
-              run: npm run tauri:template:build:win
+              run: npm run tauri:build:template
 
             - name: Rename exe template file
               shell: cmd
@@ -74,7 +77,7 @@ jobs:
                   path: target\x86_64-pc-windows-msvc\release\${{ env.EXE_TEMPLATE_FILE_NAME }}
 
             - name: Build tun-installer
-              run: npm run tauri:builder:build:win
+              run: npm run tauri:build:builder
 
             - name: Rename exe tun-installer file
               shell: cmd
