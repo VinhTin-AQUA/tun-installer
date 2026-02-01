@@ -36,7 +36,7 @@ pub fn add_value() -> io::Result<()> {
 }
 
 // read value
-pub fn add_value() -> io::Result<()> {
+pub fn read_value() -> io::Result<()> {
     let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
 
     // Tạo (hoặc mở nếu đã tồn tại) key
