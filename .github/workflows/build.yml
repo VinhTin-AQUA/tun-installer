@@ -104,10 +104,13 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Setup GitHub CLI
-              shell: powershell
-              run: |
-                  choco install gh --version=2.83.2 -y
+            # - name: Setup GitHub CLI
+            #   run: |
+            #       choco install gh --version=2.83.2 -y
+            #   shell: powershell
+
+            - name: Check GitHub CLI
+              run: gh --version
 
             - name: Remove old tag if exists
               shell: powershell
