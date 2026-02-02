@@ -18,7 +18,7 @@ pub async fn compress_installer_command(
     paths.push(PathBuf::from(project_state.resource_dir.clone()));
 
     // let exe = std::env::current_exe()?;
-    let exe = PathBuf::from(project_state.project_dir.clone()).join("template.exe");
+    let exe = PathBuf::from(project_state.project_dir.clone()).join("exe_template_v1.0.0.exe");
 
     tauri::async_runtime::spawn_blocking(move || compressor.compress_installer(paths, exe))
         .await
@@ -37,7 +37,7 @@ pub async fn extract_installer_command(
     let compressor = app_state.compressor.clone();
     let output: String = String::from("output");
     // let exe = std::env::current_exe()?;
-    let exe = PathBuf::from(project_state.project_dir.clone()).join("template.exe");
+    let exe = PathBuf::from(project_state.project_dir.clone()).join("exe_template_v1.0.0.exe");
 
     tauri::async_runtime::spawn_blocking(move || {
         let r = compressor

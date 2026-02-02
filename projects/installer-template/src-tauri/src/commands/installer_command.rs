@@ -28,7 +28,7 @@ pub async fn install(
     let exe_path_buf = std::env::current_exe().map_err(|e| e.to_string())?;
     // let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
 
-    let resource_path_buf = exe_path_buf.clone().join(RESOURCES_DIR);
+    let resource_path_buf = temp_app_dir.clone().join(RESOURCES_DIR);
 
     // extract
     _ = tauri::async_runtime::spawn_blocking(move || {

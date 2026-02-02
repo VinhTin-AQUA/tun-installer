@@ -1,6 +1,6 @@
 {
   "properties": {
-    "installationLocation": "C:/ProgramFiles",
+    "installationLocation": "C:/Program Files",
     "productName": "First App",
     "icon": "icon.ico",
     "productVersion": "1.0.0",
