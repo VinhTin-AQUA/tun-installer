@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use windows::{
     core::*,
     Win32::{Foundation::*, System::Com::*, UI::Shell::*},

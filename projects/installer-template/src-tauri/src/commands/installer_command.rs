@@ -94,6 +94,8 @@ fn run_exe_installer_file(path: &str, arg_input: &str, run_as_admin: bool) -> Re
     let args = parse_args(arg_input);
 
     if run_as_admin {
+        use std::process::Command;
+
         let arg_list = args.join(" ");
 
         Command::new("powershell")
@@ -109,6 +111,8 @@ fn run_exe_installer_file(path: &str, arg_input: &str, run_as_admin: bool) -> Re
             .wait()
             .map_err(|e| e.to_string())?;
     } else {
+        use std::process::Command;
+
         Command::new(path)
             .args(args)
             .spawn()
