@@ -43,7 +43,7 @@ export class HtmlEngine {
         runAsAdmin: this.installerPropertyStore.runAsAdmin(),
         launchApp: this.installerPropertyStore.launchApp(),
         progress: this.progress(),
-        message: ""
+        message: '',
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
@@ -74,7 +74,6 @@ export class HtmlEngine {
 
         console.log(this.windowInfoStore.width());
         console.log(this.windowInfoStore.height());
-        
     }
 
     async ngAfterViewInit() {
@@ -172,7 +171,7 @@ export class HtmlEngine {
                 const progress = event.payload;
 
                 this.progress.set(Math.round(progress.percent * 100) / 100);
-                this.data.message = progress.message
+                this.data.message = progress.message;
                 // this.logs.update((x) => {
                 //     return [...x, progress.message];
                 // });
@@ -185,6 +184,10 @@ export class HtmlEngine {
             ProjectFolders.resources,
             ProjectFolders.prerequisites,
         ]);
+
+        if (afterInstallPage) {
+            this.navigateTo(afterInstallPage, 'firstInstall');
+        }
     }
 
     /* ================================= */

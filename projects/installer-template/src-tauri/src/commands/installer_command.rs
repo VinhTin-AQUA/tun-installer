@@ -56,7 +56,7 @@ pub async fn install(
 
     // copy to installation_location
     let installation_location =
-        PathBuf::from(installer_document.properties.installation_location.clone());
+        PathBuf::from(installer_document.properties.installation_location.clone()).join(installer_document.properties.product_name.clone());
     _ = copy_dir_all(&resource_path_buf, &installation_location)
         .await
         .map_err(|e| e.to_string());
