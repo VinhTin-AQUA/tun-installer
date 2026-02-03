@@ -1,6 +1,6 @@
 use crate::{
     consts::event_consts, events::send_progress_event, helpers::copy_dir_all,
-    models::InstallerDocument, states::app_state::AppState,
+    models::InstallerDocument, services::create_shortcuts, states::app_state::AppState,
 };
 use shared_lib::{Progress, RESOURCES_DIR};
 use std::{env, path::PathBuf};
@@ -72,13 +72,30 @@ pub async fn install(
     // create_registry();
 
     // create shortcut
-    // create_shortcuts(
-    //     "AppName",                                      // tên shortcut
-    //     r"C:\Users\tinhv\Downloads\exe_template.exe", // file chạy
-    //     None,                                         // arguments
-    //     Some(r"C:\Users\tinhv\Downloads\exe_template.exe"), // icon
-    //                                                   // Some(r"C:\Users\tinhv\Desktop\labtest-offline-setup\build\out\icon.ico") // icon
-    // )?;
+    let run_app_file = installation_location.join(
+        installation_location.join(
+            installer_document
+                .properties
+                .shortcut_in_desktop
+                .run_file
+                .clone(),
+        ),
+    );
+    let icon = installation_location.join(
+        installer_document
+            .properties
+            .shortcut_in_desktop
+            .run_file
+            .clone(),
+    );
+    _ = create_shortcuts(
+        &installer_document.properties.product_name.clone(), // tên shortcut
+        &run_app_file.to_string_lossy().to_string(),
+        None,
+        Some(&icon.to_string_lossy().to_string()), // icon
+                                                            // Some(r"C:\Users\tinhv\Desktop\labtest-offline-setup\build\out\icon.ico") // icon
+    )
+    .map_err(|x| x.to_string())?;
 
     // call clean.exe to clean temp
 
