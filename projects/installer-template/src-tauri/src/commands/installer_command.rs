@@ -1,9 +1,6 @@
 use crate::{
-    consts::event_consts,
-    events::send_progress_event,
-    helpers::copy_dir_all,
-    models::InstallerDocument,
-    states::{app_state::AppState},
+    consts::event_consts, events::send_progress_event, helpers::copy_dir_all,
+    models::InstallerDocument, states::app_state::AppState,
 };
 use shared_lib::{Progress, RESOURCES_DIR};
 use std::{env, path::PathBuf};
@@ -56,7 +53,10 @@ pub async fn install(
 
     // copy to installation_location
     let installation_location =
-        PathBuf::from(installer_document.properties.installation_location.clone()).join(installer_document.properties.product_name.clone());
+        PathBuf::from(installer_document.properties.installation_location.clone())
+            .join(installer_document.properties.publisher.clone())
+            .join(installer_document.properties.product_name.clone());
+
     _ = copy_dir_all(&resource_path_buf, &installation_location)
         .await
         .map_err(|e| e.to_string());
