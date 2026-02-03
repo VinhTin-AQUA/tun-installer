@@ -13,8 +13,14 @@ pub mod shortcut_servivce_windows;
 #[cfg(target_os = "windows")]
 pub use shortcut_servivce_windows::*;
 
+#[cfg(target_os = "linux")]
 pub mod registry_service_linux;
+
+#[cfg(target_os = "linux")]
 pub use registry_service_linux::*;
 
+#[cfg(target_os = "linux")]
 pub mod shortcut_servivce_linux;
+
+#[cfg(target_os = "linux")]
 pub use shortcut_servivce_linux::*;
