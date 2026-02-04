@@ -9,3 +9,6 @@ pub use resource_folder_service::*;
 
 pub mod project_mananager_service;
 pub use project_mananager_service::*;
+
+pub mod prerequisite_services;
+pub use prerequisite_services::*;

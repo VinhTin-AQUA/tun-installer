@@ -1,9 +1,10 @@
-import { InstallerProperties, RegistryKeys, WindowInfo } from 'installer-core';
+import { InstallerProperties, Prerequisite, RegistryKeys, WindowInfo } from 'installer-core';
 
 export interface InstallerConfig {
     properties: InstallerProperties;
     registryKeys: RegistryKeys;
-    windowInfo: WindowInfo
+    windowInfo: WindowInfo;
+    prerequisites: Prerequisite[];
 }
 
 export interface SaveInstallerConfig {

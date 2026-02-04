@@ -1,5 +1,4 @@
 use anyhow::Result;
-use crate::enums::ERegValue;
 use crate::models::RegistryKey;
 
 // create_registry

@@ -3,6 +3,8 @@ import { ProjectStore } from '../stores/project-store';
 import {
     InstallerProperties,
     InstallerPropertyStore,
+    Prerequisite,
+    PrerequisiteStore,
     RegistryKeyStore,
     WindowInfoStore,
 } from 'installer-core';
@@ -28,6 +30,7 @@ export class ProjectManagerService {
     registryKeyStore = inject(RegistryKeyStore);
     resourceFiletore = inject(ResourceFiletore);
     windowInfoStore = inject(WindowInfoStore);
+    prerequisiteStore = inject(PrerequisiteStore);
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
@@ -184,14 +187,13 @@ export class ProjectManagerService {
     async saveInstallerConfig(): Promise<boolean> {
         const filePath = this.projectStore.configFile();
 
-        console.log(filePath);
-
         const data: SaveInstallerConfig = {
             filePath: filePath,
             payload: {
                 properties: this.installerPropertyStore.getData(),
                 registryKeys: this.registryKeyStore.getData(),
                 windowInfo: this.windowInfoStore.getData(),
+                prerequisites: this.prerequisiteStore.getData(),
             },
         };
 
@@ -236,6 +238,16 @@ export class ProjectManagerService {
 
             await this.traverseFolders(folders());
         }
+    }
+
+    //========== prerequisites ============
+
+    async getPrerequisites() {
+        const prerequissites = await this.tauriCommandService.invokeCommand<
+            Prerequisite[],
+            undefined
+        >(ProjectManagerCommands.GET_PREREQUISITES_COMMAND, undefined);
+        return prerequissites;
     }
 
     //========== private ============

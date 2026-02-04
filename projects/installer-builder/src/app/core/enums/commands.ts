@@ -10,6 +10,7 @@ export enum ProjectManagerCommands {
     READ_SUBFOLDERS_COMMAND = 'read_subfolders_command',
     READ_FILES_IN_FOLDER_COMMAND = 'read_files_in_folder_command',
     OPEN_TUNINSTALLER_PROJECT_COMMAND = 'open_tuninstaller_project_command',
+    GET_PREREQUISITES_COMMAND = 'get_prerequisites_command'
 }
 
 export enum CompressCommands {

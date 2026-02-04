@@ -9,7 +9,8 @@
         "filesAndFolders": "Files And Folders",
         "registry": "Registry",
         "htmlEngine": "Html Engine",
-        "buildInstaller": "Build Installer"
+        "buildInstaller": "Build Installer",
+        "prerequisites": "Prerequisites"
     },
     "product-details": {
         "input-config-file": "Input Config File Name"

@@ -12,3 +12,6 @@ pub use project_mananager_command::*;
 
 pub mod compress_commands;
 pub use compress_commands::*;
+
+pub mod prerequisite_commands;
+pub use prerequisite_commands::*;

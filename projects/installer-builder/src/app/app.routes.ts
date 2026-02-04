@@ -8,6 +8,7 @@ import { MainRoutes } from './core/enums/routes.enum';
 import { Settings } from './pages/settings/settings';
 import { PreviewInstallerUi } from './pages/preview-installer-ui/preview-installer-ui';
 import { BuildInstaller } from './pages/build-installer/build-installer';
+import { Prerequisites } from './pages/prerequisites/prerequisites';
 
 export const routes: Routes = [
     {
@@ -37,6 +38,10 @@ export const routes: Routes = [
             {
                 path: MainRoutes.BuildInstaller,
                 component: BuildInstaller,
+            },
+            {
+                path: MainRoutes.Prerequisites,
+                component: Prerequisites,
             },
             { path: '', redirectTo: MainRoutes.ProductDetails, pathMatch: 'full' },
         ],

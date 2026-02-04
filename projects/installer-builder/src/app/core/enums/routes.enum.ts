@@ -6,4 +6,5 @@ export enum MainRoutes {
     Registry = 'registry',
     Settings = 'settings',
     BuildInstaller = 'build-installer',
+    Prerequisites = 'prerequisites',
 }

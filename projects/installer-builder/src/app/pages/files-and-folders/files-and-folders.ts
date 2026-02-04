@@ -21,13 +21,7 @@ export class FilesAndFolders {
             name: 'Resources',
             expanded: false,
             children: [],
-        },
-        {
-            id: 'prerequisites',
-            name: 'Prerequisites',
-            expanded: false,
-            children: [],
-        },
+        }
     ]);
 
     files = signal<FileItem[]>([]);

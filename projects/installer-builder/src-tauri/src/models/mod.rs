@@ -18,3 +18,6 @@ pub use project_manager_model::*;
 
 pub mod window_info;
 pub use window_info::*;
+
+pub mod prerequisite;
+pub use prerequisite::*;

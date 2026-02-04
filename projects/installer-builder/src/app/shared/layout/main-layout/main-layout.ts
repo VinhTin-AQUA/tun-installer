@@ -34,6 +34,11 @@ export class MainLayout {
                 name: 'menuSidebar.filesAndFolders',
                 url: MainRoutes.FilesAndFolders,
             },
+
+            {
+                name: 'menuSidebar.prerequisites',
+                url: MainRoutes.Prerequisites,
+            },
             {
                 name: 'menuSidebar.registry',
                 url: MainRoutes.Registry,
