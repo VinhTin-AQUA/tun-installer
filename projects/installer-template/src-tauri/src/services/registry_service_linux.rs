@@ -1,5 +1,6 @@
 use anyhow::Result;
 use crate::enums::ERegValue;
+use crate::models::RegistryKey;
 
 // create_registry
 pub fn create_registry(app_name: &str) -> Result<()> {
@@ -13,7 +14,7 @@ pub fn remove_registry() -> Result<()> {
 }
 
 // add value
-pub fn add_values(app_name: &str, values: &[(&str, ERegValue)]) -> Result<()> {
+pub fn add_values(registry_key: &RegistryKey) -> Result<()> {
     Ok(())
 }
 

@@ -39,7 +39,6 @@ pub struct RegistryValue {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RegistryKey {
-    pub name: String, // eg: "CurrentVersion"
     pub path: String, // eg: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
     pub values: Vec<RegistryValue>,
 }

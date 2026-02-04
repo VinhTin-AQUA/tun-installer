@@ -15,7 +15,6 @@ export interface RegistryValue {
 }
 
 export interface RegistryKey {
-    name: string; // eg: "CurrentVersion"
     path: string; // eg: "HKEY_LOCAL_MACHINE\\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
     values: RegistryValue[];
 }

@@ -26,12 +26,10 @@
   },
   "registryKeys": {
     "configRegistry": {
-      "name": "",
       "path": "",
       "values": []
     },
     "uninstallRegistry": {
-      "name": "",
       "path": "",
       "values": []
     }

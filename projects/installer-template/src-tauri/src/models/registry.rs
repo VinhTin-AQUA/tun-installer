@@ -18,14 +18,13 @@ pub enum RegistryValueType {
     MultiSz,
 }
 
-// #[derive(Debug, Clone, Serialize, Deserialize)]
-// #[serde(rename_all = "camelCase")]
-// pub enum RegistryValueData {
-//     String(String),
-//     Number(u64), // dùng u64 cho DWORD/QWORD
-//     StringArray(Vec<String>),
-//     Null,
-// }
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum ERegValue<'a> {
+    Str(&'a str),
+    U32(u32),
+    U64(u64),
+    Bool(bool),
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -39,7 +38,6 @@ pub struct RegistryValue {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RegistryKey {
-    pub name: String, // eg: "CurrentVersion"
     pub path: String, // eg: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
     pub values: Vec<RegistryValue>,
 }

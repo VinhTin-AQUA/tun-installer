@@ -3,12 +3,10 @@ import { RegistryKey, RegistryKeys, RegistryValue } from '../models';
 
 const initialState: RegistryKeys = {
     configRegistry: {
-        name: '',
         path: '',
         values: [],
     },
     uninstallRegistry: {
-        name: '',
         path: '',
         values: [],
     },

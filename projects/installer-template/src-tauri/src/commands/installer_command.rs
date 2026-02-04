@@ -1,6 +1,5 @@
 use crate::{
     consts::event_consts,
-    enums::ERegValue,
     events::send_progress_event,
     helpers::copy_dir_all,
     models::InstallerDocument,
@@ -77,16 +76,8 @@ pub async fn install(
     create_registry(&installer_document.properties.product_name.clone())
         .map_err(|e| e.to_string())?;
 
-    add_values(
-        &installer_document.properties.product_name.clone(),
-        &[
-            ("Username", ERegValue::Str("Alice")),
-            ("LaunchCount", ERegValue::U32(1)),
-            ("TotalTime", ERegValue::U64(123456)),
-            ("Enabled", ERegValue::Bool(true)),
-        ],
-    )
-    .map_err(|e| e.to_string())?;
+    add_values(&installer_document.registry_keys.config_registry).map_err(|e| e.to_string())?;
+    add_values(&installer_document.registry_keys.uninstall_registry).map_err(|e| e.to_string())?;
 
     // create shortcut
     let run_app_file = installation_location.join(

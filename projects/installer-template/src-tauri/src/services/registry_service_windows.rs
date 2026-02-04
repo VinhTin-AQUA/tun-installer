@@ -1,8 +1,10 @@
-use anyhow::Result;
+use anyhow::{bail, Result};
 use winreg::enums::*;
 use winreg::RegKey;
 
-use crate::enums::ERegValue;
+use crate::models::ERegValue;
+use crate::models::RegistryKey;
+use crate::models::RegistryValueType;
 
 // create_registry
 pub fn create_registry(app_name: &str) -> Result<()> {
@@ -30,29 +32,28 @@ pub fn remove_registry() -> Result<()> {
 }
 
 // add value
-pub fn add_values(app_name: &str, values: &[(&str, ERegValue)]) -> Result<()> {
+pub fn add_values(registry_key: &RegistryKey) -> Result<()> {
     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
 
-    let subkey_path = format!(
-        "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{}",
-        app_name
-    );
+    // Cắt bỏ HKEY_LOCAL_MACHINE\\
+    let sub_path = registry_key.path.replace("HKEY_LOCAL_MACHINE\\", "");
 
-    let (key, _) = hklm.create_subkey(subkey_path)?;
+    let (key, _) = hklm.create_subkey(sub_path)?;
 
-    for (name, value) in values {
-        match value {
-            ERegValue::Str(v) => key.set_value(name, v)?,
-            ERegValue::U32(v) => key.set_value(name, v)?,
-            ERegValue::U64(v) => key.set_value(name, v)?,
+    for value in &registry_key.values {
+        let reg_value = map_to_ereg_value(&value.value_type, &value.data)?;
+
+        match reg_value {
+            ERegValue::Str(v) => key.set_value(&value.name, &v)?,
+            ERegValue::U32(v) => key.set_value(&value.name, &v)?,
+            ERegValue::U64(v) => key.set_value(&value.name, &v)?,
             ERegValue::Bool(v) => {
-                let int_val: u32 = if *v { 1 } else { 0 };
-                key.set_value(name, &int_val)?;
+                let int_val: u32 = if v { 1 } else { 0 };
+                key.set_value(&value.name, &int_val)?;
             }
         }
     }
 
-    println!("Đã ghi registry thành công!");
     Ok(())
 }
 
@@ -90,6 +91,28 @@ pub fn remove_value() -> Result<()> {
 
     key.delete_value("LaunchCount")?;
     Ok(())
+}
+
+fn map_to_ereg_value<'a>(value_type: &RegistryValueType, data: &'a str) -> Result<ERegValue<'a>> {
+    Ok(match value_type {
+        RegistryValueType::Sz | RegistryValueType::ExpandSz => ERegValue::Str(data),
+
+        RegistryValueType::Dword => ERegValue::U32(data.parse::<u32>()?),
+
+        RegistryValueType::Qword => ERegValue::U64(data.parse::<u64>()?),
+
+        RegistryValueType::None => {
+            bail!("REG_NONE không hỗ trợ ghi data")
+        }
+
+        RegistryValueType::Binary => {
+            bail!("REG_BINARY chưa được hỗ trợ")
+        }
+
+        RegistryValueType::MultiSz => {
+            bail!("REG_MULTI_SZ chưa được hỗ trợ")
+        }
+    })
 }
 
 // #[cfg(target_os = "windows")]
