@@ -118,12 +118,10 @@ export class Registry {
 
         this.registryKeyStore.updateRegistry({
             configRegistry: {
-                name: registryName,
                 path: configRegistryPath,
                 values: this.configRegistryEntries,
             },
             uninstallRegistry: {
-                name: registryName,
                 path: uninstallRegistryPath,
                 values: this.uninstallRegistryEntries,
             },
