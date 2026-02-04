@@ -1,7 +1,8 @@
 use anyhow::Result;
+use crate::enums::ERegValue;
 
 // create_registry
-fn create_registry() -> Result<()> {
+pub fn create_registry(app_name: &str) -> Result<()> {
     return Ok(());
 }
 
@@ -12,7 +13,7 @@ pub fn remove_registry() -> Result<()> {
 }
 
 // add value
-pub fn add_value() -> Result<()> {
+pub fn add_values(app_name: &str, values: &[(&str, ERegValue)]) -> Result<()> {
     Ok(())
 }
 

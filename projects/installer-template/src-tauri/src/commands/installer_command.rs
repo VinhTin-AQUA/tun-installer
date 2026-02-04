@@ -1,6 +1,11 @@
 use crate::{
-    consts::event_consts, events::send_progress_event, helpers::copy_dir_all,
-    models::InstallerDocument, services::create_shortcuts, states::app_state::AppState,
+    consts::event_consts,
+    enums::ERegValue,
+    events::send_progress_event,
+    helpers::copy_dir_all,
+    models::InstallerDocument,
+    services::{add_values, create_registry, create_shortcuts},
+    states::app_state::AppState,
 };
 use shared_lib::{Progress, RESOURCES_DIR};
 use std::{env, path::PathBuf};
@@ -69,7 +74,19 @@ pub async fn install(
     // )?;
 
     // registering registry
-    // create_registry();
+    create_registry(&installer_document.properties.product_name.clone())
+        .map_err(|e| e.to_string())?;
+
+    add_values(
+        &installer_document.properties.product_name.clone(),
+        &[
+            ("Username", ERegValue::Str("Alice")),
+            ("LaunchCount", ERegValue::U32(1)),
+            ("TotalTime", ERegValue::U64(123456)),
+            ("Enabled", ERegValue::Bool(true)),
+        ],
+    )
+    .map_err(|e| e.to_string())?;
 
     // create shortcut
     let run_app_file = installation_location.join(
@@ -93,7 +110,7 @@ pub async fn install(
         &run_app_file.to_string_lossy().to_string(),
         None,
         Some(&icon.to_string_lossy().to_string()), // icon
-                                                            // Some(r"C:\Users\tinhv\Desktop\labtest-offline-setup\build\out\icon.ico") // icon
+                                                   // Some(r"C:\Users\tinhv\Desktop\labtest-offline-setup\build\out\icon.ico") // icon
     )
     .map_err(|x| x.to_string())?;
 

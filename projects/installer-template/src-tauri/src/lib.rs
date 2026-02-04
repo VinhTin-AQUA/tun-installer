@@ -7,6 +7,7 @@ mod helpers;
 mod models;
 mod services;
 mod states;
+mod enums;
 
 use commands::*;
 use shared_lib::Compressor;
