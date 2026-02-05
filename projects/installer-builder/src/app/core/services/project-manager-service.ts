@@ -5,7 +5,9 @@ import {
     InstallerPropertyStore,
     Prerequisite,
     PrerequisiteStore,
+    RegistryKeys,
     RegistryKeyStore,
+    RegistryValueType,
     WindowInfoStore,
 } from 'installer-core';
 import { form, required } from '@angular/forms/signals';
@@ -31,6 +33,39 @@ export class ProjectManagerService {
     resourceFiletore = inject(ResourceFiletore);
     windowInfoStore = inject(WindowInfoStore);
     prerequisiteStore = inject(PrerequisiteStore);
+
+    defaultRegistries = signal<RegistryKeys>({
+        configRegistry: {
+            path: '',
+            values: [
+                {
+                    data: '',
+                    name: '',
+                    type: RegistryValueType.REG_NONE,
+                },
+            ],
+        },
+        uninstallRegistry: {
+            path: '',
+            values: [
+                {
+                    data: '',
+                    name: '',
+                    type: RegistryValueType.REG_NONE,
+                },
+                {
+                    data: '',
+                    name: '',
+                    type: RegistryValueType.REG_NONE,
+                },
+                {
+                    data: '',
+                    name: '',
+                    type: RegistryValueType.REG_NONE,
+                },
+            ],
+        },
+    });
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
@@ -69,6 +104,43 @@ export class ProjectManagerService {
                 shortcutInDesktop: this.installerPropertyDataModel().shortcutInDesktop,
                 shortcutInApplicationShortcut:
                     this.installerPropertyDataModel().shortcutInApplicationShortcut,
+            });
+
+            this.defaultRegistries.update((x) => {
+                const defaultList: RegistryKeys = {
+                    configRegistry: {
+                        path: `Software\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
+                        values: [
+                            {
+                                data: this.installerPropertyDataModel().productName,
+                                name: 'DisplayName',
+                                type: RegistryValueType.REG_SZ,
+                            },
+                        ],
+                    },
+                    uninstallRegistry: {
+                        path: `Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${this.installerPropertyDataModel().productName}`,
+                        values: [
+                            {
+                                data: this.installerPropertyDataModel().productName,
+                                name: 'DisplayName',
+                                type: RegistryValueType.REG_SZ,
+                            },
+                            {
+                                data: this.installerPropertyDataModel().productVersion,
+                                name: 'DisplayVersion',
+                                type: RegistryValueType.REG_SZ,
+                            },
+                            {
+                                data: 'uninstall.exe',
+                                name: 'UninstallString',
+                                type: RegistryValueType.REG_SZ,
+                            },
+                        ],
+                    },
+                };
+
+                return defaultList;
             });
         });
     }
@@ -187,17 +259,32 @@ export class ProjectManagerService {
     async saveInstallerDocument(): Promise<boolean> {
         const filePath = this.projectStore.configFile();
 
+        const registryKeys: RegistryKeys = {
+            configRegistry: {
+                path: `Software\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
+                values: [
+                    ...this.defaultRegistries().configRegistry.values,
+                    ...this.registryKeyStore.getData().configRegistry.values,
+                ],
+            },
+            uninstallRegistry: {
+                path: `Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${this.installerPropertyDataModel().productName}`,
+                values: [
+                    ...this.defaultRegistries().uninstallRegistry.values,
+                    ...this.registryKeyStore.getData().uninstallRegistry.values,
+                ],
+            },
+        };
+
         const data: SaveInstallerConfig = {
             filePath: filePath,
             payload: {
                 properties: this.installerPropertyStore.getData(),
-                registryKeys: this.registryKeyStore.getData(),
+                registryKeys: registryKeys,
                 windowInfo: this.windowInfoStore.getData(),
                 prerequisites: this.prerequisiteStore.getData(),
             },
         };
-
-        console.log(data);
 
         const r = await this.tauriCommandService.invokeCommand<boolean, SaveInstallerConfig>(
             ProjectManagerCommands.SAVE_INSTALLER_CONFIG_COMMAND,

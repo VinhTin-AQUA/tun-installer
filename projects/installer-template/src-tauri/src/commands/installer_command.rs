@@ -75,7 +75,7 @@ pub async fn install(
             .to_string_lossy()
             .to_string();
 
-        run_exe_installer_file(exe_path, "/S", prerequisite.run_as_admin).await?;
+        run_exe_installer_file(&exe_path, "/S", prerequisite.run_as_admin).await?;
     }
 
     // registering registry

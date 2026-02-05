@@ -1,4 +1,4 @@
-use std::io::{self, Read};
+use std::io::{Read};
 use std::{env, path::PathBuf, process::Command};
 
 fn main() {
@@ -44,7 +44,7 @@ fn admin_task() {
     wait_for_key();
 }
 
-#[cfg(windows)]
+#[cfg(target_os = "windows")]
 pub fn relaunch_as_admin() {
     let exe = env::current_exe().expect("Cannot get exe path");
 
@@ -60,6 +60,9 @@ pub fn relaunch_as_admin() {
         .expect("Failed to relaunch as admin");
 }
 
+#[cfg(target_os = "linux")]
+pub fn relaunch_as_admin(){}
+
 fn is_admin() -> bool {
     // Windows-specific admin check
     Command::new("net")
@@ -73,4 +76,8 @@ fn is_admin() -> bool {
 pub fn wait_for_key() {
     println!("\nPress ENTER to exit...");
     let _ = io::stdin().read(&mut [0u8]).unwrap();
+}
+
+#[cfg(target_os = "linux")]
+pub fn wait_for_key() {
 }

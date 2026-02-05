@@ -4,11 +4,14 @@ use anyhow::{anyhow, bail};
 use chrono::Local;
 use quick_xml::de::from_str;
 use shared_lib::CONFIG_DIR;
-use std::fs::{self, File};
+use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> anyhow::Result<bool> {
+pub async fn create_tuninstaller_project(
+    base_dir: String,
+    project_name: String,
+) -> anyhow::Result<bool> {
     let base_path = Path::new(base_dir.as_str()).join(project_name.clone());
 
     if base_path.exists() {
@@ -16,7 +19,7 @@ pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> an
     }
 
     // Tạo thư mục gốc
-    fs::create_dir_all(base_path.clone())?;
+    tokio::fs::create_dir_all(base_path.clone()).await?;
 
     // Tạo các thư mục con
     for dir in [
@@ -27,7 +30,7 @@ pub fn create_tuninstaller_project(base_dir: String, project_name: String) -> an
         "pages/first-time-install",
         "pages/maintenance",
     ] {
-        fs::create_dir_all(base_path.join(dir))?;
+        tokio::fs::create_dir_all(base_path.join(dir)).await?;
     }
 
     // Tạo dữ liệu XML
