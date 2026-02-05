@@ -17,7 +17,8 @@
         "tauri:build:builder": "tauri build --no-bundle --config projects/installer-builder/src-tauri/tauri.conf.json -- --target x86_64-pc-windows-msvc --package installer_builder --bin installer_builder",
         "tauri:build:template": "tauri build --no-bundle --config projects/installer-template/src-tauri/tauri.conf.json -- --target x86_64-pc-windows-msvc --package installer_template --bin installer_template",
         "cargo:build:builder": "cargo build -p installer_builder --bin installer_builder",
-        "cargo:build:template": "cargo build -p installer_template --bin installer_template"
+        "cargo:build:template": "cargo build -p installer_template --bin installer_template",
+        "cargo:dev:cleaner": "cargo run -p cleaner"
     },
     "prettier": {
         "printWidth": 100,
