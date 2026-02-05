@@ -13,5 +13,6 @@ pub async fn get_installer_document_command(
         properties: state.properties.clone(),
         registry_keys: state.registry_keys.clone(),
         window_info: state.window_info.clone(),
+        prerequisites: state.prerequisites.clone(),
     }))
 }

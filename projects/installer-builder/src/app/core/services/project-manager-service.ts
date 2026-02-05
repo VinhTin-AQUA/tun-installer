@@ -184,7 +184,7 @@ export class ProjectManagerService {
 
     //========== installer config ============
 
-    async saveInstallerConfig(): Promise<boolean> {
+    async saveInstallerDocument(): Promise<boolean> {
         const filePath = this.projectStore.configFile();
 
         const data: SaveInstallerConfig = {

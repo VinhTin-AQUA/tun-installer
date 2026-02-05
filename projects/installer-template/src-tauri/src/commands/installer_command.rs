@@ -6,7 +6,7 @@ use crate::{
     services::{add_values, create_registry, create_shortcuts},
     states::app_state::AppState,
 };
-use shared_lib::{Progress, RESOURCES_DIR};
+use shared_lib::{Progress, PREREQUISITE_DIR, RESOURCES_DIR};
 use std::{env, path::PathBuf};
 use tauri::{command, AppHandle, State};
 use tokio::sync::Mutex;
@@ -25,11 +25,11 @@ pub async fn install(
     //     PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app");
 
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
-
     let exe_path_buf = std::env::current_exe().map_err(|e| e.to_string())?;
     // let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
 
     let resource_path_buf = temp_app_dir.clone().join(RESOURCES_DIR);
+    let prerequisite_path_buf = temp_app_dir.clone().join(PREREQUISITE_DIR);
 
     // extract
     _ = tauri::async_runtime::spawn_blocking(move || {
@@ -66,11 +66,17 @@ pub async fn install(
         .map_err(|e| e.to_string());
 
     // installer prerequisites
-    // run_installer(
-    //     "C:/Users/tinhv/Downloads/exe_template.exe",
-    //     "/S",
-    //     true,
-    // )?;
+    let prerequisites = installer_document.prerequisites.clone();
+    for prerequisite in prerequisites {
+        println!("Installing {}", prerequisite.name);
+
+        let exe_path = prerequisite_path_buf
+            .join(&prerequisite.name)
+            .to_string_lossy()
+            .to_string();
+
+        run_exe_installer_file(exe_path, "/S", prerequisite.run_as_admin).await?;
+    }
 
     // registering registry
     create_registry(&installer_document.properties.product_name.clone())
@@ -112,41 +118,60 @@ pub async fn install(
 
 //====================================================
 
+#[cfg(target_os = "linux")]
+pub async fn run_exe_installer_file(
+    path: &str,
+    arg_input: &str,
+    run_as_admin: bool,
+) -> Result<bool, String> {
+    Ok(true)
+}
+
 // cmd: /install /quiet /norestart /D="C:\Program Files\App"
 // crate: shlex = "1"
 #[cfg(target_os = "windows")]
-fn run_exe_installer_file(path: &str, arg_input: &str, run_as_admin: bool) -> Result<bool, String> {
-    let args = parse_args(arg_input);
+pub async fn run_exe_installer_file(
+    path: String,
+    arg_input: &str,
+    run_as_admin: bool,
+) -> Result<bool, String> {
+    let arg_input = arg_input.to_string();
 
-    if run_as_admin {
-        use std::process::Command;
+    tokio::task::spawn_blocking(move || {
+        let args = parse_args(&arg_input);
 
-        let arg_list = args.join(" ");
+        if run_as_admin {
+            use std::process::Command;
 
-        Command::new("powershell")
-            .args([
-                "-Command",
-                &format!(
-                    "Start-Process '{}' -ArgumentList '{}' -Verb runAs",
-                    path, arg_list
-                ),
-            ])
-            .spawn()
-            .map_err(|e| e.to_string())?
-            .wait()
-            .map_err(|e| e.to_string())?;
-    } else {
-        use std::process::Command;
+            let arg_list = args.join(" ");
 
-        Command::new(path)
-            .args(args)
-            .spawn()
-            .map_err(|e| e.to_string())?
-            .wait()
-            .map_err(|e| e.to_string())?;
-    }
+            Command::new("powershell")
+                .args([
+                    "-Command",
+                    &format!(
+                        "Start-Process '{}' -ArgumentList '{}' -Verb runAs -Wait",
+                        path, arg_list
+                    ),
+                ])
+                .spawn()
+                .map_err(|e| e.to_string())?
+                .wait()
+                .map_err(|e| e.to_string())?;
+        } else {
+            use std::process::Command;
 
-    Ok(true)
+            Command::new(&path)
+                .args(args)
+                .spawn()
+                .map_err(|e| e.to_string())?
+                .wait()
+                .map_err(|e| e.to_string())?;
+        }
+
+        Ok(true)
+    })
+    .await
+    .map_err(|e| e.to_string())?
 }
 
 // parse input args

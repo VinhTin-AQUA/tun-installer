@@ -1,67 +1,74 @@
 {
-    "properties": {
-        "installationLocation": "C:/Program Files",
-        "productName": "First App",
-        "icon": "icon.ico",
-        "productVersion": "1.0.0",
-        "publisher": "My Company",
-        "supportLink": "https://example.com",
-        "supportEmail": "example@gmail.com",
-        "comment": "Welcome to my app",
-        "launchFile": "start.txt",
-        "runAsAdmin": true,
-        "launchApp": false,
-        "shortcutInDesktop": {
-            "isCreated": true,
-            "runAsAdmin": true,
-            "shortcutName": "First App",
-            "runFile": "start.txt"
-        },
-        "shortcutInApplicationShortcut": {
-            "isCreated": false,
-            "runAsAdmin": false,
-            "shortcutName": "",
-            "runFile": ""
+  "properties": {
+    "installationLocation": "C:/Program Files",
+    "productName": "First App",
+    "icon": "icon.ico",
+    "productVersion": "1.0.0",
+    "publisher": "My Company",
+    "supportLink": "https://example.com",
+    "supportEmail": "example@gmail.com",
+    "comment": "Welcome to my app",
+    "launchFile": "start.txt",
+    "runAsAdmin": true,
+    "launchApp": false,
+    "shortcutInDesktop": {
+      "isCreated": true,
+      "runAsAdmin": true,
+      "shortcutName": "First App",
+      "runFile": "start.txt"
+    },
+    "shortcutInApplicationShortcut": {
+      "isCreated": false,
+      "runAsAdmin": false,
+      "shortcutName": "",
+      "runFile": ""
+    }
+  },
+  "registryKeys": {
+    "configRegistry": {
+      "path": "Software\\New Tun\\First App",
+      "values": [
+        {
+          "name": "DisplayName",
+          "type": "REG_SZ",
+          "data": "First App"
         }
+      ]
     },
-    "registryKeys": {
-        "configRegistry": {
-            "path": "Software\\New Tun\\First App",
-            "values": [
-                {
-                    "name": "DisplayName",
-                    "type": "REG_SZ",
-                    "data": "First App"
-                }
-            ]
+    "uninstallRegistry": {
+      "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First App",
+      "values": [
+        {
+          "name": "DisplayName",
+          "type": "REG_SZ",
+          "data": "First App"
         },
-        "uninstallRegistry": {
-            "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First App",
-            "values": [
-                {
-                    "name": "DisplayName",
-                    "type": "REG_SZ",
-                    "data": "First App"
-                },
-                {
-                    "name": "DisplayVersion",
-                    "type": "REG_SZ",
-                    "data": "1.3.4"
-                },
-                {
-                    "name": "UninstallString",
-                    "type": "REG_SZ",
-                    "data": "uninstall.exe"
-                }
-            ]
+        {
+          "name": "DisplayVersion",
+          "type": "REG_SZ",
+          "data": "1.3.4"
+        },
+        {
+          "name": "UninstallString",
+          "type": "REG_SZ",
+          "data": "uninstall.exe"
         }
-    },
-    "windowInfo": {
-        "title": "My App",
-        "width": 800.0,
-        "height": 600.0,
-        "startPage": "welcome.html",
-        "alwaysOnTop": false
-    },
-    "prerequisites": []
+      ]
+    }
+  },
+  "windowInfo": {
+    "title": "My App",
+    "width": 800.0,
+    "height": 600.0,
+    "startPage": "welcome.html",
+    "alwaysOnTop": false
+  },
+  "prerequisites": [
+    {
+      "name": "prerequisite.exe",
+      "runAsAdmin": false,
+      "installPhase": "After",
+      "size": 5.54
+    }
+  ]
 }

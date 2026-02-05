@@ -243,7 +243,7 @@ export class HtmlEngine {
     }
 
     async save() {
-        const r = await this.projectManagerService.saveInstallerConfig();
+        const r = await this.projectManagerService.saveInstallerDocument();
         if (!r) {
             this.toastService.show('Something error', 'error');
             return;

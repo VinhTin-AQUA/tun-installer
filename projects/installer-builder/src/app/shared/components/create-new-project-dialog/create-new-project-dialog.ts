@@ -59,7 +59,7 @@ export class CreateNewProjectDialog {
             this.data().projectName,
         );
 
-        await this.projectManagerService.saveInstallerConfig();
+        await this.projectManagerService.saveInstallerDocument();
         await this.projectManagerService.init();
         this.dialogStore.update({
             createNewProjectDialog: false,

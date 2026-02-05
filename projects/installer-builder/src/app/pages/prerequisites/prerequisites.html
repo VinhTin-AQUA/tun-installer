@@ -19,20 +19,13 @@
                 </tr>
             </thead>
             <tbody>
-                @for (p of prerequisites(); track $index) {
+                @for (p of prerequisiteStore.getData(); track $index) {
                     <tr class="border-b last:border-0">
                         <td class="py-2">{{ p.name }}</td>
                         <td class="capitalize">{{ p.installPhase }}</td>
                         <td>{{ p.runAsAdmin ? 'Yes' : 'No' }}</td>
                         <td>{{ p.size }} MB</td>
-                        <td class="text-right">
-                            <button
-                                (click)="removePrerequisite(p.name)"
-                                class="text-red-600 hover:underline"
-                            >
-                                Remove
-                            </button>
-                        </td>
+                        <td class="text-right"></td>
                     </tr>
                 }
             </tbody>
@@ -41,15 +34,11 @@
 
     <!-- Save button -->
     <div class="flex justify-end gap-1">
-        <button class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">
-            Reload
-        </button>
-
         <button
             (click)="save()"
             class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700"
         >
-            Save configuration
+            Reload
         </button>
     </div>
 </div>

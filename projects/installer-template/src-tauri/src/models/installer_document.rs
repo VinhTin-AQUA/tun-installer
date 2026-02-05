@@ -1,4 +1,4 @@
-use crate::models::{InstallerProperties, RegistryKeys, WindowInfo};
+use crate::models::{InstallerProperties, Prerequisite, RegistryKeys, WindowInfo};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -6,5 +6,6 @@ use serde::{Deserialize, Serialize};
 pub struct InstallerDocument {
     pub properties: InstallerProperties,
     pub registry_keys: RegistryKeys,
-    pub window_info: WindowInfo
+    pub window_info: WindowInfo,
+    pub prerequisites: Vec<Prerequisite>,
 }

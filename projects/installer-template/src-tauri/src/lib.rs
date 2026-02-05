@@ -53,6 +53,7 @@ pub fn run() {
                 properties: installer_document.properties.clone(),
                 registry_keys: installer_document.registry_keys.clone(),
                 window_info: installer_document.window_info.clone(),
+                prerequisites: installer_document.prerequisites.clone(),
             }));
 
             let project_state = init_project_state(&state)?;

@@ -12,3 +12,6 @@ pub use registry::*;
 
 pub mod html_page;
 pub use html_page::*;
+
+pub mod prerequisite;
+pub use prerequisite::*;
