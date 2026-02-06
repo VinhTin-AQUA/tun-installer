@@ -1,5 +1,6 @@
 use std::io::{Read};
 use std::{env, path::PathBuf, process::Command};
+use std::io;
 
 fn main() {
     // let temp = env::temp_dir();
@@ -74,6 +75,8 @@ fn is_admin() -> bool {
 
 #[cfg(windows)]
 pub fn wait_for_key() {
+    
+
     println!("\nPress ENTER to exit...");
     let _ = io::stdin().read(&mut [0u8]).unwrap();
 }
