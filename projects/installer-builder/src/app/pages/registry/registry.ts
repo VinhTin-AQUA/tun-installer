@@ -22,8 +22,8 @@ export class Registry {
         'Computer\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall'; //  + publisher\\appName
 
     configRegistryEntries: RegistryValue[] = [
-        { name: 'PostgreSQL', type: RegistryValueType.REG_DWORD, data: '17.5-3' },
-        { name: 'MyApp', type: RegistryValueType.REG_DWORD, data: '1' },
+        { name: 'PostgreSQL', type: RegistryValueType.REG_DWORD, data: '17.5-3', default: false },
+        { name: 'MyApp', type: RegistryValueType.REG_DWORD, data: '1', default: false },
     ];
 
     uninstallRegistryEntries: RegistryValue[] = [
@@ -31,11 +31,13 @@ export class Registry {
             name: 'PostgreSQL 17',
             type: RegistryValueType.REG_DWORD,
             data: 'C:\\Program Files\\PostgreSQL\\17',
+            default: false,
         },
         {
             name: 'MyApp',
             type: RegistryValueType.REG_DWORD,
             data: 'C:\\Program Files\\MyApp',
+            default: false,
         },
     ];
 
@@ -57,6 +59,7 @@ export class Registry {
             name: '',
             type: RegistryValueType.REG_DWORD,
             data: '',
+            default: false,
         });
     }
 
@@ -65,6 +68,7 @@ export class Registry {
             name: '',
             type: RegistryValueType.REG_DWORD,
             data: '',
+            default: false,
         });
     }
 

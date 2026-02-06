@@ -1,5 +1,5 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { RegistryKey, RegistryKeys, RegistryValue } from '../models';
+import { RegistryKey, RegistryKeys, RegistryValue, RegistryValueType } from '../models';
 
 const initialState: RegistryKeys = {
     configRegistry: {

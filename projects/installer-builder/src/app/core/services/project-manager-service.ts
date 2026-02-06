@@ -34,39 +34,6 @@ export class ProjectManagerService {
     windowInfoStore = inject(WindowInfoStore);
     prerequisiteStore = inject(PrerequisiteStore);
 
-    defaultRegistries = signal<RegistryKeys>({
-        configRegistry: {
-            path: '',
-            values: [
-                {
-                    data: '',
-                    name: '',
-                    type: RegistryValueType.REG_NONE,
-                },
-            ],
-        },
-        uninstallRegistry: {
-            path: '',
-            values: [
-                {
-                    data: '',
-                    name: '',
-                    type: RegistryValueType.REG_NONE,
-                },
-                {
-                    data: '',
-                    name: '',
-                    type: RegistryValueType.REG_NONE,
-                },
-                {
-                    data: '',
-                    name: '',
-                    type: RegistryValueType.REG_NONE,
-                },
-            ],
-        },
-    });
-
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
         required(f.productName, { message: 'Product Name is required' });
@@ -106,42 +73,7 @@ export class ProjectManagerService {
                     this.installerPropertyDataModel().shortcutInApplicationShortcut,
             });
 
-            this.defaultRegistries.update((x) => {
-                const defaultList: RegistryKeys = {
-                    configRegistry: {
-                        path: `Software\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
-                        values: [
-                            {
-                                data: this.installerPropertyDataModel().productName,
-                                name: 'DisplayName',
-                                type: RegistryValueType.REG_SZ,
-                            },
-                        ],
-                    },
-                    uninstallRegistry: {
-                        path: `Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${this.installerPropertyDataModel().productName}`,
-                        values: [
-                            {
-                                data: this.installerPropertyDataModel().productName,
-                                name: 'DisplayName',
-                                type: RegistryValueType.REG_SZ,
-                            },
-                            {
-                                data: this.installerPropertyDataModel().productVersion,
-                                name: 'DisplayVersion',
-                                type: RegistryValueType.REG_SZ,
-                            },
-                            {
-                                data: 'uninstall.exe',
-                                name: 'UninstallString',
-                                type: RegistryValueType.REG_SZ,
-                            },
-                        ],
-                    },
-                };
-
-                return defaultList;
-            });
+            // this.registryKeyStore.updateRegistry()
         });
     }
 
@@ -259,28 +191,11 @@ export class ProjectManagerService {
     async saveInstallerDocument(): Promise<boolean> {
         const filePath = this.projectStore.configFile();
 
-        const registryKeys: RegistryKeys = {
-            configRegistry: {
-                path: `Software\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
-                values: [
-                    ...this.defaultRegistries().configRegistry.values,
-                    ...this.registryKeyStore.getData().configRegistry.values,
-                ],
-            },
-            uninstallRegistry: {
-                path: `Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${this.installerPropertyDataModel().productName}`,
-                values: [
-                    ...this.defaultRegistries().uninstallRegistry.values,
-                    ...this.registryKeyStore.getData().uninstallRegistry.values,
-                ],
-            },
-        };
-
         const data: SaveInstallerConfig = {
             filePath: filePath,
             payload: {
                 properties: this.installerPropertyStore.getData(),
-                registryKeys: registryKeys,
+                registryKeys: this.registryKeyStore.getData(),
                 windowInfo: this.windowInfoStore.getData(),
                 prerequisites: this.prerequisiteStore.getData(),
             },
@@ -336,6 +251,10 @@ export class ProjectManagerService {
         >(ProjectManagerCommands.GET_PREREQUISITES_COMMAND, undefined);
         return prerequissites;
     }
+
+    //========== registry ============
+
+    
 
     //========== private ============
 

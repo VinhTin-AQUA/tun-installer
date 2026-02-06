@@ -12,6 +12,7 @@ export interface RegistryValue {
     name: string; // eg: "ProductName"
     type: RegistryValueType; // eg: RegistryValueType.SZ,
     data: string | number | string[] | null; // "Tun Installer"
+    default: boolean,
 }
 
 export interface RegistryKey {

@@ -34,6 +34,7 @@ pub struct RegistryValue {
     #[serde(rename = "type")]
     pub value_type: RegistryValueType, // eg: RegistryValueType::Sz
     pub data: String, // eg: RegistryValueData::String("Tun Installer".into())
+    pub default: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

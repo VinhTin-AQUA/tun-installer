@@ -1,5 +1,5 @@
 use crate::helpers::to_pretty_xml;
-use crate::models::TunInstallerProject;
+use crate::models::{create_default_installer_document, TunInstallerProject};
 use anyhow::{anyhow, bail};
 use chrono::Local;
 use quick_xml::de::from_str;
@@ -7,6 +7,7 @@ use shared_lib::CONFIG_DIR;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+use tokio::fs;
 
 pub async fn create_tuninstaller_project(
     base_dir: String,
@@ -55,7 +56,15 @@ pub async fn create_tuninstaller_project(
     file.write_all(xml.as_bytes())?;
 
     let config_file_path = base_path.join(CONFIG_DIR).join("config.json");
-    File::create(config_file_path)?;
+    File::create(config_file_path.clone())?;
+
+    let default_config = create_default_installer_document();
+    let json = serde_json::to_string_pretty(&default_config)?;
+    fs::write(
+        config_file_path.to_string_lossy().to_string().as_str(),
+        json,
+    )
+    .await?;
 
     Ok(true)
 }
