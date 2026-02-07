@@ -11,13 +11,12 @@ import { ToastService } from '../../core/services/toast-service';
     styleUrl: './prerequisites.css',
 })
 export class Prerequisites {
-    // prerequisites = signal<Prerequisite[]>([]);
     prerequisiteStore = inject(PrerequisiteStore);
 
     newPrerequisite: Prerequisite = {
         name: '',
         runAsAdmin: true,
-        installPhase: 'before',
+        installPhase: 'Before',
         size: 0,
     };
 
@@ -30,19 +29,45 @@ export class Prerequisites {
         await this.save();
     }
 
+    updateRunAsAdmin(name: string, value: boolean) {
+        this.prerequisiteStore.update(name, {
+            runAsAdmin: value,
+        });
+    }
+
+    updatePhase(name: string, phase: 'Before' | 'After') {
+        this.prerequisiteStore.update(name, {
+            installPhase: phase,
+        });
+    }
+
     async save() {
-        const prerequisites = await this.projectManagerService.getPrerequisites();
-        console.log(prerequisites);
-        if (!prerequisites) {
-            return;
-        }
-        this.prerequisiteStore.setList(prerequisites);
+
+        console.log(this.prerequisiteStore.getData());
+
+        
+
+        const newPrerequisites = await this.projectManagerService.getPrerequisites();
+        if (!newPrerequisites) return;
+
+        const current = this.prerequisiteStore.getData();
+        const merged = newPrerequisites.map((p) => {
+            const old = current.find((c) => c.name === p.name);
+
+            return {
+                ...p,
+                runAsAdmin: old?.runAsAdmin ?? true,
+                installPhase: old?.installPhase ?? 'Before',
+            };
+        });
+
+        this.prerequisiteStore.setList(merged);
+        console.log(this.prerequisiteStore.getData());
 
         const r = await this.projectManagerService.saveInstallerDocument();
-        if (r) {
-            this.toastService.show('Save Prerequisite Success', 'success');
-        } else {
-            this.toastService.show('Load Prerequisite Failed', 'error');
-        }
+        this.toastService.show(
+            r ? 'Save Prerequisite Success' : 'Load Prerequisite Failed',
+            r ? 'success' : 'error',
+        );
     }
 }

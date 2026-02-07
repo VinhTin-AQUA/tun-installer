@@ -32,17 +32,11 @@ export const PrerequisiteStore = signalStore(
         }
 
         function update(name: string, changes: Partial<Prerequisite>) {
-            patchState(store, (currentState) => {
-                let item = currentState.prerequisites.find((x) => x.name === name);
-
-                if (item) {
-                    item = { ...item, ...changes };
-                }
-
-                return {
-                    prerequisites: currentState.prerequisites,
-                };
-            });
+            patchState(store, (state) => ({
+                prerequisites: state.prerequisites.map((item) =>
+                    item.name === name ? { ...item, ...changes } : item,
+                ),
+            }));
         }
 
         return {

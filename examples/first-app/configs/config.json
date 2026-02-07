@@ -85,7 +85,7 @@
     }
   },
   "windowInfo": {
-    "title": "My Application Installer",
+    "title": "1_welcome.html",
     "width": 800.0,
     "height": 600.0,
     "startPage": "welcome.html",
@@ -94,8 +94,8 @@
   "prerequisites": [
     {
       "name": "prerequisite.exe",
-      "runAsAdmin": false,
-      "installPhase": "After",
+      "runAsAdmin": true,
+      "installPhase": "Before",
       "size": 5.54
     }
   ]

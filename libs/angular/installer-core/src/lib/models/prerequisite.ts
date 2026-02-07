@@ -1,6 +1,6 @@
 export interface Prerequisite {
     name: string;
     runAsAdmin: boolean;
-    installPhase: 'before' | 'after';
+    installPhase: 'Before' | 'After';
     size: number;
 }

@@ -223,6 +223,7 @@ export class ProjectManagerService {
         });
 
         this.windowInfoStore.updateValue(installerDocumentConfig.windowInfo);
+        this.prerequisiteStore.setList(installerDocumentConfig.prerequisites)
 
         /* =========== get files in resources ==============  */
         await this.getResourceFiles();

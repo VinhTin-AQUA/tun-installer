@@ -18,17 +18,40 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                @for (p of prerequisiteStore.getData(); track $index) {
-                    <tr class="border-b last:border-0">
-                        <td class="py-2">{{ p.name }}</td>
-                        <td class="capitalize">{{ p.installPhase }}</td>
-                        <td>{{ p.runAsAdmin ? 'Yes' : 'No' }}</td>
-                        <td>{{ p.size }} MB</td>
-                        <td class="text-right"></td>
-                    </tr>
-                }
-            </tbody>
+      <tbody>
+    @for (p of prerequisiteStore.getData(); track p.name) {
+        <tr class="border-b last:border-0">
+            <td class="py-2">{{ p.name }}</td>
+
+            <!-- installPhase -->
+            <td>
+                <select
+                    class="border rounded px-2 py-1"
+                    [value]="p.installPhase"
+                    (change)="updatePhase(p.name, $any($event.target).value)"
+                >
+                    <option value="Before">Before</option>
+                    <option value="After">After</option>
+                </select>
+            </td>
+
+            <!-- size -->
+            <td>{{ p.size }} MB</td>
+
+            <!-- runAsAdmin -->
+            <td>
+                <input
+                    type="checkbox"
+                    [checked]="p.runAsAdmin"
+                    (change)="updateRunAsAdmin(p.name, $any($event.target).checked)"
+                />
+            </td>
+
+            <td></td>
+        </tr>
+    }
+</tbody>
+
         </table>
     </div>
 
