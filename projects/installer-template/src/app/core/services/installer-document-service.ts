@@ -22,7 +22,7 @@ export class InstallerDocumentService {
 
         if(r) {
             this.installerPropertyStore.update(r.properties);
-            this.registryKeyStore.updateRegistry({
+            this.registryKeyStore.setRegistry({
                 configRegistry: r.registryKeys.configRegistry,
                 uninstallRegistry: r.registryKeys.uninstallRegistry
             });
