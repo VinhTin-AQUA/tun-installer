@@ -1,10 +1,10 @@
 {
   "properties": {
     "installationLocation": "C:\\Program Files\\MyApp",
-    "productName": "My Application",
+    "productName": "BiTTT",
     "icon": "icon.ico",
     "productVersion": "1.0.0",
-    "publisher": "My Company",
+    "publisher": "Company",
     "supportLink": "https://support.mycompany.com",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
@@ -26,12 +26,12 @@
   },
   "registryKeys": {
     "configRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\My Company\\My Application",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Company\\BiTTT",
       "values": [
         {
           "name": "InstallPath",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\My Company\\My Application",
+          "data": "C:\\Program Files\\Company\\BiTTT",
           "default": true
         },
         {
@@ -43,24 +43,24 @@
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "My Application",
+          "data": "BiTTT",
           "default": true
         }
       ]
     },
     "uninstallRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\My Application",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\BiTTT",
       "values": [
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "My Application",
+          "data": "BiTTT",
           "default": true
         },
         {
           "name": "Publisher",
           "type": "REG_SZ",
-          "data": "My Company",
+          "data": "Company",
           "default": true
         },
         {
@@ -72,8 +72,14 @@
         {
           "name": "UninstallString",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\My Company\\My Application\\uninstall.exe",
+          "data": "C:\\Program Files\\Company\\BiTTT\\uninstall.exe",
           "default": true
+        },
+        {
+          "name": "đoán xem",
+          "type": "REG_EXPAND_SZ",
+          "data": "ai biết gì đâu",
+          "default": false
         }
       ]
     }

@@ -1,142 +1,95 @@
-<div class="p-6 space-y-12">
-    <!-- CONFIG REGISTRY -->
-    <div>
-        <h2 class="text-xl font-bold mb-2">Config Registry</h2>
-        <p class="text-gray-600 mb-4">{{ configRegistry }}</p>
-        <table class="min-w-full border border-gray-300">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border px-4 py-2 text-left">Name</th>
-                    <th class="border px-4 py-2 text-left">Type</th>
-                    <th class="border px-4 py-2 text-left">Data</th>
-                    <th class="border px-4 py-2 text-left"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (entry of configRegistryEntries; track $index) {
-                    <tr
-                        class="hover:bg-gray-50"
-                        [ngClass]="{
-                            'bg-red-100': invalidConfigEntries().includes(entry.name),
-                        }"
+<div class="p-6 space-y-8 bg-slate-100 min-h-screen">
+    <!-- ===== Registry Section ===== -->
+    @for (section of registrySections; track $index) {
+        <ng-container>
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-slate-800">
+                            {{ section.label }}
+                        </h2>
+                        <p class="text-sm text-slate-500">
+                            {{ section.key.path }}
+                        </p>
+                    </div>
+
+                    <button
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        (click)="addValue(section.key)"
                     >
-                        <td class="border px-4 py-2">
+                        + Add
+                    </button>
+                </div>
+
+                <!-- Values List -->
+                <div class="space-y-3">
+                    @for (value of section.key.values; track $index) {
+                        <div
+                            class="grid grid-cols-12 gap-3 items-center p-3 rounded-lg"
+                            [ngClass]="value.default ? 'bg-slate-50' : 'bg-slate-100'"
+                        >
+                            <!-- Name -->
                             <input
-                                list="nameList"
-                                [(ngModel)]="entry.name"
-                                class="w-full border rounded px-2 py-1"
+                                class="col-span-3 input"
+                                [readonly]="value.default"
+                                [(ngModel)]="value.name"
                             />
-                            <datalist id="nameList">
-                                @for (n of nameSuggestions; track $index) {
-                                    <option [value]="n">{{ n }}</option>
-                                }
-                            </datalist>
-                        </td>
-                        <td class="border px-4 py-2">
+
+                            <!-- Type -->
                             <select
-                                [(ngModel)]="entry.type"
-                                class="w-full border rounded px-2 py-1"
+                                class="col-span-3 input"
+                                [disabled]="value.default"
+                                [(ngModel)]="value.type"
                             >
-                                @for (t of typeOptions; track $index) {
-                                    <option [value]="t">{{ t }}</option>
-                                }
+                                <option *ngFor="let t of registryTypes" [value]="t">
+                                    {{ t }}
+                                </option>
                             </select>
-                        </td>
-                        <td class="border px-4 py-2">
+
+                            <!-- Data -->
                             <input
-                                list="dataList"
-                                [(ngModel)]="entry.data"
-                                class="w-full border rounded px-2 py-1"
+                                class="col-span-4 input"
+                                [readonly]="value.default"
+                                [(ngModel)]="value.data"
                             />
-                            <datalist id="dataList">
-                                @for (d of dataSuggestions; track $index) {
-                                    <option [value]="d">{{ d }}</option>
+
+                            <!-- Default badge -->
+                            <div class="col-span-1 text-center">
+                                @if (value.default) {
+                                    <span
+                                        class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full"
+                                    >
+                                        Default
+                                    </span>
                                 }
-                            </datalist>
-                        </td>
+                            </div>
 
-                        <td class="border px-4 py-2">
-                            <button (click)="removeConfigEntry(entry.name)" class="bg-red-400">
-                                delete
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button
-            (click)="addConfigEntry()"
-            class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-            Add Entry
-        </button>
-    </div>
+                            <!-- Actions -->
+                            <div class="col-span-1 text-right">
+                                @if (!value.default) {
+                                    <button
+                                        class="text-red-500 hover:text-red-700"
+                                        (click)="removeValue(section.key, $index)"
+                                    >
+                                        🗑
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
 
-    <!-- UNINSTALL REGISTRY -->
-    <div>
-        <h2 class="text-xl font-bold mb-2">Uninstall Registry</h2>
-        <p class="text-gray-600 mb-4">{{ uninstallRegistry }}</p>
-        <table class="min-w-full border border-gray-300">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border px-4 py-2 text-left">Name</th>
-                    <th class="border px-4 py-2 text-left">Type</th>
-                    <th class="border px-4 py-2 text-left">Data</th>
-                    <th class="border px-4 py-2 text-left"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (entry of uninstallRegistryEntries; track $index) {
-                    <tr
-                        class="hover:bg-gray-50"
-                        [ngClass]="{
-                            'bg-red-100': invalidUninstallEntries().includes(entry.name),
-                        }"
+                <!-- Footer -->
+                <div class="mt-6 text-right">
+                    <button
+                        class="px-5 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                        (click)="save()"
                     >
-                        <td class="border px-4 py-2">
-                            <input
-                                list="nameList"
-                                [(ngModel)]="entry.name"
-                                class="w-full border rounded px-2 py-1"
-                            />
-                        </td>
-                        <td class="border px-4 py-2">
-                            <select
-                                [(ngModel)]="entry.type"
-                                class="w-full border rounded px-2 py-1"
-                            >
-                                @for (t of typeOptions; track $index) {
-                                    <option [value]="t">{{ t }}</option>
-                                }
-                            </select>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <input
-                                list="dataList"
-                                [(ngModel)]="entry.data"
-                                class="w-full border rounded px-2 py-1"
-                            />
-                        </td>
-                        <td class="border px-4 py-2">
-                            <button (click)="removeUninstallEntry(entry.name)" class="bg-red-400">
-                                delete
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button
-            (click)="addUninstallEntry()"
-            class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-            Add Entry
-        </button>
-    </div>
-
-    <!-- Save -->
-
-    <div>
-        <button (click)="saveEntryConfig()" class="bg-red-400">Save</button>
-    </div>
+                        💾 Save
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+    }
 </div>

@@ -50,52 +50,63 @@ export const RegistryKeyStore = signalStore(
             return data;
         }
 
-        function addValue(key: keyof RegistryKeys, value: RegistryValue) {
-            patchState(store, (state) => ({
-                [key]: {
-                    ...state[key],
-                    values: [...state[key].values, value],
-                },
-            }));
-        }
+        // function addValue(key: keyof RegistryKeys, value: RegistryValue) {
+        //     patchState(store, (state) => ({
+        //         [key]: {
+        //             ...state[key],
+        //             values: [...state[key].values, value],
+        //         },
+        //     }));
+        // }
 
-        function updateValue(
-            key: keyof RegistryKeys,
-            valueName: string,
-            update: Partial<RegistryValue>,
-        ) {
-            patchState(store, (state) => ({
-                [key]: {
-                    ...state[key],
-                    values: state[key].values.map((v) =>
-                        v.name === valueName ? { ...v, ...update } : v,
-                    ),
-                },
-            }));
-        }
+        // function updateValue(
+        //     key: keyof RegistryKeys,
+        //     valueName: string,
+        //     update: Partial<RegistryValue>,
+        // ) {
+        //     patchState(store, (state) => ({
+        //         [key]: {
+        //             ...state[key],
+        //             values: state[key].values.map((v) =>
+        //                 v.name === valueName ? { ...v, ...update } : v,
+        //             ),
+        //         },
+        //     }));
+        // }
 
-        function upsertValue(key: keyof RegistryKeys, value: RegistryValue) {
+        // function upsertValue(key: keyof RegistryKeys, value: RegistryValue) {
+        //     patchState(store, (state) => {
+        //         const exists = state[key].values.some((v) => v.name === value.name);
+
+        //         return {
+        //             [key]: {
+        //                 ...state[key],
+        //                 values: exists
+        //                     ? state[key].values.map((v) => (v.name === value.name ? value : v))
+        //                     : [...state[key].values, value],
+        //             },
+        //         };
+        //     });
+        // }
+
+        // function removeValue(key: keyof RegistryKeys, valueName: string) {
+        //     patchState(store, (state) => ({
+        //         [key]: {
+        //             ...state[key],
+        //             values: state[key].values.filter((v) => v.name !== valueName),
+        //         },
+        //     }));
+        // }
+
+        function addValues(key: keyof RegistryKeys, values: RegistryValue[]) {
             patchState(store, (state) => {
-                const exists = state[key].values.some((v) => v.name === value.name);
-
                 return {
                     [key]: {
                         ...state[key],
-                        values: exists
-                            ? state[key].values.map((v) => (v.name === value.name ? value : v))
-                            : [...state[key].values, value],
+                        values: values,
                     },
                 };
             });
-        }
-
-        function removeValue(key: keyof RegistryKeys, valueName: string) {
-            patchState(store, (state) => ({
-                [key]: {
-                    ...state[key],
-                    values: state[key].values.filter((v) => v.name !== valueName),
-                },
-            }));
         }
 
         function mergeDefaultValues(
@@ -138,10 +149,11 @@ export const RegistryKeyStore = signalStore(
             // updateConfigRegistry,
             // updateUninstallRegistry,
             getData,
-            addValue,
-            updateValue,
-            removeValue,
-            upsertValue,
+            // addValue,
+            // updateValue,
+            // removeValue,
+            // upsertValue,
+            addValues,
             updateDefaultRegistryValue,
         };
     }),

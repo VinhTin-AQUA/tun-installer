@@ -49,3 +49,10 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #0f172a; /* color of the scroll thumb on hover */
 }
+
+
+.input {
+    @apply w-full px-3 py-2 rounded-lg border border-slate-300
+           focus:outline-none focus:ring-2 focus:ring-blue-500
+           disabled:bg-slate-200 disabled:text-slate-500;
+}
