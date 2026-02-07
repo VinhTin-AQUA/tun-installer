@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { ProjectStore } from '../stores/project-store';
 import {
     InstallerProperties,
@@ -7,6 +7,7 @@ import {
     PrerequisiteStore,
     RegistryKeys,
     RegistryKeyStore,
+    RegistryValue,
     RegistryValueType,
     WindowInfoStore,
 } from 'installer-core';
@@ -52,28 +53,99 @@ export class ProjectManagerService {
         effect(() => {
             const projectDir = this.installerPropertyDataModel().comment;
 
-            this.projectStore.updateValues({
-                isDirty: true,
-            });
+            untracked(() => {
+                this.projectStore.updateValues({
+                    isDirty: true,
+                });
 
-            this.installerPropertyStore.update({
-                installationLocation: this.installerPropertyDataModel().installationLocation,
-                productName: this.installerPropertyDataModel().productName,
-                icon: this.installerPropertyDataModel().icon,
-                productVersion: this.installerPropertyDataModel().productVersion,
-                publisher: this.installerPropertyDataModel().publisher,
-                supportLink: this.installerPropertyDataModel().supportLink,
-                supportEmail: this.installerPropertyDataModel().supportEmail,
-                comment: this.installerPropertyDataModel().comment,
-                launchFile: this.installerPropertyDataModel().launchFile,
-                runAsAdmin: this.installerPropertyDataModel().runAsAdmin,
-                launchApp: this.installerPropertyDataModel().launchApp,
-                shortcutInDesktop: this.installerPropertyDataModel().shortcutInDesktop,
-                shortcutInApplicationShortcut:
-                    this.installerPropertyDataModel().shortcutInApplicationShortcut,
-            });
+                this.installerPropertyStore.update({
+                    installationLocation: this.installerPropertyDataModel().installationLocation,
+                    productName: this.installerPropertyDataModel().productName,
+                    icon: this.installerPropertyDataModel().icon,
+                    productVersion: this.installerPropertyDataModel().productVersion,
+                    publisher: this.installerPropertyDataModel().publisher,
+                    supportLink: this.installerPropertyDataModel().supportLink,
+                    supportEmail: this.installerPropertyDataModel().supportEmail,
+                    comment: this.installerPropertyDataModel().comment,
+                    launchFile: this.installerPropertyDataModel().launchFile,
+                    runAsAdmin: this.installerPropertyDataModel().runAsAdmin,
+                    launchApp: this.installerPropertyDataModel().launchApp,
+                    shortcutInDesktop: this.installerPropertyDataModel().shortcutInDesktop,
+                    shortcutInApplicationShortcut:
+                        this.installerPropertyDataModel().shortcutInApplicationShortcut,
+                });
 
-            // this.registryKeyStore.updateRegistry()
+                const configRegistry: RegistryValue[] = [
+                    {
+                        name: 'InstallPath',
+                        type: RegistryValueType.REG_SZ,
+                        data: `C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
+                        default: true,
+                    },
+                    {
+                        name: 'Version',
+                        type: RegistryValueType.REG_SZ,
+                        data: this.installerPropertyDataModel().productVersion,
+                        default: true,
+                    },
+                    {
+                        name: 'DisplayName',
+                        type: RegistryValueType.REG_SZ,
+                        data: this.installerPropertyDataModel().productName,
+                        default: true,
+                    },
+                ];
+
+                const uninstallRegistry: RegistryValue[] = [
+                    {
+                        name: 'DisplayName',
+                        type: RegistryValueType.REG_SZ,
+                        data: this.installerPropertyDataModel().productName,
+                        default: true,
+                    },
+                    {
+                        name: 'Publisher',
+                        type: RegistryValueType.REG_SZ,
+                        data: this.installerPropertyDataModel().publisher,
+                        default: true,
+                    },
+                    {
+                        name: 'DisplayVersion',
+                        type: RegistryValueType.REG_SZ,
+                        data: this.installerPropertyDataModel().productVersion,
+                        default: true,
+                    },
+                    {
+                        name: 'UninstallString',
+                        type: RegistryValueType.REG_SZ,
+                        data: `C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}\\uninstall.exe`,
+                        default: true,
+                    },
+                ];
+
+                this.registryKeyStore.updateDefaultRegistryValue(configRegistry, uninstallRegistry);
+                this.registryKeyStore.setRegistry({
+                    configRegistry: {
+                        ...this.registryKeyStore.getData().configRegistry,
+                        path: `HKEY_LOCAL_MACHINE\\SOFTWARE\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
+                    },
+                    uninstallRegistry: {
+                        ...this.registryKeyStore.getData().uninstallRegistry,
+                        path: `HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${this.installerPropertyDataModel().productName}`,
+                    },
+                });
+
+                const registryKeyStoreUpdatePath: RegistryKeys = {
+                    configRegistry: {
+                        ...this.registryKeyStore.configRegistry()
+                    },
+                    uninstallRegistry: {
+                        ...this.registryKeyStore.uninstallRegistry()
+                    },
+                }
+
+                this.registryKeyStore.setRegistry(registryKeyStoreUpdatePath)
+            });
         });
     }
 
@@ -145,7 +217,7 @@ export class ProjectManagerService {
                 installerDocumentConfig.properties.shortcutInApplicationShortcut,
         });
 
-        this.registryKeyStore.updateRegistry({
+        this.registryKeyStore.setRegistry({
             configRegistry: installerDocumentConfig.registryKeys.configRegistry,
             uninstallRegistry: installerDocumentConfig.registryKeys.uninstallRegistry,
         });
@@ -253,8 +325,6 @@ export class ProjectManagerService {
     }
 
     //========== registry ============
-
-    
 
     //========== private ============
 

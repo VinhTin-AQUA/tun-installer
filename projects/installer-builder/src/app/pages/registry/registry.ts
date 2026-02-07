@@ -120,7 +120,7 @@ export class Registry {
         const configRegistryPath = `${this.configRegistry}\\${registryName}`;
         const uninstallRegistryPath = `${this.uninstallRegistry}\\${registryName}`;
 
-        this.registryKeyStore.updateRegistry({
+        this.registryKeyStore.setRegistry({
             configRegistry: {
                 path: configRegistryPath,
                 values: this.configRegistryEntries,

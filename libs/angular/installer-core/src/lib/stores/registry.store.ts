@@ -18,8 +18,8 @@ export const RegistryKeyStore = signalStore(
     },
     withState(initialState),
     withMethods((store) => {
-        function updateRegistry(update: RegistryKeys) {
-            patchState(store, (state) => ({
+        function setRegistry(update: RegistryKeys) {
+            patchState(store, () => ({
                 ...update,
             }));
         }
@@ -98,8 +98,43 @@ export const RegistryKeyStore = signalStore(
             }));
         }
 
+        function mergeDefaultValues(
+            currentValues: RegistryValue[],
+            defaultValues: RegistryValue[],
+        ): RegistryValue[] {
+            return currentValues.map((value) => {
+                if (!value.default) {
+                    return value; // giữ nguyên
+                }
+                const newDefault = defaultValues.find((d) => d.name === value.name);
+                return newDefault ? { ...newDefault } : value;
+            });
+        }
+
+        function updateDefaultRegistryValue(
+            configDefaultRegistryValue: RegistryValue[],
+            uninstallDefaultRegistryValue: RegistryValue[],
+        ) {
+            patchState(store, (state) => ({
+                configRegistry: {
+                    ...state.configRegistry,
+                    values: mergeDefaultValues(
+                        state.configRegistry.values,
+                        configDefaultRegistryValue,
+                    ),
+                },
+                uninstallRegistry: {
+                    ...state.uninstallRegistry,
+                    values: mergeDefaultValues(
+                        state.uninstallRegistry.values,
+                        uninstallDefaultRegistryValue,
+                    ),
+                },
+            }));
+        }
+
         return {
-            updateRegistry,
+            setRegistry,
             // updateConfigRegistry,
             // updateUninstallRegistry,
             getData,
@@ -107,6 +142,7 @@ export const RegistryKeyStore = signalStore(
             updateValue,
             removeValue,
             upsertValue,
+            updateDefaultRegistryValue,
         };
     }),
 );
