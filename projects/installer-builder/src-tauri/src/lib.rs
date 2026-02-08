@@ -1,17 +1,20 @@
+mod adapters;
 mod commands;
 mod helpers;
 mod models;
 mod services;
 mod states;
-mod adapters;
 use std::sync::Arc;
 
 use commands::*;
-use shared_lib::Compressor;
+use service::Compressor;
 use tauri::Manager;
 use tokio::sync::Mutex;
 
-use crate::{adapters::TauriProgressReporter, states::{ProjectState, app_state::AppState}};
+use crate::{
+    adapters::TauriProgressReporter,
+    states::{app_state::AppState, ProjectState},
+};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

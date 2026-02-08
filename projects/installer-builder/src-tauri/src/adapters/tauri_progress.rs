@@ -1,4 +1,4 @@
-use shared_lib::{CompressProgressReporter, Progress};
+use service::{CompressProgressReporter, Progress};
 use tauri::{AppHandle, Emitter};
 
 pub struct TauriProgressReporter {

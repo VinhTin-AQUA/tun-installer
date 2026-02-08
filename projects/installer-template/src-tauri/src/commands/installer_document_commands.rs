@@ -1,7 +1,7 @@
+use domain::InstallerDocument;
 use tauri::{command, State};
 use tokio::sync::Mutex;
 
-use crate::models::InstallerDocument;
 
 #[command]
 pub async fn get_installer_document_command(

@@ -721,6 +721,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "domain"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "dpi"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1635,11 +1643,12 @@ dependencies = [
  "async-recursion",
  "bincode",
  "chrono",
+ "domain",
  "log",
  "quick-xml 0.31.0",
  "serde",
  "serde_json",
- "shared-lib",
+ "service",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
@@ -1655,10 +1664,11 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-recursion",
+ "domain",
  "log",
  "serde",
  "serde_json",
- "shared-lib",
+ "service",
  "shlex",
  "tauri",
  "tauri-build",
@@ -3225,6 +3235,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "service"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bincode",
+ "domain",
+ "serde",
+ "serde_json",
+ "tokio",
+ "walkdir",
+ "zstd",
+]
+
+[[package]]
 name = "servo_arc"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3243,18 +3267,6 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "digest",
-]
-
-[[package]]
-name = "shared-lib"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "bincode",
- "serde",
- "serde_json",
- "walkdir",
- "zstd",
 ]
 
 [[package]]

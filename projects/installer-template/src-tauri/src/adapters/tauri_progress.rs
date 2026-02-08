@@ -1,7 +1,7 @@
-use shared_lib::{CompressProgressReporter, Progress};
+use domain::event_consts;
+use service::{CompressProgressReporter, Progress};
 use tauri::{AppHandle, Emitter};
 
-use crate::consts::event_consts;
 
 pub struct TauriProgressReporter {
     app: AppHandle,

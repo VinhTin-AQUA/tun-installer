@@ -4,4 +4,6 @@ members = [
   "projects/installer-template/src-tauri",
   "projects/installer-builder/src-tauri", 
   "projects/cleaner", 
+  "libs/rust/domain", 
+  "libs/rust/service", 
 ]

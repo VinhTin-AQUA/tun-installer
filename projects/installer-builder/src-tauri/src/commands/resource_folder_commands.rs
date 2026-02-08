@@ -1,8 +1,7 @@
-use crate::{
-    models::{FileItem, FolderNode},
-    services::{read_files_in_folder, read_subfolders},
-};
+use domain::{FileItem, FolderNode};
 use tauri::command;
+
+use crate::services::{read_files_in_folder, read_subfolders};
 
 #[command]
 pub async fn read_subfolders_command(path: String) -> Result<Vec<FolderNode>, String> {

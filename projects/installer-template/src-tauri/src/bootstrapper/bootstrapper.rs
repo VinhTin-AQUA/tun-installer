@@ -1,9 +1,7 @@
-use crate::{
-    models::InstallerDocument,
-    states::{app_state::AppState, ProjectState},
-};
-use shared_lib::{CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
+use domain::{InstallerDocument, CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
 use std::env;
+
+use crate::states::{AppState, ProjectState};
 
 pub fn extract_data_inner(app_state: &AppState) -> Result<InstallerDocument, String> {
     let compressor = app_state.compressor.clone();

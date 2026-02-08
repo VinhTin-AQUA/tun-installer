@@ -1,4 +1,4 @@
-use shared_lib::Progress;
+use service::Progress;
 use tauri::{AppHandle, Emitter};
 
 pub fn send_progress_event(app: AppHandle, event: &str, progress: Progress) {

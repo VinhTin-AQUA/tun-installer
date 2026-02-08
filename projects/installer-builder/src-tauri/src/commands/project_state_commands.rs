@@ -3,7 +3,7 @@ use tauri::{command, State};
 use tokio::sync::Mutex;
 
 #[command]
-pub async  fn update_project_state_command(
+pub async fn update_project_state_command(
     project_state: State<'_, Mutex<ProjectState>>,
     data: ProjectState,
 ) -> Result<Option<bool>, String> {
@@ -23,7 +23,7 @@ pub async  fn update_project_state_command(
 }
 
 #[command]
-pub async  fn load_project_state_command(
+pub async fn load_project_state_command(
     state: State<'_, Mutex<ProjectState>>,
 ) -> Result<Option<ProjectState>, String> {
     let state = state.lock().await;

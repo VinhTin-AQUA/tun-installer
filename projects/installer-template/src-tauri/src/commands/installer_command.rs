@@ -1,15 +1,10 @@
-use crate::{
-    consts::event_consts,
-    events::send_progress_event,
-    helpers::copy_dir_all,
-    models::InstallerDocument,
-    services::{add_values, create_registry, create_shortcuts},
-    states::app_state::AppState,
-};
-use shared_lib::{Progress, PREREQUISITE_DIR, RESOURCES_DIR};
 use std::{env, path::PathBuf};
+use domain::{InstallerDocument, PREREQUISITE_DIR, RESOURCES_DIR, event_consts};
+use service::Progress;
 use tauri::{command, AppHandle, State};
 use tokio::sync::Mutex;
+
+use crate::{events::send_progress_event, helpers::copy_dir_all, services::{add_values, create_registry, create_shortcuts}, states::AppState};
 
 #[command]
 pub async fn install(
@@ -120,7 +115,7 @@ pub async fn install(
 
 #[cfg(target_os = "linux")]
 pub async fn run_exe_installer_file(
-    path: &str,
+    path: String,
     arg_input: &str,
     run_as_admin: bool,
 ) -> Result<bool, String> {

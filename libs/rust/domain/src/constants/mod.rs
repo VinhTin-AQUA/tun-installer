@@ -1,3 +1,7 @@
+pub mod folders;
+pub use folders::*;
+
+
 // pub const APP_NAME: &str = "My Tauri App";
 // pub const MAX_RETRY: u32 = 3;
 

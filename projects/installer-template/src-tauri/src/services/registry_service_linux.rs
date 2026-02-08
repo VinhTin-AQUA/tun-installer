@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::models::RegistryKey;
+use domain::RegistryKey;
 
 // create_registry
 pub fn create_registry(app_name: &str) -> Result<()> {

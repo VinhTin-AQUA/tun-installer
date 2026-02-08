@@ -1,5 +1,6 @@
+use service::Compressor;
+
 use crate::adapters::TauriProgressReporter;
-use shared_lib::Compressor;
 use std::sync::Arc;
 
 #[derive(Clone)]

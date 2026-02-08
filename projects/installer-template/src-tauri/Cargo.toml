@@ -36,7 +36,9 @@ shlex = "1"
 
 
 
-shared-lib = { path = "../../../libs/rust/shared-lib" }
+domain = { path = "../../../libs/rust/domain" }
+service = { path = "../../../libs/rust/service" }
+
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.52"

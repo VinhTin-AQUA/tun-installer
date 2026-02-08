@@ -1,5 +1,5 @@
-use crate::models::InstallerDocument;
 use anyhow::{bail, Result};
+use domain::InstallerDocument;
 use std::path::Path;
 use tokio::fs;
 
@@ -32,11 +32,11 @@ pub async fn load_installer_document_config(
         bail!("File cấu hình không tồn tại")
     }
 
-    let content = fs::read_to_string(path).
-            await
-            .map_err(|e| anyhow::anyhow!("Không thể đọc file: {}", e))?;
+    let content = fs::read_to_string(path)
+        .await
+        .map_err(|e| anyhow::anyhow!("Không thể đọc file: {}", e))?;
 
-    let data:InstallerDocument = serde_json::from_str(&content)?;
+    let data: InstallerDocument = serde_json::from_str(&content)?;
 
     Ok(Some(data))
 }

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InstallerProperties {
     pub installation_location: String, // install location
@@ -18,7 +18,7 @@ pub struct InstallerProperties {
     pub shortcut_in_application_shortcut: ShortcutInApplicationShortcut,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShortcutInDesktop {
     pub is_created: bool,
@@ -27,7 +27,7 @@ pub struct ShortcutInDesktop {
     pub run_file: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShortcutInApplicationShortcut {
     pub is_created: bool,

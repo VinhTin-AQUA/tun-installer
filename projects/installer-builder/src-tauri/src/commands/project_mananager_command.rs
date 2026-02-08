@@ -1,12 +1,14 @@
+use anyhow::Result;
+use domain::InstallerDocument;
+use tauri::command;
+
 use crate::{
-    models::{InstallerDocument, TunInstallerProject},
+    models::TunInstallerProject,
     services::{
         create_tuninstaller_project, load_installer_document_config, open_tuninstaller_project,
         save_installer_config,
     },
 };
-use anyhow::Result;
-use tauri::command;
 
 #[command]
 pub async fn create_tuninstaller_project_command(

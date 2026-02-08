@@ -1,15 +1,14 @@
 mod adapters;
 mod bootstrapper;
 mod commands;
-mod consts;
 mod events;
 mod helpers;
-mod models;
 mod services;
 mod states;
 
 use commands::*;
-use shared_lib::Compressor;
+use domain::InstallerDocument;
+use service::Compressor;
 use std::sync::Arc;
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use tokio::sync::Mutex;
@@ -17,7 +16,6 @@ use tokio::sync::Mutex;
 use crate::{
     adapters::TauriProgressReporter,
     bootstrapper::{extract_data_inner, init_project_state},
-    models::InstallerDocument,
     states::app_state::AppState,
 };
 

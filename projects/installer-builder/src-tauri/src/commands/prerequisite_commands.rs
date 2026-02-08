@@ -1,6 +1,8 @@
-use crate::{models::Prerequisite, services::get_prerequisites, states::ProjectState};
+use domain::Prerequisite;
 use tauri::{command, State};
 use tokio::sync::Mutex;
+
+use crate::{services::get_prerequisites, states::ProjectState};
 
 #[command]
 pub async fn get_prerequisites_command(

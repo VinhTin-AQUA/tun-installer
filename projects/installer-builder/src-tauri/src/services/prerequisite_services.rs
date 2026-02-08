@@ -1,6 +1,5 @@
-use crate::models::{prerequisite, Prerequisite};
 use anyhow::bail;
-use shared_lib::PREREQUISITE_DIR;
+use domain::{prerequisite, Prerequisite, PREREQUISITE_DIR};
 use std::path::PathBuf;
 use tokio::fs;
 
