@@ -222,7 +222,7 @@ export class ProjectManagerService {
             uninstallRegistry: installerDocumentConfig.registryKeys.uninstallRegistry,
         });
 
-        this.windowInfoStore.updateValue(installerDocumentConfig.windowInfo);
+        this.windowInfoStore.setWindows(installerDocumentConfig.windowInfos);
         this.prerequisiteStore.setList(installerDocumentConfig.prerequisites)
 
         /* =========== get files in resources ==============  */
@@ -269,7 +269,7 @@ export class ProjectManagerService {
             payload: {
                 properties: this.installerPropertyStore.getData(),
                 registryKeys: this.registryKeyStore.getData(),
-                windowInfo: this.windowInfoStore.getData(),
+                windowInfos: this.windowInfoStore.getData(),
                 prerequisites: this.prerequisiteStore.getData(),
             },
         };

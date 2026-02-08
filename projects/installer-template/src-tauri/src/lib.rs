@@ -50,25 +50,27 @@ pub fn run() {
             app.manage(Mutex::new(InstallerDocument {
                 properties: installer_document.properties.clone(),
                 registry_keys: installer_document.registry_keys.clone(),
-                window_info: installer_document.window_info.clone(),
+                window_infos: installer_document.window_infos.clone(),
                 prerequisites: installer_document.prerequisites.clone(),
             }));
 
             let project_state = init_project_state(&state)?;
             app.manage(Mutex::new(project_state));
 
+            let install_window_info = installer_document.window_infos.installer_window;
+
             // let webview_window =
             WebviewWindowBuilder::new(app.handle(), "main", WebviewUrl::App("/".into()))
-                .title(installer_document.window_info.title)
+                .title(install_window_info.title)
                 .inner_size(
-                    installer_document.window_info.width,
-                    installer_document.window_info.height,
+                    install_window_info.width,
+                    install_window_info.height,
                 )
                 .resizable(false)
                 .fullscreen(false)
                 .decorations(true)
                 .transparent(false)
-                .always_on_top(installer_document.window_info.always_on_top)
+                .always_on_top(install_window_info.always_on_top)
                 .center()
                 .visible(true)
                 .closable(true)

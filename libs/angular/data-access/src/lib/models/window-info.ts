@@ -5,3 +5,9 @@ export interface WindowInfo {
     startPage: string;
     alwaysOnTop: boolean
 }
+
+export interface WindowInfos {
+    installerWindow: WindowInfo;
+    uninstallerWindow: WindowInfo;
+}
+

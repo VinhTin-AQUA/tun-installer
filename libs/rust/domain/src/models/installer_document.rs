@@ -1,6 +1,9 @@
-use crate::models::{
-    InstallerProperties, Prerequisite, RegistryKey, RegistryKeys, RegistryValue, RegistryValueType,
-    ShortcutInApplicationShortcut, ShortcutInDesktop, WindowInfo,
+use crate::{
+    WindowInfo,
+    models::{
+        InstallerProperties, Prerequisite, RegistryKey, RegistryKeys, RegistryValue,
+        RegistryValueType, ShortcutInApplicationShortcut, ShortcutInDesktop, WindowInfos,
+    },
 };
 use serde::{Deserialize, Serialize};
 
@@ -9,7 +12,7 @@ use serde::{Deserialize, Serialize};
 pub struct InstallerDocument {
     pub properties: InstallerProperties,
     pub registry_keys: RegistryKeys,
-    pub window_info: WindowInfo,
+    pub window_infos: WindowInfos,
     pub prerequisites: Vec<Prerequisite>,
 }
 
@@ -98,12 +101,21 @@ pub fn create_default_installer_document() -> InstallerDocument {
             },
         },
 
-        window_info: WindowInfo {
-            title: "My Application Installer".into(),
-            width: 800.0,
-            height: 600.0,
-            start_page: "welcome.html".into(),
-            always_on_top: false,
+        window_infos: WindowInfos {
+            installer_window: WindowInfo {
+                title: "My Application Installer".into(),
+                width: 800.0,
+                height: 600.0,
+                start_page: "welcome.html".into(),
+                always_on_top: false,
+            },
+            uninstaller_window: WindowInfo {
+                title: "My Application Installer".into(),
+                width: 800.0,
+                height: 600.0,
+                start_page: "verify_uninstall.html".into(),
+                always_on_top: false,
+            }
         },
 
         prerequisites: vec![],

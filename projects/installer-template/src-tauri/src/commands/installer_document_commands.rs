@@ -12,7 +12,7 @@ pub async fn get_installer_document_command(
     Ok(Some(InstallerDocument {
         properties: state.properties.clone(),
         registry_keys: state.registry_keys.clone(),
-        window_info: state.window_info.clone(),
+        window_infos: state.window_infos.clone(),
         prerequisites: state.prerequisites.clone(),
     }))
 }

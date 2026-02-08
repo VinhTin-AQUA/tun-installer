@@ -1,13 +1,15 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { HtmlPage } from '../../core/models/html-page';
-import { InstallerPropertyStore, WindowInfoStore } from 'data-access';
+import { InstallerPropertyStore, PageType, WindowInfos, WindowInfoStore } from 'data-access';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from '../../core/services/toast-service';
 import { ProjectStore } from '../../core/stores/project-store';
 import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ApiReferences } from '../../core/api-references/api-references';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
+
+type WindowKey = keyof WindowInfos;
 
 @Component({
     selector: 'app-html-engine',
@@ -18,12 +20,9 @@ import { ProjectManagerService } from '../../core/services/project-manager-servi
 export class HtmlEngine {
     @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
 
-    // htmlPages: HtmlPage[] = [];
     index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
-
     progress = signal<number>(0);
-
     data = {
         installationLocation: this.installerPropertyStore.installationLocation(),
         productName: this.installerPropertyStore.productName(),
@@ -40,15 +39,41 @@ export class HtmlEngine {
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    // iframeWidth = signal<number>(800);
-    // iframeHeight = signal<number>(600);
-    // windowTitle = signal<string>('Window title');
-    // startPage = signal<string>('');
-    // alwaysOnTop = signal<boolean>(false);
-
     windowInfoStore = inject(WindowInfoStore);
-
     projectStore = inject(ProjectStore);
+
+    configSections: {
+        id: PageType;
+        label: string;
+        pages: () => { name: string }[];
+    }[] = [
+        {
+            id: 'firstInstall',
+            label: 'First Time Install',
+            pages: () => this.firstInstallPages(),
+        },
+        {
+            id: 'maintenance',
+            label: 'Maintenance',
+            pages: () => this.maintenancePages(),
+        },
+    ];
+
+    activeSection: PageType | '' = 'firstInstall';
+    activePageType = signal<PageType>('firstInstall');
+
+    PAGE_TO_WINDOW_KEY: Record<PageType, WindowKey> = {
+        firstInstall: 'installerWindow',
+        maintenance: 'uninstallerWindow',
+    };
+
+    private get activeWindowKey(): WindowKey {
+        return this.PAGE_TO_WINDOW_KEY[this.activePageType()];
+    }
+
+    get activeWindow() {
+        return this.windowInfoStore[this.activeWindowKey]();
+    }
 
     // test
 
@@ -77,6 +102,14 @@ export class HtmlEngine {
         await this.loadPages();
     }
 
+    /* ================ api implements ================= */
+
+    toggleSection(id: PageType) {
+        this.activeSection = this.activeSection === id ? '' : id;
+    }
+
+    /* ================ load pages ================= */
+
     private async loadFirstInstallPages() {
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
         let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], LoadHtmlPage>(
@@ -90,7 +123,7 @@ export class HtmlEngine {
 
         this.firstInstallPages.set(pages);
         this.loadPage(pages[0].name, 'firstInstall');
-        this.windowInfoStore.updateValue({ title: pages[0].name });
+        this.windowInfoStore.updateWindow('installerWindow', { title: pages[0].name });
     }
 
     private async loadMaintenancePages() {
@@ -115,6 +148,7 @@ export class HtmlEngine {
     /* ================ api implements ================= */
 
     loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
+        this.activePageType.set(type);
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
@@ -171,8 +205,8 @@ export class HtmlEngine {
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
-                width: this.windowInfoStore.getData().width + 72,
-                height: this.windowInfoStore.getData().height + 54,
+                width: this.windowInfoStore.getData().installerWindow.width + 72,
+                height: this.windowInfoStore.getData().installerWindow.height + 54,
             },
         );
     }
@@ -180,35 +214,29 @@ export class HtmlEngine {
     updateFrameWidth(event: any) {
         const value =
             event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
-        this.windowInfoStore.updateValue({ width: Number(value) });
+
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { width: Number(value) });
     }
 
     updateFrameHeight(event: any) {
         const value =
             event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
-        this.windowInfoStore.updateValue({ height: Number(value) });
+
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { height: Number(value) });
     }
 
     updateWindowTitle(event: any) {
-        const value = event.target.value;
-        this.windowInfoStore.updateValue({ title: value });
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { title: event.target.value });
     }
 
     updateStartPage(event: any) {
-        const value = event.target.value;
-        this.windowInfoStore.updateValue({
-            startPage: value,
-        });
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { startPage: event.target.value });
     }
 
     updateAlwaysOnTop(event: any) {
         const checked = (event.target as HTMLInputElement).checked;
 
-        console.log(checked); // true / false
-
-        this.windowInfoStore.updateValue({
-            alwaysOnTop: checked,
-        });
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { alwaysOnTop: checked });
     }
 
     reset() {

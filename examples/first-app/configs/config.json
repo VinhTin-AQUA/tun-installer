@@ -84,12 +84,21 @@
       ]
     }
   },
-  "windowInfo": {
-    "title": "1_welcome.html",
-    "width": 800.0,
-    "height": 600.0,
-    "startPage": "welcome.html",
-    "alwaysOnTop": false
+  "windowInfos": {
+    "installerWindow": {
+      "title": "1_welcome.html",
+      "width": 650.0,
+      "height": 500.0,
+      "startPage": "welcome.html",
+      "alwaysOnTop": false
+    },
+    "uninstallerWindow": {
+      "title": "verify uninstall",
+      "width": 600.0,
+      "height": 450.0,
+      "startPage": "verify_uninstall.html",
+      "alwaysOnTop": true
+    }
   },
   "prerequisites": [
     {
