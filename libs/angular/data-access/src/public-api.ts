@@ -1,5 +1,5 @@
 /*
- * Public API Surface of installer-core
+ * Public API Surface of data-access
  */
 
 export * from './lib/models';

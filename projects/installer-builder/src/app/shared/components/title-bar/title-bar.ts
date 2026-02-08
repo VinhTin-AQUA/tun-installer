@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { ClickOutside } from '../../directives/click-outside';
-import { InstallerPropertyStore } from 'installer-core';
+import { InstallerPropertyStore } from 'data-access';
 import { DialogStore } from '../../../core/stores/dialog.store';
 import { FileHelper } from '../../helpers/file.helper';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';

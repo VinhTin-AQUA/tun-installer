@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore, WindowInfoStore } from 'installer-core';
+import { InstallerPropertyStore, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/store/project-store';
 import { TauriCommandService } from '../../core/tauri/tauri-command-service';

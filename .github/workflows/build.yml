@@ -59,7 +59,7 @@ jobs:
               run: npm install
 
             - name: Build libs
-              run: ng build installer-core
+              run: ng build data-access
 
             - name: Build exe template
               run: npm run tauri:build:template

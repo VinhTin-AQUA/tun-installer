@@ -10,6 +10,8 @@
     ng generate application app2
     ng generate library shared-lib
 
+    ng g library data-access --project-root=libs/angular/data-access;
+
     ng s installer-template
     ```
 

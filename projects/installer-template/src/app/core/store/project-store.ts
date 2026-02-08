@@ -1,6 +1,6 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { ProjectState } from '../models/project-state';
-import {} from 'installer-core';
+import {} from 'data-access';
 import { ProjectFolders } from '../consts/folder.const';
 
 const initialState: ProjectState = {

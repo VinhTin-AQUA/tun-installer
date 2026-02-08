@@ -1,4 +1,4 @@
-import { InstallerProperties, RegistryKeys, WindowInfo } from 'installer-core';
+import { InstallerProperties, RegistryKeys, WindowInfo } from 'data-access';
 
 export interface InstallerDocument {
     properties: InstallerProperties;

@@ -6,7 +6,9 @@
         "strict": true,
         "noImplicitOverride": true,
         "paths": {
-            "installer-core": ["./dist/installer-core"]
+          "data-access": [
+            "./dist/data-access"
+          ],
         },
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,
@@ -26,23 +28,23 @@
     },
     "files": [],
     "references": [
-        {
-            "path": "./projects/installer-template/tsconfig.app.json"
-        },
-        {
-            "path": "./projects/installer-template/tsconfig.spec.json"
-        },
-        {
-            "path": "./projects/installer-builder/tsconfig.app.json"
-        },
-        {
-            "path": "./projects/installer-builder/tsconfig.spec.json"
-        },
-        {
-            "path": "./libs/angular/installer-core/tsconfig.lib.json"
-        },
-        {
-            "path": "./libs/angular/installer-core/tsconfig.spec.json"
-        }
+      {
+        "path": "./projects/installer-template/tsconfig.app.json"
+      },
+      {
+        "path": "./projects/installer-template/tsconfig.spec.json"
+      },
+      {
+        "path": "./projects/installer-builder/tsconfig.app.json"
+      },
+      {
+        "path": "./projects/installer-builder/tsconfig.spec.json"
+      },
+      {
+        "path": "./libs/angular/data-access/tsconfig.lib.json"
+      },
+      {
+        "path": "./libs/angular/data-access/tsconfig.spec.json"
+      }
     ]
 }

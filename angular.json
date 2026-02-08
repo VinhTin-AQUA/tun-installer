@@ -136,31 +136,31 @@
                 }
             }
         },
-        "installer-core": {
-            "projectType": "library",
-            "root": "libs/angular/installer-core",
-            "sourceRoot": "libs/angular/installer-core/src",
-            "prefix": "lib",
-            "architect": {
-                "build": {
-                    "builder": "@angular/build:ng-packagr",
-                    "configurations": {
-                        "production": {
-                            "tsConfig": "libs/angular/installer-core/tsconfig.lib.prod.json"
-                        },
-                        "development": {
-                            "tsConfig": "libs/angular/installer-core/tsconfig.lib.json"
-                        }
-                    },
-                    "defaultConfiguration": "production"
+        "data-access": {
+          "projectType": "library",
+          "root": "libs/angular/data-access",
+          "sourceRoot": "libs/angular/data-access/src",
+          "prefix": "lib",
+          "architect": {
+            "build": {
+              "builder": "@angular/build:ng-packagr",
+              "configurations": {
+                "production": {
+                  "tsConfig": "libs/angular/data-access/tsconfig.lib.prod.json"
                 },
-                "test": {
-                    "builder": "@angular/build:unit-test",
-                    "options": {
-                        "tsConfig": "libs/angular/installer-core/tsconfig.spec.json"
-                    }
+                "development": {
+                  "tsConfig": "libs/angular/data-access/tsconfig.lib.json"
                 }
+              },
+              "defaultConfiguration": "production"
+            },
+            "test": {
+              "builder": "@angular/build:unit-test",
+              "options": {
+                "tsConfig": "libs/angular/data-access/tsconfig.spec.json"
+              }
             }
+          }
         }
     }
 }

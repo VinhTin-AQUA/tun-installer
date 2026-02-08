@@ -10,7 +10,7 @@ import {
     RegistryValue,
     RegistryValueType,
     WindowInfoStore,
-} from 'installer-core';
+} from 'data-access';
 import { form, required } from '@angular/forms/signals';
 import { TauriCommandService } from '../tauri/tauri-command-service';
 import {
