@@ -58,9 +58,7 @@ pub async fn install(
 
     // copy to installation_location
     let installation_location =
-        PathBuf::from(installer_document.properties.installation_location.clone())
-            .join(installer_document.properties.publisher.clone())
-            .join(installer_document.properties.product_name.clone());
+        PathBuf::from(installer_document.properties.installation_location.clone());
 
     _ = copy_dir_all(&resource_path_buf, &installation_location)
         .await
@@ -113,7 +111,7 @@ pub async fn install(
     .map_err(|x| x.to_string())?;
 
     // clean temp
-    _ = remove_dir_all(temp_app_dir_to_delete_temp_folder).await;
+    // _ = remove_dir_all(temp_app_dir_to_delete_temp_folder).await;
 
     Ok(true)
 }

@@ -1,37 +1,37 @@
 {
   "properties": {
-    "installationLocation": "C:\\Program Files\\MyApp",
-    "productName": "BiTTT",
+    "installationLocation": "C:\\Program Files\\Newtun\\First App",
+    "productName": "First App",
     "icon": "icon.ico",
     "productVersion": "1.0.0",
-    "publisher": "Company",
+    "publisher": "Newtun",
     "supportLink": "https://support.mycompany.com",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
-    "launchFile": "myapp.exe",
+    "launchFile": "FirstApp.exe",
     "runAsAdmin": false,
     "launchApp": true,
     "shortcutInDesktop": {
       "isCreated": true,
       "runAsAdmin": false,
-      "shortcutName": "My Application",
-      "runFile": "myapp.exe"
+      "shortcutName": "First App",
+      "runFile": "FirstApp.exe"
     },
     "shortcutInApplicationShortcut": {
       "isCreated": true,
       "runAsAdmin": false,
-      "shortcutName": "My Application",
-      "runFile": "myapp.exe"
+      "shortcutName": "First App",
+      "runFile": "FirstApp.exe"
     }
   },
   "registryKeys": {
     "configRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Company\\BiTTT",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtun\\First App",
       "values": [
         {
           "name": "InstallPath",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Company\\BiTTT",
+          "data": "C:\\Program Files\\Newtun\\First App",
           "default": true
         },
         {
@@ -43,24 +43,24 @@
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "BiTTT",
+          "data": "First App",
           "default": true
         }
       ]
     },
     "uninstallRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\BiTTT",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First App",
       "values": [
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "BiTTT",
+          "data": "First App",
           "default": true
         },
         {
           "name": "Publisher",
           "type": "REG_SZ",
-          "data": "Company",
+          "data": "Newtun",
           "default": true
         },
         {
@@ -72,7 +72,7 @@
         {
           "name": "UninstallString",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Company\\BiTTT\\uninstall.exe",
+          "data": "C:\\Program Files\\Newtun\\First App\\uninstall.exe",
           "default": true
         },
         {
@@ -100,12 +100,5 @@
       "alwaysOnTop": true
     }
   },
-  "prerequisites": [
-    {
-      "name": "prerequisite.exe",
-      "runAsAdmin": true,
-      "installPhase": "Before",
-      "size": 5.54
-    }
-  ]
+  "prerequisites": []
 }

@@ -58,7 +58,7 @@ export class ProjectManagerService {
                 });
 
                 this.installerPropertyStore.update({
-                    installationLocation: this.installerPropertyDataModel().installationLocation,
+                    installationLocation: `C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`,
                     productName: this.installerPropertyDataModel().productName,
                     icon: this.installerPropertyDataModel().icon,
                     productVersion: this.installerPropertyDataModel().productVersion,
@@ -73,6 +73,8 @@ export class ProjectManagerService {
                     shortcutInApplicationShortcut:
                         this.installerPropertyDataModel().shortcutInApplicationShortcut,
                 });
+
+                this.installerPropertyDataForm.installationLocation().setControlValue(`C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`)
 
                 const configRegistry: RegistryValue[] = [
                     {
