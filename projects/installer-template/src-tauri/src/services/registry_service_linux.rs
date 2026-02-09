@@ -8,7 +8,7 @@ pub fn create_registry(app_name: &str) -> Result<()> {
 
 // remove key
 
-pub fn remove_registry() -> Result<()> {
+pub fn remove_registry(key: String) -> Result<()> {
     Ok(())
 }
 

@@ -17,3 +17,7 @@ fn known_folder() -> Result<()> {
 fn save_link() -> Result<()> {
     Ok(())
 }
+
+pub fn remove_shortcuts(app_name: &str) -> Result<()> {
+    Ok(())
+}

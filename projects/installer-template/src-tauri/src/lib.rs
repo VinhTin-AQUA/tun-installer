@@ -92,7 +92,9 @@ pub fn run() {
             extract_installer_command,
             cancel_extract_command,
             is_cancelled_command,
-            install
+            install,
+            uninstall_command,
+            clean_uninstall_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

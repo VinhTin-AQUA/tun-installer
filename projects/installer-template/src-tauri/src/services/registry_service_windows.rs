@@ -24,11 +24,18 @@ pub fn create_registry(app_name: &str) -> Result<()> {
 
 // remove key
 
-pub fn remove_registry() -> Result<()> {
+// pub fn remove_registry() -> Result<()> {
+//     let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
+//     hkcu.delete_subkey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\AAAA")?;
+//     Ok(())
+// }
+
+pub fn remove_registry(key: String) -> Result<()> {
     let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
-    hkcu.delete_subkey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\AAAA")?;
+    hkcu.delete_subkey(key.as_str())?;
     Ok(())
 }
+
 
 // add value
 pub fn add_values(registry_key: &RegistryKey) -> Result<()> {

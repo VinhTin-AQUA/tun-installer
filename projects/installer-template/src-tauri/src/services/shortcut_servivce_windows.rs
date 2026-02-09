@@ -60,3 +60,24 @@ fn save_link(persist: &IPersistFile, dir: &PathBuf, name: &str) -> windows::core
 
     Ok(())
 }
+
+pub fn remove_shortcuts(app_name: &str) -> Result<()> {
+    unsafe {
+        CoInitializeEx(None, COINIT_APARTMENTTHREADED).ok()?;
+
+        // Desktop
+        if let Ok(desktop) = known_folder(&FOLDERID_Desktop) {
+            let mut path = desktop;
+            path.push(format!("{app_name}.lnk"));
+            let _ = std::fs::remove_file(path);
+        }
+
+        // Start Menu / Programs
+        if let Ok(programs) = known_folder(&FOLDERID_Programs) {
+            let mut path = programs;
+            path.push(format!("{app_name}.lnk"));
+            let _ = std::fs::remove_file(path);
+        }
+    }
+    Ok(())
+}

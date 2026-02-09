@@ -12,3 +12,6 @@ pub use compress_commands::*;
 
 pub mod installer_command;
 pub use installer_command::*;
+
+pub mod uninstall_commands;
+pub use uninstall_commands::*;
