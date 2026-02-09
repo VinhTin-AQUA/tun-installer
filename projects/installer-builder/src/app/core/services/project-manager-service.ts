@@ -11,7 +11,7 @@ import {
     RegistryValueType,
     WindowInfoStore,
 } from 'data-access';
-import { ProjectManagerCommands, TauriCommandService } from 'tauri';
+import { ProjectManagerCommands, TauriCommandService } from 'service';
 import { form, required } from '@angular/forms/signals';
 import {
     InstallerConfig,

@@ -6,7 +6,7 @@ import { LoadHtmlPage } from '../../core/models/load-html-pages';
 import { Progress } from '../../core/models/progress';
 import { InstallerService } from '../../core/services/installer-service';
 import { Events as EventSystemConsts } from '../../core/consts/event.const';
-import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'tauri';
+import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'service';
 import { ToastService, WindowService } from 'service';
 import { ApiContracts } from 'api-contracts';
 

@@ -3,5 +3,6 @@
  */
 
 export * from './lib/service';
-export * from './lib/toast-service';
-export * from './lib/window-service';
+export * from './lib/services';
+export * from './lib/shared';
+export * from './lib/tauri';

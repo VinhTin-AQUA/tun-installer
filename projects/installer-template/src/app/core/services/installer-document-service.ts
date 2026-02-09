@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { InstallerDocument } from '../models/installer-document';
 import { InstallerPropertyStore, RegistryKeyStore, WindowInfoStore } from 'data-access';
-import { InstallerDocumentCommands, TauriCommandService } from 'tauri';
+import { InstallerDocumentCommands, TauriCommandService } from 'service';
 
 @Injectable({
     providedIn: 'root',

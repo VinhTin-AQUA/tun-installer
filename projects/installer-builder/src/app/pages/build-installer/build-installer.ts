@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { Progress } from '../../core/models/progress';
 import { ToastService } from 'service';
-import { CompressCommands, TauriCommandService, TauriEventService } from 'tauri';
+import { CompressCommands, TauriCommandService, TauriEventService } from 'service';
 
 @Component({
     selector: 'app-build-installer',

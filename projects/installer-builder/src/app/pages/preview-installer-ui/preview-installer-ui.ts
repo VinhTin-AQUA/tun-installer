@@ -6,7 +6,7 @@ import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ApiContracts } from 'api-contracts';
 import { ToastService, WindowService } from 'service';
 import { ActivatedRoute } from '@angular/router';
-import { HtmlEngineCommands, TauriCommandService } from 'tauri';
+import { HtmlEngineCommands, TauriCommandService } from 'service';
 
 @Component({
     selector: 'app-preview-installer-ui',

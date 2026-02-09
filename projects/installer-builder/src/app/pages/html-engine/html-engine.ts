@@ -5,7 +5,7 @@ import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from 'service';
 import { ProjectStore } from '../../core/stores/project-store';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
-import { HtmlEngineCommands, TauriCommandService } from 'tauri';
+import { HtmlEngineCommands, TauriCommandService } from 'service';
 import {ApiContracts} from 'api-contracts'
 
 type WindowKey = keyof WindowInfos;

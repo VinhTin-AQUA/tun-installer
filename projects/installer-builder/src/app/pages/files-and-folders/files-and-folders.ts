@@ -5,7 +5,7 @@ import { InstallerPropertyStore } from 'data-access';
 import { ProjectStore } from '../../core/stores/project-store';
 import { ResourceFiletore } from '../../core/stores/resource-file.store';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
-import { ProjectManagerCommands, TauriCommandService } from 'tauri';
+import { ProjectManagerCommands, TauriCommandService } from 'service';
 
 @Component({
     selector: 'app-files-and-folders',

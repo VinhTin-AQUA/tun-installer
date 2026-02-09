@@ -7,7 +7,7 @@
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
-        "build-all-lib": "ng build data-access && ng build api-contracts && ng build tauri && ng build service",
+        "build-all-lib": "ng build data-access && ng build api-contracts && ng build service",
         "tauri": "tauri",
         "tauri:dev:builder": "tauri dev --config projects/installer-builder/src-tauri/tauri.conf.json -- --package installer_builder --bin installer_builder",
         "tauri:dev:template": "tauri dev --config projects/installer-template/src-tauri/tauri.conf.json -- --package installer_template --bin installer_template",

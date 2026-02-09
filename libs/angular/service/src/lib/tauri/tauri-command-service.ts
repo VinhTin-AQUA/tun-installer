@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ToastService } from 'service';
 import {
     CompressCommands,
     HtmlEngineCommands,
@@ -10,6 +9,7 @@ import {
     WindowCommands,
 } from './commands';
 import { invoke, InvokeArgs } from '@tauri-apps/api/core';
+import { ToastService } from '../shared';
 
 @Injectable({
     providedIn: 'root',
