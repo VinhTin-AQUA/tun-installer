@@ -92,7 +92,7 @@
                 </div>
 
                 <p id="log" style="margin-top: 12px; font-size: 14px; color: #6b7280">
-                    Copying files... 0%
+                    Progress: 0%
                 </p>
             </div>
 
@@ -117,7 +117,7 @@
                 }
 
                 // el.innerText = `Copying files... ${data.progress}%`;
-                el.innerText = `Copying files... ${data.message}%`;
+                el.innerText = `Progress: ${data.progress}%`;
 
                 const process = document.getElementById('process');
                 process.style.width = `${data.progress}%`;

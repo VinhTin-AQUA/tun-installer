@@ -1,7 +1,7 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { ProjectState } from '../models/project-state';
 import {} from 'data-access';
-import { ProjectFolders } from '../consts/folder.const';
+import { ProjectFolders } from 'data-access';
 
 const initialState: ProjectState = {
     isDirty: false,

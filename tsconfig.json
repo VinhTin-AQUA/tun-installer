@@ -6,6 +6,9 @@
         "strict": true,
         "noImplicitOverride": true,
         "paths": {
+          "api-contracts": [
+            "./dist/api-contracts"
+          ],
           "data-access": [
             "./dist/data-access"
           ],
@@ -63,6 +66,12 @@
       },
       {
         "path": "./libs/angular/tauri/tsconfig.spec.json"
+      },
+      {
+        "path": "./libs/angular/api-contracts/tsconfig.lib.json"
+      },
+      {
+        "path": "./libs/angular/api-contracts/tsconfig.spec.json"
       }
     ]
 }

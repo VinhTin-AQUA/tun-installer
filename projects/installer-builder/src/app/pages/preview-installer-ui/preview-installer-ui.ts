@@ -3,7 +3,7 @@ import { InstallerPropertyStore, PageType, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/stores/project-store';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
-import { ApiReferences } from '../../core/api-references/api-references';
+import { ApiContracts } from 'api-contracts';
 import { ToastService } from 'service';
 import { ActivatedRoute } from '@angular/router';
 import { HtmlEngineCommands, TauriCommandService } from 'tauri';
@@ -125,7 +125,7 @@ export class PreviewInstallerUi {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
-            ApiReferences.injectAPIs(
+            ApiContracts.injectAPIs(
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
@@ -172,7 +172,7 @@ export class PreviewInstallerUi {
                     this.navigateTo(afterInstallPage, 'firstInstall');
                 }
             }
-            ApiReferences.updateIframe(this.data);
+            ApiContracts.updateIframe(this.data);
         }, 500);
     }
 
@@ -189,7 +189,7 @@ export class PreviewInstallerUi {
                     this.navigateTo(afterUninstallPage, 'maintenance');
                 }
             }
-            ApiReferences.updateIframe(this.data);
+            ApiContracts.updateIframe(this.data);
         }, 500);
     }
 

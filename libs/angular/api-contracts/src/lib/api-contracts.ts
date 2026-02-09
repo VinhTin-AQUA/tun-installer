@@ -1,12 +1,34 @@
-import { ElementRef } from '@angular/core';
+// import { Component } from '@angular/core';
+
+// @Component({
+//   selector: 'lib-api-contracts',
+//   imports: [],
+//   template: `
+//     <p>
+//       api-contracts works!
+//     </p>
+//   `,
+//   styles: ``,
+// })
+// export class ApiContracts {
+
+// }
+
+import { PageType } from 'data-access';
 
 export {};
 
 declare global {
     interface Window {
         App: {
-            navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
+            navigateTo: (pageName: string, type: PageType) => void;
+
             install: (afterInstallPage: string | null) => Promise<void>;
+            finishInstall: () => Promise<void>;
+
+            uninstall: (afterUninstallPage: string | null) => Promise<void>;
+            finishUnintall: () => Promise<void>;
+
             logData: () => void;
             data: any;
         };
@@ -15,25 +37,41 @@ declare global {
     }
 }
 
+import { ElementRef } from '@angular/core';
 
-export class ApiReferences {
+export class ApiContracts {
     private static win: Window;
 
     public static injectAPIs(
         iframe: ElementRef<HTMLIFrameElement>,
-        navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void,
+        navigateTo: (pageName: string, type: PageType) => void,
+
         install: (afterInstallPage: string | null) => Promise<void>,
+        finishInstall: () => Promise<void>,
+
+        uninstall: (afterUninstallPage: string | null) => Promise<void>,
+        finishUnintall: () => Promise<void>,
+        
         data: any,
     ) {
         const win = iframe.nativeElement.contentWindow!;
         this.win = win;
 
         this.win.App = {
-            navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => {
+            navigateTo: (pageName: string, type: PageType) => {
                 navigateTo(pageName, type);
             },
             install: async (afterInstallPage: string | null) => {
                 await install(afterInstallPage);
+            },
+            finishInstall: async () => {
+                await finishInstall();
+            },
+            uninstall: async (afterUninstallPage: string | null) => {
+                await uninstall(afterUninstallPage);
+            },
+            finishUnintall: async () => {
+                await finishUnintall();
             },
             logData: () => {
                 console.log('Test Install');

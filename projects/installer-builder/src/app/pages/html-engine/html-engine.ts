@@ -4,9 +4,9 @@ import { InstallerPropertyStore, PageType, WindowInfos, WindowInfoStore } from '
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from 'service';
 import { ProjectStore } from '../../core/stores/project-store';
-import { ApiReferences } from '../../core/api-references/api-references';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
 import { HtmlEngineCommands, TauriCommandService } from 'tauri';
+import {ApiContracts} from 'api-contracts'
 
 type WindowKey = keyof WindowInfos;
 
@@ -149,7 +149,7 @@ export class HtmlEngine {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
-            ApiReferences.injectAPIs(
+            ApiContracts.injectAPIs(
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
@@ -195,7 +195,7 @@ export class HtmlEngine {
                     this.navigateTo(afterInstallPage, 'firstInstall');
                 }
             }
-            ApiReferences.updateIframe(this.data);
+            ApiContracts.updateIframe(this.data);
         }, 500);
     }
 
@@ -210,7 +210,7 @@ export class HtmlEngine {
                     this.navigateTo(afterUninstallPage, 'maintenance');
                 }
             }
-            ApiReferences.updateIframe(this.data);
+            ApiContracts.updateIframe(this.data);
         }, 500);
     }
 

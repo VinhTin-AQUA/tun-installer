@@ -1,15 +1,14 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore, WindowInfoStore } from 'data-access';
+import { InstallerPropertyStore, ProjectFolders, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/store/project-store';
 import { LoadHtmlPage } from '../../core/models/load-html-pages';
-import { ApiReferences } from '../../core/api-references/api-references';
-import { ProjectFolders } from '../../core/consts/folder.const';
 import { Progress } from '../../core/models/progress';
 import { InstallerService } from '../../core/services/installer-service';
 import { Events as EventSystemConsts } from '../../core/consts/event.const';
 import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'tauri';
 import { ToastService } from 'service';
+import { ApiContracts } from 'api-contracts';
 
 @Component({
     selector: 'app-html-engine',
@@ -116,10 +115,16 @@ export class HtmlEngine {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
-            ApiReferences.injectAPIs(
+            ApiContracts.injectAPIs(
                 this.iframe,
                 this.navigateTo.bind(this),
+
                 this.install.bind(this),
+                this.finishInstall.bind(this),
+
+                this.uninstall.bind(this),
+                this.finishUnintall.bind(this),
+
                 this.data,
             );
         };
@@ -147,19 +152,6 @@ export class HtmlEngine {
     }
 
     async install(afterInstallPage: string | null) {
-        // this.intervalId = setInterval(() => {
-        //     this.progress.update((x) => x + 5);
-        //     if (this.progress() > 100) {
-        //         this.progress.set(100);
-        //         clearInterval(this.intervalId);
-
-        //         if (afterInstallPage) {
-        //             this.navigateTo(afterInstallPage, 'firstInstall');
-        //         }
-        //     }
-        //     ApiReferences.updateIframe(this.data);
-        // }, 500);
-
         this.unlisten = await this.tauriEventService.listenEvent<Progress>(
             EventSystemConsts.install,
             (event) => {
@@ -172,7 +164,7 @@ export class HtmlEngine {
                 //     return [...x, progress.message];
                 // });
 
-                ApiReferences.updateIframe(this.data);
+                ApiContracts.updateIframe(this.data);
             },
         );
 
@@ -185,6 +177,12 @@ export class HtmlEngine {
             this.navigateTo(afterInstallPage, 'firstInstall');
         }
     }
+
+    async finishInstall() {}
+
+    async uninstall() {}
+
+    async finishUnintall() {}
 
     /* ================================= */
 
