@@ -26,7 +26,7 @@ export class InstallerDocumentService {
                 configRegistry: r.registryKeys.configRegistry,
                 uninstallRegistry: r.registryKeys.uninstallRegistry
             });
-            this.windowInfoStore.updateValue(r.windowInfo);
+            this.windowInfoStore.setWindows(r.windowInfos);
         }
     }
 }

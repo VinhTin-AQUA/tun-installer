@@ -102,7 +102,7 @@ export class HtmlEngine {
         await this.loadPages();
     }
 
-    /* ================ api implements ================= */
+    /* ================ others ================= */
 
     toggleSection(id: PageType) {
         this.activeSection = this.activeSection === id ? '' : id;
@@ -144,8 +144,6 @@ export class HtmlEngine {
     async loadPages() {
         await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
     }
-
-    /* ================ api implements ================= */
 
     loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
         this.activePageType.set(type);
@@ -205,6 +203,7 @@ export class HtmlEngine {
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
+                pageType: this.activePageType(),
                 width: this.windowInfoStore.getData().installerWindow.width + 72,
                 height: this.windowInfoStore.getData().installerWindow.height + 54,
             },

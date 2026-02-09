@@ -20,7 +20,6 @@ export class PreviewInstallerUi {
     // htmlPages: HtmlPage[] = [];
     index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
-
     progress = signal<number>(0);
 
     data = {
@@ -63,6 +62,11 @@ export class PreviewInstallerUi {
         //     productName: 'MyApp',
         //     productVersion: '1.0.1',
         // });
+
+        // page_type = 'firstInstall';
+        // page_type = 'maintenance';
+
+        
     }
 
     async ngAfterViewInit() {

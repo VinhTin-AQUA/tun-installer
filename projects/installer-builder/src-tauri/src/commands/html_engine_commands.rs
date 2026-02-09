@@ -23,12 +23,14 @@ pub async fn load_html_maintenance_pages_command(
 }
 
 #[command]
-pub async fn preview_installer_ui_command(app: AppHandle, width: f64, height: f64) {
+pub async fn preview_installer_ui_command(app: AppHandle, page_type: String, width: f64, height: f64) {
+    println!("page_type = {:?}", page_type);
+    
     // let webview_window =
     WebviewWindowBuilder::new(
         &app,
         "label",
-        WebviewUrl::App("/preview-installer-ui".into()),
+        WebviewUrl::App(format!("/preview-installer-ui?pageType={}", page_type).into()),
     )
     .title("Preview Page")
     .inner_size(width, height)

@@ -1,7 +1,7 @@
-import { InstallerProperties, RegistryKeys, WindowInfo } from 'data-access';
+import { InstallerProperties, RegistryKeys, WindowInfos } from 'data-access';
 
 export interface InstallerDocument {
     properties: InstallerProperties;
     registryKeys: RegistryKeys;
-    windowInfo: WindowInfo;
+    windowInfos: WindowInfos;
 }
