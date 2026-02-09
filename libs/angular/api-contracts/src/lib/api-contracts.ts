@@ -27,7 +27,7 @@ declare global {
             finishInstall: () => Promise<void>;
 
             uninstall: (afterUninstallPage: string | null) => Promise<void>;
-            finishUnintall: () => Promise<void>;
+            finishUninstall: () => Promise<void>;
 
             logData: () => void;
             data: any;
@@ -50,7 +50,7 @@ export class ApiContracts {
         finishInstall: () => Promise<void>,
 
         uninstall: (afterUninstallPage: string | null) => Promise<void>,
-        finishUnintall: () => Promise<void>,
+        finishUninstall: () => Promise<void>,
         
         data: any,
     ) {
@@ -70,8 +70,8 @@ export class ApiContracts {
             uninstall: async (afterUninstallPage: string | null) => {
                 await uninstall(afterUninstallPage);
             },
-            finishUnintall: async () => {
-                await finishUnintall();
+            finishUninstall: async () => {
+                await finishUninstall();
             },
             logData: () => {
                 console.log('Test Install');

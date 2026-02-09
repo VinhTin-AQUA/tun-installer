@@ -42,6 +42,7 @@
                 </p>
 
                 <button
+                    onclick="finishUninstall()"
                     style="
                         margin-top: 25px;
                         padding: 10px 25px;
@@ -58,8 +59,8 @@
         </div>
 
         <script>
-            function navigateToFinish() {
-                window.App.navigateTo('finish.html', 'maintenance');
+            function finishUninstall() {
+                window.App.finishUninstall();
             }
         </script>
     </body>

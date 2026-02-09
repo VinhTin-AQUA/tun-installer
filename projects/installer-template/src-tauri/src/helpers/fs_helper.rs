@@ -24,4 +24,9 @@ pub async fn copy_dir_all(src: &Path, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
+pub async fn remove_dir_all<P: AsRef<Path>>(folder_path: P) -> io::Result<()>  {
+    fs::remove_dir_all(folder_path).await?;
+    Ok(())
+}
+
 // copy_dir_all(Path::new("A"), Path::new("B")).await?;

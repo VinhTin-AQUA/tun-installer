@@ -95,6 +95,7 @@
             <!-- Footer -->
             <div style="display: flex; justify-content: flex-end">
                 <button
+                    onclick="finishInstall()"
                     style="
                         background: #4f46e5;
                         color: #ffffff;
@@ -112,5 +113,11 @@
                 </button>
             </div>
         </div>
+
+        <script>
+            function finishInstall() {
+                window.App.finishInstall();
+            }
+        </script>
     </body>
 </html>

@@ -1,10 +1,15 @@
-use std::{env, path::PathBuf};
-use domain::{InstallerDocument, PREREQUISITE_DIR, RESOURCES_DIR, event_consts};
+use domain::{event_consts, InstallerDocument, PREREQUISITE_DIR, RESOURCES_DIR};
 use service::Progress;
+use std::{env, path::PathBuf};
 use tauri::{command, AppHandle, State};
 use tokio::sync::Mutex;
 
-use crate::{events::send_progress_event, helpers::copy_dir_all, services::{add_values, create_registry, create_shortcuts}, states::AppState};
+use crate::{
+    events::send_progress_event,
+    helpers::{copy_dir_all, remove_dir_all},
+    services::{add_values, create_registry, create_shortcuts},
+    states::AppState,
+};
 
 #[command]
 pub async fn install(
@@ -22,6 +27,7 @@ pub async fn install(
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
     let exe_path_buf = std::env::current_exe().map_err(|e| e.to_string())?;
     // let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
+    let temp_app_dir_to_delete_temp_folder = temp_app_dir.clone();
 
     let resource_path_buf = temp_app_dir.clone().join(RESOURCES_DIR);
     let prerequisite_path_buf = temp_app_dir.clone().join(PREREQUISITE_DIR);
@@ -106,7 +112,8 @@ pub async fn install(
     )
     .map_err(|x| x.to_string())?;
 
-    // call clean.exe to clean temp
+    // clean temp
+    _ = remove_dir_all(temp_app_dir_to_delete_temp_folder).await;
 
     Ok(true)
 }

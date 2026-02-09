@@ -7,7 +7,7 @@ import { Progress } from '../../core/models/progress';
 import { InstallerService } from '../../core/services/installer-service';
 import { Events as EventSystemConsts } from '../../core/consts/event.const';
 import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'tauri';
-import { ToastService } from 'service';
+import { ToastService, WindowService } from 'service';
 import { ApiContracts } from 'api-contracts';
 
 @Component({
@@ -46,13 +46,12 @@ export class HtmlEngine {
     projectStore = inject(ProjectStore);
     unlisten: any;
 
-    private intervalId: any;
-
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
         private installerService: InstallerService,
         private tauriEventService: TauriEventService,
+        private windowService: WindowService,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -178,11 +177,15 @@ export class HtmlEngine {
         }
     }
 
-    async finishInstall() {}
+    async finishInstall() {
+        await this.windowService.closeCurrentWindow();
+    }
 
     async uninstall() {}
 
-    async finishUnintall() {}
+    async finishUnintall() {
+        await this.windowService.closeCurrentWindow();
+    }
 
     /* ================================= */
 

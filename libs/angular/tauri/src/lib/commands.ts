@@ -35,3 +35,7 @@ export enum InstallerDocumentCommands {
 export enum InstallCommands {
     INSTALL = 'install',
 }
+
+export enum WindowCommands {
+    CLOSE_CURRENT_WINDOW = 'close_current_window',
+}

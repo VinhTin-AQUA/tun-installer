@@ -4,7 +4,7 @@ import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/stores/project-store';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ApiContracts } from 'api-contracts';
-import { ToastService } from 'service';
+import { ToastService, WindowService } from 'service';
 import { ActivatedRoute } from '@angular/router';
 import { HtmlEngineCommands, TauriCommandService } from 'tauri';
 
@@ -53,6 +53,7 @@ export class PreviewInstallerUi {
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
         private activatedRoute: ActivatedRoute,
+        private windowService: WindowService
     ) {
         effect(() => {
             const progress = this.progress();
@@ -176,7 +177,9 @@ export class PreviewInstallerUi {
         }, 500);
     }
 
-    async finishInstall() {}
+    async finishInstall() {
+        await this.windowService.closeCurrentWindow();
+    }
 
     async uninstall(afterUninstallPage: string | null) {
         this.intervalId = setInterval(() => {
@@ -193,7 +196,9 @@ export class PreviewInstallerUi {
         }, 500);
     }
 
-    async finishUninstall() {}
+    async finishUninstall() {
+        await this.windowService.closeCurrentWindow();
+    }
 
     /* ================================= */
 
