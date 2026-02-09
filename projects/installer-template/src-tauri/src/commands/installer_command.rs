@@ -111,7 +111,7 @@ pub async fn install(
     .map_err(|x| x.to_string())?;
 
     // clean temp
-    // _ = remove_dir_all(temp_app_dir_to_delete_temp_folder).await;
+    _ = remove_dir_all(temp_app_dir_to_delete_temp_folder).await;
 
     Ok(true)
 }
