@@ -1,10 +1,9 @@
 use anyhow::{bail, Result};
+use domain::ERegValue;
+use domain::RegistryKey;
+use domain::RegistryValueType;
 use winreg::enums::*;
 use winreg::RegKey;
-
-use crate::models::ERegValue;
-use crate::models::RegistryKey;
-use crate::models::RegistryValueType;
 
 // create_registry
 pub fn create_registry(app_name: &str) -> Result<()> {

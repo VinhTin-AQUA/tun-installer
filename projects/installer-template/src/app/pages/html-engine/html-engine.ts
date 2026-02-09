@@ -72,8 +72,8 @@ export class HtmlEngine {
         //     productVersion: '1.0.1',
         // });
 
-        console.log(this.windowInfoStore.width());
-        console.log(this.windowInfoStore.height());
+        console.log(this.windowInfoStore.installerWindow().width);
+        console.log(this.windowInfoStore.installerWindow().height);
     }
 
     async ngAfterViewInit() {
