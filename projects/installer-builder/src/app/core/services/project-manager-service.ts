@@ -11,14 +11,13 @@ import {
     RegistryValueType,
     WindowInfoStore,
 } from 'data-access';
+import { ProjectManagerCommands, TauriCommandService } from 'tauri';
 import { form, required } from '@angular/forms/signals';
-import { TauriCommandService } from '../tauri/tauri-command-service';
 import {
     InstallerConfig,
     SaveInstallerConfig,
 } from '../models/tauri-payloads/save-Installer-document';
 import { CreateTunInstallerProject } from '../models/tauri-payloads/create-tuninstaller-project';
-import { ProjectManagerCommands } from '../enums/commands';
 import { TunInstallerProject } from '../models/tun-installer-project';
 import { ResourceFiletore } from '../stores/resource-file.store';
 import { FileItem, FolderNode } from '../models/directory-tree';
@@ -137,14 +136,14 @@ export class ProjectManagerService {
 
                 const registryKeyStoreUpdatePath: RegistryKeys = {
                     configRegistry: {
-                        ...this.registryKeyStore.configRegistry()
+                        ...this.registryKeyStore.configRegistry(),
                     },
                     uninstallRegistry: {
-                        ...this.registryKeyStore.uninstallRegistry()
+                        ...this.registryKeyStore.uninstallRegistry(),
                     },
-                }
+                };
 
-                this.registryKeyStore.setRegistry(registryKeyStoreUpdatePath)
+                this.registryKeyStore.setRegistry(registryKeyStoreUpdatePath);
             });
         });
     }
@@ -223,7 +222,7 @@ export class ProjectManagerService {
         });
 
         this.windowInfoStore.setWindows(installerDocumentConfig.windowInfos);
-        this.prerequisiteStore.setList(installerDocumentConfig.prerequisites)
+        this.prerequisiteStore.setList(installerDocumentConfig.prerequisites);
 
         /* =========== get files in resources ==============  */
         await this.getResourceFiles();

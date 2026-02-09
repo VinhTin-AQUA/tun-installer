@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TauriCommandService } from '../tauri/tauri-command-service';
-import { InstallCommands } from '../enums/tauri-commands';
+import { InstallCommands, TauriCommandService } from 'tauri';
 
 @Injectable({
     providedIn: 'root',

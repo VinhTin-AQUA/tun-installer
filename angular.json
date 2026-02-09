@@ -161,6 +161,58 @@
               }
             }
           }
+        },
+        "service": {
+          "projectType": "library",
+          "root": "libs/angular/service",
+          "sourceRoot": "libs/angular/service/src",
+          "prefix": "lib",
+          "architect": {
+            "build": {
+              "builder": "@angular/build:ng-packagr",
+              "configurations": {
+                "production": {
+                  "tsConfig": "libs/angular/service/tsconfig.lib.prod.json"
+                },
+                "development": {
+                  "tsConfig": "libs/angular/service/tsconfig.lib.json"
+                }
+              },
+              "defaultConfiguration": "production"
+            },
+            "test": {
+              "builder": "@angular/build:unit-test",
+              "options": {
+                "tsConfig": "libs/angular/service/tsconfig.spec.json"
+              }
+            }
+          }
+        },
+        "tauri": {
+          "projectType": "library",
+          "root": "libs/angular/tauri",
+          "sourceRoot": "libs/angular/tauri/src",
+          "prefix": "lib",
+          "architect": {
+            "build": {
+              "builder": "@angular/build:ng-packagr",
+              "configurations": {
+                "production": {
+                  "tsConfig": "libs/angular/tauri/tsconfig.lib.prod.json"
+                },
+                "development": {
+                  "tsConfig": "libs/angular/tauri/tsconfig.lib.json"
+                }
+              },
+              "defaultConfiguration": "production"
+            },
+            "test": {
+              "builder": "@angular/build:unit-test",
+              "options": {
+                "tsConfig": "libs/angular/tauri/tsconfig.spec.json"
+              }
+            }
+          }
         }
     }
 }

@@ -1,13 +1,12 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { InstallerPropertyStore, PageType, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
-import { TauriCommandService } from '../../core/tauri/tauri-command-service';
-import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ProjectStore } from '../../core/stores/project-store';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ApiReferences } from '../../core/api-references/api-references';
-import { ToastService } from '../../core/services/toast-service';
+import { ToastService } from 'service';
 import { ActivatedRoute } from '@angular/router';
+import { HtmlEngineCommands, TauriCommandService } from 'tauri';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -130,7 +129,10 @@ export class PreviewInstallerUi {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
+                this.finishInstall.bind(this),
                 this.uninstall.bind(this),
+                this.finishUninstall.bind(this),
+
                 this.data,
             );
         };
@@ -155,7 +157,7 @@ export class PreviewInstallerUi {
 
     /* ================ api implements ================= */
 
-    navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
+    navigateTo(pageName: string, type: PageType) {
         this.loadPage(pageName, type);
     }
 
@@ -174,6 +176,8 @@ export class PreviewInstallerUi {
         }, 500);
     }
 
+    async finishInstall() {}
+
     async uninstall(afterUninstallPage: string | null) {
         this.intervalId = setInterval(() => {
             this.progress.update((x) => x + 5);
@@ -188,6 +192,8 @@ export class PreviewInstallerUi {
             ApiReferences.updateIframe(this.data);
         }, 500);
     }
+
+    async finishUninstall() {}
 
     /* ================================= */
 
@@ -218,32 +224,6 @@ export class PreviewInstallerUi {
     reset() {
         this.loadPages();
         this.ngOnDestroy();
-    }
-
-    private propDataBindind(text: string): string {
-        const replacements: Record<string, string> = {
-            '{{installationLocation}}': this.data.installationLocation,
-            '{{productName}}': this.data.productName,
-            '{{icon}}': this.data.icon,
-            '{{productVersion}}': this.data.productVersion,
-            '{{publisher}}': this.data.publisher,
-            '{{supportLink}}': this.data.supportLink,
-            '{{supportEmail}}': this.data.supportEmail,
-            '{{comment}}': this.data.comment,
-            '{{launchFile}}': this.data.launchFile,
-            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
-            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
-            '{{progress}}': this.data.progress.toString(),
-        };
-
-        const pattern = new RegExp(
-            Object.keys(replacements)
-                .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // escape regex
-                .join('|'),
-            'g',
-        );
-
-        return text.replace(pattern, (match) => replacements[match]);
     }
 
     ngOnDestroy() {

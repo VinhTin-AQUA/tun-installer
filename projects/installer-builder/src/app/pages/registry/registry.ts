@@ -5,7 +5,7 @@ import {
     RegistryKeyStore,
     RegistryValueType,
 } from 'data-access';
-import { ToastService } from '../../core/services/toast-service';
+import { ToastService } from 'service';
 import { CommonModule } from '@angular/common';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
 

@@ -2,11 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { FolderNode, FileItem } from '../../core/models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'data-access';
-import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { ProjectStore } from '../../core/stores/project-store';
-import { ProjectManagerCommands } from '../../core/enums/commands';
 import { ResourceFiletore } from '../../core/stores/resource-file.store';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { ProjectManagerCommands, TauriCommandService } from 'tauri';
 
 @Component({
     selector: 'app-files-and-folders',
@@ -21,7 +20,7 @@ export class FilesAndFolders {
             name: 'Resources',
             expanded: false,
             children: [],
-        }
+        },
     ]);
 
     files = signal<FileItem[]>([]);

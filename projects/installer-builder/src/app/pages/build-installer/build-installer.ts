@@ -1,9 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { TauriEventService } from '../../core/tauri/tauri-event-service';
-import { TauriCommandService } from '../../core/tauri/tauri-command-service';
-import { CompressCommands } from '../../core/enums/commands';
 import { Progress } from '../../core/models/progress';
-import { ToastService } from '../../core/services/toast-service';
+import { ToastService } from 'service';
+import { CompressCommands, TauriCommandService, TauriEventService } from 'tauri';
 
 @Component({
     selector: 'app-build-installer',

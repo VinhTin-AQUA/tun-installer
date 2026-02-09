@@ -54,7 +54,8 @@ pub fn run() {
             cancel_compress_command,
             cancel_extract_command,
             is_cancelled_command,
-            get_prerequisites_command
+            get_prerequisites_command,
+            close_current_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

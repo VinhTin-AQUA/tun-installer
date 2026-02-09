@@ -19,6 +19,7 @@
 
     ```bash
     ng generate component components/button --project=shared-lib
+    ng g s tauri-command-service --project=tauri
     ```
 
 - build lib

@@ -1,5 +1,13 @@
 import { Injectable, signal } from '@angular/core';
-import { ToastModel } from '../models/toast.model';
+
+export interface ToastModel {
+    id: number;
+    message: string;
+    type: 'success' | 'error' | 'info' | 'warning';
+    duration: number;
+    closing?: boolean;
+}
+
 
 @Injectable({
     providedIn: 'root',

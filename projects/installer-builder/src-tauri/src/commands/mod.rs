@@ -15,3 +15,6 @@ pub use compress_commands::*;
 
 pub mod prerequisite_commands;
 pub use prerequisite_commands::*;
+
+pub mod window_commands;
+pub use window_commands::*;

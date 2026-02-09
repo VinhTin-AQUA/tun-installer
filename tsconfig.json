@@ -9,6 +9,12 @@
           "data-access": [
             "./dist/data-access"
           ],
+          "service": [
+            "./dist/service"
+          ],
+          "tauri": [
+            "./dist/tauri"
+          ],
         },
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,
@@ -45,6 +51,18 @@
       },
       {
         "path": "./libs/angular/data-access/tsconfig.spec.json"
+      },
+      {
+        "path": "./libs/angular/service/tsconfig.lib.json"
+      },
+      {
+        "path": "./libs/angular/service/tsconfig.spec.json"
+      },
+      {
+        "path": "./libs/angular/tauri/tsconfig.lib.json"
+      },
+      {
+        "path": "./libs/angular/tauri/tsconfig.spec.json"
       }
     ]
 }

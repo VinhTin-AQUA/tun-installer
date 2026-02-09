@@ -2,18 +2,14 @@ import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angul
 import { InstallerPropertyStore, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/store/project-store';
-import { TauriCommandService } from '../../core/tauri/tauri-command-service';
-import { ToastService } from '../../core/services/toast-service';
 import { LoadHtmlPage } from '../../core/models/load-html-pages';
-import { HtmlEngineCommands } from '../../core/enums/tauri-commands';
 import { ApiReferences } from '../../core/api-references/api-references';
-import { CompressService } from '../../core/services/compress-service';
-import { join } from '@tauri-apps/api/path';
 import { ProjectFolders } from '../../core/consts/folder.const';
-import { TauriEventService } from '../../core/tauri/tauri-event-service';
 import { Progress } from '../../core/models/progress';
 import { InstallerService } from '../../core/services/installer-service';
 import { Events as EventSystemConsts } from '../../core/consts/event.const';
+import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'tauri';
+import { ToastService } from 'service';
 
 @Component({
     selector: 'app-html-engine',

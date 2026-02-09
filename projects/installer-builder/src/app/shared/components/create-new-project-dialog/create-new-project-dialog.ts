@@ -3,10 +3,10 @@ import { DialogStore } from '../../../core/stores/dialog.store';
 import { Field, form, readonly, required } from '@angular/forms/signals';
 import { FolderHelper } from '../../helpers/folder.helper';
 import { CreateTunInstallerProject } from '../../../core/models/tauri-payloads/create-tuninstaller-project';
-import { ToastService } from '../../../core/services/toast-service';
 import { ProjectStore } from '../../../core/stores/project-store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ProjectStateService } from '../../../core/services/project-state-service';
+import { ToastService } from 'service';
 
 @Component({
     selector: 'app-create-new-project-dialog',

@@ -1,13 +1,12 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { HtmlPage } from '../../core/models/html-page';
 import { InstallerPropertyStore, PageType, WindowInfos, WindowInfoStore } from 'data-access';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
-import { ToastService } from '../../core/services/toast-service';
+import { ToastService } from 'service';
 import { ProjectStore } from '../../core/stores/project-store';
-import { HtmlEngineCommands } from '../../core/enums/commands';
 import { ApiReferences } from '../../core/api-references/api-references';
 import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { HtmlEngineCommands, TauriCommandService } from 'tauri';
 
 type WindowKey = keyof WindowInfos;
 
@@ -154,7 +153,9 @@ export class HtmlEngine {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
+                async () => {},
                 this.uninstall.bind(this),
+                async () => {},
                 this.data,
             );
         };

@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ProjectStore } from '../stores/project-store';
-import { TauriCommandService } from '../tauri/tauri-command-service';
 import { ProjectState } from '../models/project-state';
-import { ProjectStateCommands } from '../enums/commands';
+import { ProjectStateCommands, TauriCommandService } from 'tauri';
 
 @Injectable({
     providedIn: 'root',

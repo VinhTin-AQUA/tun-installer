@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Field } from '@angular/forms/signals';
-import { ToastService } from '../../core/services/toast-service';
+import { ToastService } from 'service';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogStore } from '../../core/stores/dialog.store';
