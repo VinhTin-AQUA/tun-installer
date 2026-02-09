@@ -97,8 +97,7 @@ pub async fn install(
     let icon = installation_location.join(
         installer_document
             .properties
-            .shortcut_in_desktop
-            .run_file
+            .icon
             .clone(),
     );
     _ = create_shortcuts(
