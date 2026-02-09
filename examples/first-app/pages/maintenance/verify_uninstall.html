@@ -57,6 +57,7 @@
                     </button>
 
                     <button
+                        onclick="uninstall()"
                         style="
                             width: 48%;
                             padding: 10px;
@@ -72,5 +73,12 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function uninstall() {
+                window.App.navigateTo('progress.html', 'maintenance');
+                window.App.uninstall('finish.html');
+            }
+        </script>
     </body>
 </html>

@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore } from 'data-access';
+import { InstallerPropertyStore, PageType, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { TauriCommandService } from '../../core/tauri/tauri-command-service';
 import { HtmlEngineCommands } from '../../core/enums/commands';
@@ -7,6 +7,7 @@ import { ProjectStore } from '../../core/stores/project-store';
 import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
 import { ApiReferences } from '../../core/api-references/api-references';
 import { ToastService } from '../../core/services/toast-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -18,8 +19,10 @@ export class PreviewInstallerUi {
     @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
 
     // htmlPages: HtmlPage[] = [];
-    index = 0;
+    // index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
+    windowInfoStore = inject(WindowInfoStore);
+
     progress = signal<number>(0);
 
     data = {
@@ -41,6 +44,7 @@ export class PreviewInstallerUi {
     iframeWidth = signal<number>(800);
     iframeHeight = signal<number>(600);
     projectStore = inject(ProjectStore);
+    pageType: PageType = 'firstInstall';
 
     // test
 
@@ -49,6 +53,7 @@ export class PreviewInstallerUi {
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
+        private activatedRoute: ActivatedRoute,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -62,11 +67,13 @@ export class PreviewInstallerUi {
         //     productName: 'MyApp',
         //     productVersion: '1.0.1',
         // });
-
         // page_type = 'firstInstall';
         // page_type = 'maintenance';
 
-        
+        this.activatedRoute.queryParams.subscribe((res: any) => {
+            console.log(res);
+            this.pageType = res.pageType;
+        });
     }
 
     async ngAfterViewInit() {
@@ -85,7 +92,10 @@ export class PreviewInstallerUi {
         }
 
         this.firstInstallPages.set(pages);
-        this.loadPage(pages[0].name, 'firstInstall');
+
+        if (this.pageType === 'firstInstall') {
+            this.loadPage(this.windowInfoStore.installerWindow().startPage, 'firstInstall');
+        }
     }
 
     private async loadMaintenancePages() {
@@ -100,7 +110,10 @@ export class PreviewInstallerUi {
         }
 
         this.maintenancePages.set(pages);
-        // this.loadPage();
+
+        if (this.pageType === 'maintenance') {
+            this.loadPage(this.windowInfoStore.uninstallerWindow().startPage, 'maintenance');
+        }
     }
 
     async loadPages() {
@@ -109,7 +122,7 @@ export class PreviewInstallerUi {
 
     /* ================ api implements ================= */
 
-    loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
+    loadPage(pageName: string, type: PageType) {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
@@ -117,6 +130,7 @@ export class PreviewInstallerUi {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
+                this.uninstall.bind(this),
                 this.data,
             );
         };
@@ -154,6 +168,21 @@ export class PreviewInstallerUi {
 
                 if (afterInstallPage) {
                     this.navigateTo(afterInstallPage, 'firstInstall');
+                }
+            }
+            ApiReferences.updateIframe(this.data);
+        }, 500);
+    }
+
+    async uninstall(afterUninstallPage: string | null) {
+        this.intervalId = setInterval(() => {
+            this.progress.update((x) => x + 5);
+            if (this.progress() > 100) {
+                this.progress.set(100);
+                clearInterval(this.intervalId);
+
+                if (afterUninstallPage) {
+                    this.navigateTo(afterUninstallPage, 'maintenance');
                 }
             }
             ApiReferences.updateIframe(this.data);

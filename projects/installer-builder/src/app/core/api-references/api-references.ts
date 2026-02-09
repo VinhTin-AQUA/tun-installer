@@ -7,6 +7,7 @@ export class ApiReferences {
         iframe: ElementRef<HTMLIFrameElement>,
         navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void,
         install: (afterInstallPage: string | null) => Promise<void>,
+        uninstall: (afterUninstallPage: string | null) => Promise<void>,
         data: any,
     ) {
         const win = iframe.nativeElement.contentWindow!;
@@ -18,6 +19,9 @@ export class ApiReferences {
             },
             install: async (afterInstallPage: string | null) => {
                 await install(afterInstallPage);
+            },
+            uninstall: async (afterUninstallPage: string | null) => {
+                await uninstall(afterUninstallPage);
             },
             logData: () => {
                 console.log('Test Install');

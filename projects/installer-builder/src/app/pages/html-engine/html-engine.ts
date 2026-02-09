@@ -154,6 +154,7 @@ export class HtmlEngine {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
+                this.uninstall.bind(this),
                 this.data,
             );
         };
@@ -191,6 +192,21 @@ export class HtmlEngine {
 
                 if (afterInstallPage) {
                     this.navigateTo(afterInstallPage, 'firstInstall');
+                }
+            }
+            ApiReferences.updateIframe(this.data);
+        }, 500);
+    }
+
+    async uninstall(afterUninstallPage: string | null) {
+        this.intervalId = setInterval(() => {
+            this.progress.update((x) => x + 5);
+            if (this.progress() > 100) {
+                this.progress.set(100);
+                clearInterval(this.intervalId);
+
+                if (afterUninstallPage) {
+                    this.navigateTo(afterUninstallPage, 'maintenance');
                 }
             }
             ApiReferences.updateIframe(this.data);

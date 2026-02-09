@@ -89,7 +89,7 @@
       "title": "1_welcome.html",
       "width": 650.0,
       "height": 500.0,
-      "startPage": "welcome.html",
+      "startPage": "1_welcome.html",
       "alwaysOnTop": false
     },
     "uninstallerWindow": {

@@ -5,6 +5,7 @@ declare global {
         App: {
             navigateTo: (pageName: string, type: 'firstInstall' | 'maintenance') => void;
             install: (afterInstallPage: string | null) => Promise<void>;
+            uninstall: (afterUninstallPage: string | null) => Promise<void>;
             logData: () => void;
             data: any;
         };

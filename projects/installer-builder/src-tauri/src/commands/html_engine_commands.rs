@@ -29,7 +29,7 @@ pub async fn preview_installer_ui_command(app: AppHandle, page_type: String, wid
     // let webview_window =
     WebviewWindowBuilder::new(
         &app,
-        "label",
+        "preview-window",
         WebviewUrl::App(format!("/preview-installer-ui?pageType={}", page_type).into()),
     )
     .title("Preview Page")
