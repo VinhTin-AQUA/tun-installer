@@ -31,33 +31,38 @@ pub async fn uninstall_command(
     }
 
     // Kill app
-    let app_exe_name = &installer_document.properties.product_name;
+    println!("Kill app");
+    let app_exe_name = &installer_document.properties.shortcut_in_application_shortcut.run_file;
     let _ = Command::new("taskkill")
         .args(["/IM", app_exe_name, "/F", "/T"])
         .status();
 
     // delete application folder
+    println!("delete application folder");
     let _ = clear_dir_best_effort(app_dir.clone())
         .await
         .map_err(|x| x.to_string());
 
     // delete registry
+    println!("delete registry");
     remove_registry(registries.config_registry.path).unwrap();
     remove_registry(registries.uninstall_registry.path).unwrap();
 
     // delete shortcut
+    println!("delete shortcut");
     let _ = remove_shortcuts(&properties.product_name);
 
     // Spawn cmd to delete app folder after exit
-    let cmd = format!(
-        r#"/C ping 127.0.0.1 -n 3 > nul && rmdir /s /q "{}""#,
-        app_dir
-    );
+    println!("Spawn cmd to delete app folder after exit");
+    // let cmd = format!(
+    //     r#"/C ping 127.0.0.1 -n 3 > nul && rmdir /s /q "{}""#,
+    //     app_dir
+    // );
 
-    let _ = Command::new("cmd")
-        .args(["/C", &cmd])
-        .spawn()
-        .map_err(|x| x.to_string());
+    // let _ = Command::new("cmd")
+    //     .args(["/C", &cmd])
+    //     .spawn()
+    //     .map_err(|x| x.to_string());
 
     Ok(true)
 }

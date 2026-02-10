@@ -11,6 +11,7 @@ import { ToastService, WindowService } from 'service';
 import { ApiContracts } from 'api-contracts';
 import { InstallerArgsService } from '../../core/services/installer-args-service';
 import { InstallerArgs, InstallerStatus } from '../../core/models/installer-args';
+import { UninstallerService } from '../../core/services/uninstaller-service';
 
 @Component({
     selector: 'app-html-engine',
@@ -56,6 +57,7 @@ export class HtmlEngine {
         private tauriEventService: TauriEventService,
         private windowService: WindowService,
         private installerArgsService: InstallerArgsService,
+        private uninstallerService: UninstallerService
     ) {
         effect(() => {
             const progress = this.progress();
@@ -201,7 +203,29 @@ export class HtmlEngine {
         await this.windowService.closeCurrentWindow();
     }
 
-    async uninstall() {}
+    async uninstall(afterUninstallPage: string | null) {
+        // this.unlisten = await this.tauriEventService.listenEvent<Progress>(
+        //     EventSystemConsts.install,
+        //     (event) => {
+        //         // console.log(event.payload);
+        //         const progress = event.payload;
+
+        //         this.progress.set(Math.round(progress.percent * 100) / 100);
+        //         this.data.message = progress.message;
+        //         // this.logs.update((x) => {
+        //         //     return [...x, progress.message];
+        //         // });
+
+        //         ApiContracts.updateIframe(this.data);
+        //     },
+        // );
+
+        const r = await this.uninstallerService.uninstall();
+
+        if (afterUninstallPage) {
+            this.navigateTo(afterUninstallPage, 'maintenance');
+        }
+    }
 
     async finishUnintall() {
         await this.windowService.closeCurrentWindow();

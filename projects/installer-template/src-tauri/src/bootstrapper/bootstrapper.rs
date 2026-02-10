@@ -114,9 +114,9 @@ fn extract_uninstaller_res(app_state: &AppState) -> Result<InstallerDocument, St
 }
 
 fn get_exe_path() -> PathBuf {
-    // let exe_path_buf = std::env::current_exe().map_err(|e| e.to_string())?;
-    let exe_path_buf =
-        PathBuf::from("C:/Users/tinhv/Downloads/exe_template_v1.0.0.exe");
+    let exe_path_buf = std::env::current_exe().expect("Không lấy được đường dẫn file exe");
+    // let exe_path_buf =
+    //     PathBuf::from("C:/Users/tinhv/Downloads/exe_template_v1.0.0.exe");
 
     exe_path_buf
 }

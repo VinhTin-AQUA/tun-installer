@@ -31,11 +31,16 @@ pub fn create_registry(app_name: &str) -> Result<()> {
 // }
 
 pub fn remove_registry(key: String) -> Result<()> {
-    let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
-    hkcu.delete_subkey(key.as_str())?;
+    let hkml = RegKey::predef(HKEY_LOCAL_MACHINE);
+
+    let relative = key
+        .strip_prefix("HKEY_LOCAL_MACHINE\\")
+        .unwrap_or(key.as_str())
+        .trim_start_matches('\\');
+
+    hkml.delete_subkey_all(relative)?;
     Ok(())
 }
-
 
 // add value
 pub fn add_values(registry_key: &RegistryKey) -> Result<()> {

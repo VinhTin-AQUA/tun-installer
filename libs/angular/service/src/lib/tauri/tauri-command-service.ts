@@ -7,6 +7,7 @@ import {
     InstallerDocumentCommands,
     ProjectManagerCommands,
     ProjectStateCommands,
+    UninstallCommands,
     WindowCommands,
 } from './commands';
 import { invoke, InvokeArgs } from '@tauri-apps/api/core';
@@ -27,7 +28,8 @@ export class TauriCommandService {
             | InstallerDocumentCommands
             | InstallCommands
             | WindowCommands
-            | InstallerArgsCommands,
+            | InstallerArgsCommands
+            | UninstallCommands,
         params: P,
     ): Promise<T | null> {
         try {

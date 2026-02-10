@@ -36,6 +36,10 @@ export enum InstallCommands {
     INSTALL = 'install',
 }
 
+export enum UninstallCommands {
+    UNINSTALL_COMMAND = 'uninstall_command',
+}
+
 export enum WindowCommands {
     CLOSE_CURRENT_WINDOW = 'close_current_window',
 }

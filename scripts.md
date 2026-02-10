@@ -162,5 +162,5 @@ project-names
 ## Chạy exe với tham số
 
 ```bash
-installer_builder.exe --debug-mode --channel beta --env production
+exe_template_v1.0.0.exe --status uninstall
 ```

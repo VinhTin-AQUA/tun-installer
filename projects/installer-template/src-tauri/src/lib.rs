@@ -71,18 +71,17 @@ fn run_inner() {
             }
 
             let start = std::time::Instant::now();
-            
+            println!("START");
 
             app.manage(Mutex::new(installer_args));
             let installer_args = app.state::<tokio::sync::Mutex<InstallerArgs>>();
-            let installer_args = installer_args.blocking_lock(); 
+            let installer_args = installer_args.blocking_lock();
 
             let reporter = TauriProgressReporter::new(app.handle().clone());
             let compressor = Arc::new(Compressor::new(reporter));
             let app_state = AppState { compressor };
             app.manage(app_state);
 
-           
             //
             let app_state = app.state::<AppState>();
             let installer_document = extract_data_inner(&app_state, &installer_args)?;
@@ -94,11 +93,9 @@ fn run_inner() {
                 window_infos: installer_document.window_infos.clone(),
                 prerequisites: installer_document.prerequisites.clone(),
             }));
-            
-println!("START");
+
             let project_state = init_project_state(&app_state)?;
             app.manage(Mutex::new(project_state));
- println!("START"); 
 
             let install_window_info = if installer_args.status == InstallerStatus::Install {
                 installer_document.window_infos.installer_window
