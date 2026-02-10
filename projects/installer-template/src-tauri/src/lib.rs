@@ -71,7 +71,7 @@ fn run_inner() {
             }
 
             let start = std::time::Instant::now();
-            println!("START");
+            
 
             app.manage(Mutex::new(installer_args));
             let installer_args = app.state::<tokio::sync::Mutex<InstallerArgs>>();
@@ -82,6 +82,7 @@ fn run_inner() {
             let app_state = AppState { compressor };
             app.manage(app_state);
 
+           
             //
             let app_state = app.state::<AppState>();
             let installer_document = extract_data_inner(&app_state, &installer_args)?;
@@ -93,9 +94,11 @@ fn run_inner() {
                 window_infos: installer_document.window_infos.clone(),
                 prerequisites: installer_document.prerequisites.clone(),
             }));
-
+            
+println!("START");
             let project_state = init_project_state(&app_state)?;
             app.manage(Mutex::new(project_state));
+ println!("START"); 
 
             let install_window_info = if installer_args.status == InstallerStatus::Install {
                 installer_document.window_infos.installer_window
@@ -135,7 +138,8 @@ fn run_inner() {
             is_cancelled_command,
             install,
             uninstall_command,
-            clean_uninstall_command
+            clean_uninstall_command,
+            get_installer_args_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -39,3 +39,9 @@ export enum InstallCommands {
 export enum WindowCommands {
     CLOSE_CURRENT_WINDOW = 'close_current_window',
 }
+
+export enum InstallerArgsCommands {
+    GET_INSTALLER_ARGS_COMMAND = 'get_installer_args_command',
+}
+
+

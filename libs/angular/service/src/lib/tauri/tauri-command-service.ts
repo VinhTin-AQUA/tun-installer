@@ -3,6 +3,7 @@ import {
     CompressCommands,
     HtmlEngineCommands,
     InstallCommands,
+    InstallerArgsCommands,
     InstallerDocumentCommands,
     ProjectManagerCommands,
     ProjectStateCommands,
@@ -25,7 +26,8 @@ export class TauriCommandService {
             | HtmlEngineCommands
             | InstallerDocumentCommands
             | InstallCommands
-            | WindowCommands,
+            | WindowCommands
+            | InstallerArgsCommands,
         params: P,
     ): Promise<T | null> {
         try {

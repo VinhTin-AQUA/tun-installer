@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore, ProjectFolders, WindowInfoStore } from 'data-access';
+import { InstallerPropertyStore, PageType, ProjectFolders, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/store/project-store';
 import { LoadHtmlPage } from '../../core/models/load-html-pages';
@@ -9,6 +9,8 @@ import { Events as EventSystemConsts } from '../../core/consts/event.const';
 import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'service';
 import { ToastService, WindowService } from 'service';
 import { ApiContracts } from 'api-contracts';
+import { InstallerArgsService } from '../../core/services/installer-args-service';
+import { InstallerArgs, InstallerStatus } from '../../core/models/installer-args';
 
 @Component({
     selector: 'app-html-engine',
@@ -19,8 +21,6 @@ import { ApiContracts } from 'api-contracts';
 export class HtmlEngine {
     @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
 
-    // htmlPages: HtmlPage[] = [];
-    index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
     windowInfoStore = inject(WindowInfoStore);
     progress = signal<number>(0);
@@ -45,6 +45,9 @@ export class HtmlEngine {
 
     projectStore = inject(ProjectStore);
     unlisten: any;
+    installerArgs: InstallerArgs = { status: InstallerStatus.Install };
+    width = signal<number>(800);
+    height = signal<number>(600);
 
     constructor(
         private tauriCommandService: TauriCommandService,
@@ -52,6 +55,7 @@ export class HtmlEngine {
         private installerService: InstallerService,
         private tauriEventService: TauriEventService,
         private windowService: WindowService,
+        private installerArgsService: InstallerArgsService,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -66,8 +70,19 @@ export class HtmlEngine {
         //     productVersion: '1.0.1',
         // });
 
-        console.log(this.windowInfoStore.installerWindow().width);
-        console.log(this.windowInfoStore.installerWindow().height);
+        const installerArgs = await this.installerArgsService.getInstallerArgs();
+
+        if (installerArgs) {
+            this.installerArgs = installerArgs;
+
+            if (installerArgs.status === InstallerStatus.Install) {
+                this.width.set(this.windowInfoStore.installerWindow().width);
+                this.height.set(this.windowInfoStore.installerWindow().height);
+            } else {
+                this.width.set(this.windowInfoStore.uninstallerWindow().width);
+                this.height.set(this.windowInfoStore.uninstallerWindow().height);
+            }
+        }
     }
 
     async ngAfterViewInit() {
@@ -86,7 +101,10 @@ export class HtmlEngine {
         }
 
         this.firstInstallPages.set(pages);
-        this.loadPage(pages[0].name, 'firstInstall');
+
+        if (this.installerArgs.status === InstallerStatus.Install) {
+            this.loadPage(this.windowInfoStore.installerWindow().startPage, 'firstInstall');
+        }
     }
 
     private async loadMaintenancePages() {
@@ -101,7 +119,9 @@ export class HtmlEngine {
         }
 
         this.maintenancePages.set(pages);
-        // this.loadPage();
+        if (this.installerArgs.status === InstallerStatus.Uninstall) {
+            this.loadPage(this.windowInfoStore.uninstallerWindow().startPage, 'maintenance');
+        }
     }
 
     async loadPages() {
@@ -110,7 +130,7 @@ export class HtmlEngine {
 
     /* ================ api implements ================= */
 
-    loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
+    loadPage(pageName: string, type: PageType) {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
@@ -146,7 +166,7 @@ export class HtmlEngine {
         iframeEl.srcdoc = page.content;
     }
 
-    navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
+    navigateTo(pageName: string, type: PageType) {
         this.loadPage(pageName, type);
     }
 

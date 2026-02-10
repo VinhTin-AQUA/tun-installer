@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use service::Compressor;
 
 use crate::{adapters::TauriProgressReporter, enums::InstallerStatus};
@@ -10,7 +11,7 @@ pub struct AppState {
     pub compressor: Arc<Compressor<TauriProgressReporter>>,
 }
 
-#[derive(Parser, Debug, Clone)]
+#[derive(Serialize, Deserialize,Parser, Debug, Clone)]
 pub struct InstallerArgs {
     #[arg(long, value_enum, default_value_t = InstallerStatus::Install)]
     pub status: InstallerStatus,
