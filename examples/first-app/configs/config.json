@@ -1,10 +1,10 @@
 {
   "properties": {
-    "installationLocation": "C:\\Program Files\\Newtun\\First App",
-    "productName": "First App",
+    "installationLocation": "C:\\Program Files\\Newtunrwerw\\First Ap3rw3rw",
+    "productName": "First Ap3rw3rw",
     "icon": "icon.ico",
     "productVersion": "1.0.0",
-    "publisher": "Newtun",
+    "publisher": "Newtunrwerw",
     "supportLink": "https://support.mycompany.com",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
@@ -15,23 +15,23 @@
       "isCreated": true,
       "runAsAdmin": false,
       "shortcutName": "First App",
-      "runFile": "FirstApp.exe"
+      "runFile": "start.txt"
     },
     "shortcutInApplicationShortcut": {
       "isCreated": true,
       "runAsAdmin": false,
       "shortcutName": "First App",
-      "runFile": "FirstApp.exe"
+      "runFile": "start.txt"
     }
   },
   "registryKeys": {
     "configRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtun\\First App",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtunrwerw\\First Ap3rw3rw",
       "values": [
         {
           "name": "InstallPath",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First App",
+          "data": "C:\\Program Files\\Newtunrwerw\\First Ap3rw3rw",
           "default": true
         },
         {
@@ -43,24 +43,24 @@
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "First App",
+          "data": "First Ap3rw3rw",
           "default": true
         }
       ]
     },
     "uninstallRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First App",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First Ap3rw3rw",
       "values": [
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "First App",
+          "data": "First Ap3rw3rw",
           "default": true
         },
         {
           "name": "Publisher",
           "type": "REG_SZ",
-          "data": "Newtun",
+          "data": "Newtunrwerw",
           "default": true
         },
         {
@@ -72,7 +72,7 @@
         {
           "name": "UninstallString",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First App\\uninstall.exe",
+          "data": "C:\\Program Files\\Newtunrwerw\\First Ap3rw3rw\\uninstall.exe",
           "default": true
         },
         {

@@ -75,7 +75,7 @@ pub fn remove_shortcuts(app_name: &str) -> Result<()> {
         // Start Menu / Programs
         if let Ok(programs) = known_folder(&FOLDERID_Programs) {
             let mut path = programs;
-            path.push(format!("{app_name}.lnk"));
+            path.push(format!("{}.lnk", app_name));
             let _ = std::fs::remove_file(path);
         }
     }

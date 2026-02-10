@@ -12,7 +12,7 @@ import {
     WindowInfoStore,
 } from 'data-access';
 import { ProjectManagerCommands, TauriCommandService } from 'service';
-import { form, required } from '@angular/forms/signals';
+import { form, readonly, required } from '@angular/forms/signals';
 import {
     InstallerConfig,
     SaveInstallerConfig,
@@ -36,6 +36,7 @@ export class ProjectManagerService {
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
+        readonly(f.installationLocation);
         required(f.productName, { message: 'Product Name is required' });
         // required(f.icon);
         required(f.productVersion, { message: 'Product Version is required' });
@@ -73,8 +74,6 @@ export class ProjectManagerService {
                     shortcutInApplicationShortcut:
                         this.installerPropertyDataModel().shortcutInApplicationShortcut,
                 });
-
-                this.installerPropertyDataForm.installationLocation().setControlValue(`C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}`)
 
                 const configRegistry: RegistryValue[] = [
                     {

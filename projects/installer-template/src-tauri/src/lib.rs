@@ -1,29 +1,63 @@
 mod adapters;
 mod bootstrapper;
 mod commands;
+mod enums;
 mod events;
 mod helpers;
 mod services;
 mod states;
 
+use clap::Parser;
 use commands::*;
 use domain::InstallerDocument;
 use service::Compressor;
-use std::sync::Arc;
+use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, sync::Arc};
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use tokio::sync::Mutex;
 
 use crate::{
     adapters::TauriProgressReporter,
     bootstrapper::{extract_data_inner, init_project_state},
-    states::app_state::AppState,
+    enums::InstallerStatus,
+    states::{app_state::AppState, InstallerArgs},
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // extract
+    // Catch panic toàn cục
+    panic::set_hook(Box::new(|panic_info| {
+        let msg = if let Some(s) = panic_info.payload().downcast_ref::<&str>() {
+            s.to_string()
+        } else if let Some(s) = panic_info.payload().downcast_ref::<String>() {
+            s.clone()
+        } else {
+            "Unknown panic".to_string()
+        };
 
-    // get config
+        let location = panic_info
+            .location()
+            .map(|l| format!("{}:{}", l.file(), l.line()))
+            .unwrap_or_else(|| "unknown location".into());
+
+        log_to_file(&format!(
+            "[PANIC]\nMessage: {}\nLocation: {}\n",
+            msg, location
+        ));
+    }));
+
+    // Bọc toàn bộ app bằng catch_unwind
+    let result = panic::catch_unwind(|| {
+        run_inner();
+    });
+
+    if let Err(err) = result {
+        log_to_file(&format!("[FATAL] Application crashed: {:?}\n", err));
+    }
+}
+
+fn run_inner() {
+    let installer_args = InstallerArgs::parse();
+    println!("{:?}", installer_args);
 
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
@@ -39,14 +73,20 @@ pub fn run() {
             let start = std::time::Instant::now();
             println!("START");
 
+            app.manage(Mutex::new(installer_args));
+            let installer_args = app.state::<tokio::sync::Mutex<InstallerArgs>>();
+            let installer_args = installer_args.blocking_lock(); 
+
             let reporter = TauriProgressReporter::new(app.handle().clone());
             let compressor = Arc::new(Compressor::new(reporter));
             let app_state = AppState { compressor };
             app.manage(app_state);
 
-            let state = app.state::<AppState>();
-            let installer_document = extract_data_inner(&state)?;
+            //
+            let app_state = app.state::<AppState>();
+            let installer_document = extract_data_inner(&app_state, &installer_args)?;
 
+            //
             app.manage(Mutex::new(InstallerDocument {
                 properties: installer_document.properties.clone(),
                 registry_keys: installer_document.registry_keys.clone(),
@@ -54,18 +94,19 @@ pub fn run() {
                 prerequisites: installer_document.prerequisites.clone(),
             }));
 
-            let project_state = init_project_state(&state)?;
+            let project_state = init_project_state(&app_state)?;
             app.manage(Mutex::new(project_state));
 
-            let install_window_info = installer_document.window_infos.installer_window;
+            let install_window_info = if installer_args.status == InstallerStatus::Install {
+                installer_document.window_infos.installer_window
+            } else {
+                installer_document.window_infos.uninstaller_window
+            };
 
             // let webview_window =
             WebviewWindowBuilder::new(app.handle(), "main", WebviewUrl::App("/".into()))
                 .title(install_window_info.title)
-                .inner_size(
-                    install_window_info.width,
-                    install_window_info.height,
-                )
+                .inner_size(install_window_info.width, install_window_info.height)
                 .resizable(false)
                 .fullscreen(false)
                 .decorations(true)
@@ -98,4 +139,17 @@ pub fn run() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+fn log_to_file(message: &str) {
+    let exe_dir: PathBuf = std::env::current_exe()
+        .ok()
+        .and_then(|p| p.parent().map(|p| p.to_path_buf()))
+        .unwrap_or_else(|| PathBuf::from("."));
+
+    let log_path = exe_dir.join("error.log");
+
+    if let Ok(mut file) = OpenOptions::new().create(true).append(true).open(log_path) {
+        let _ = writeln!(file, "{}", message);
+    }
 }

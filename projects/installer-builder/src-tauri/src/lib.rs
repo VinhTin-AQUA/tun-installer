@@ -4,20 +4,25 @@ mod helpers;
 mod models;
 mod services;
 mod states;
-use std::sync::Arc;
+use std::{env, sync::Arc};
 
 use commands::*;
 use service::Compressor;
 use tauri::Manager;
 use tokio::sync::Mutex;
+use clap::Parser;
 
 use crate::{
     adapters::TauriProgressReporter,
+    models::Args,
     states::{app_state::AppState, ProjectState},
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let args = Args::parse();
+    println!("{:?}", args);
+
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {

@@ -16,8 +16,7 @@
 pub mod project_manager_model;
 pub use project_manager_model::*;
 
-// pub mod window_info;
-// pub use window_info::*;
+pub mod app_model;
+pub use app_model::*;
 
-// pub mod prerequisite;
-// pub use prerequisite::*;
+

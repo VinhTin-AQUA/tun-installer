@@ -157,3 +157,10 @@ project-names
 
 // /media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app
 // C:/Users/tinhv/Desktop/f/tun-installer/examples/first-app
+
+
+## Chạy exe với tham số
+
+```bash
+installer_builder.exe --debug-mode --channel beta --env production
+```

@@ -7,9 +7,12 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Installation Location</label>
                 <input
-                    [field]="installerPropertyDataForm.installationLocation"
+                    [value]="
+                        `${installerPropertyDataForm.installationLocation().value()}\\${installerPropertyDataForm.publisher().value()}\\${installerPropertyDataForm.productName().value()}`
+                    "
+                    readonly
                     class="input"
-                    placeholder="C:/ProgramFiles"
+                    placeholder="C:/Program Files"
                 />
 
                 @if (
