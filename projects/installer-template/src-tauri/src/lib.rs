@@ -136,7 +136,8 @@ fn run_inner() {
             install,
             uninstall_command,
             clean_uninstall_command,
-            get_installer_args_command
+            get_installer_args_command,
+            close_current_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

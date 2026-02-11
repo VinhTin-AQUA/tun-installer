@@ -94,7 +94,7 @@ pub fn create_default_installer_document() -> InstallerDocument {
                        RegistryValue {
                         name: "UninstallString".into(),
                         value_type: RegistryValueType::Sz,
-                        data: "C:\\Program Files\\MyCompany\\MyApp\\uninstall.exe".into(),
+                        data: "C:\\Program Files\\MyCompany\\MyApp\\uninstall.exe --status uninstall".into(),
                         default: true,
                     },
                 ],

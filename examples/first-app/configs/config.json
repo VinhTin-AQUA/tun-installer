@@ -72,7 +72,7 @@
         {
           "name": "UninstallString",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First App\\uninstall.exe",
+          "data": "C:\\Program Files\\Newtun\\First App\\uninstall.exe --status uninstall",
           "default": true
         },
         {

@@ -3,9 +3,10 @@ use std::process::Command;
 use domain::InstallerDocument;
 use tauri::{command, State};
 use tokio::sync::Mutex;
+use std::{env};
 
 use crate::{
-    helpers::clear_dir_best_effort,
+    helpers::{clear_dir_best_effort, remove_dir_all},
     services::{remove_registry, remove_shortcuts},
 };
 
@@ -17,6 +18,9 @@ pub async fn uninstall_command(
     let app_dir = installer_document.clone().properties.installation_location;
     let registries = installer_document.registry_keys.clone();
     let properties = installer_document.properties.clone();
+    
+    let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
+    let temp_app_dir_to_delete_temp_folder = temp_app_dir.clone();
 
     let forbidden = [
         "C:\\Windows",
@@ -52,17 +56,19 @@ pub async fn uninstall_command(
     println!("delete shortcut");
     let _ = remove_shortcuts(&properties.product_name);
 
+     _ = remove_dir_all(temp_app_dir_to_delete_temp_folder).await;
+
     // Spawn cmd to delete app folder after exit
     println!("Spawn cmd to delete app folder after exit");
-    // let cmd = format!(
-    //     r#"/C ping 127.0.0.1 -n 3 > nul && rmdir /s /q "{}""#,
-    //     app_dir
-    // );
+    let cmd = format!(
+        r#"/C ping 127.0.0.1 -n 5 > nul && rmdir /s /q "{}""#,
+        app_dir
+    );
 
-    // let _ = Command::new("cmd")
-    //     .args(["/C", &cmd])
-    //     .spawn()
-    //     .map_err(|x| x.to_string());
+    let _ = Command::new("cmd")
+        .args(["/C", &cmd])
+        .spawn()
+        .map_err(|x| x.to_string());
 
     Ok(true)
 }
@@ -87,14 +93,9 @@ pub async fn clean_uninstall_command(
     }
 
     // Kill app
-    let app_exe_name = &installer_document.properties.product_name;
-    let _ = Command::new("taskkill")
-        .args(["/IM", app_exe_name, "/F", "/T"])
-        .status();
-
-    // Spawn cmd to delete app folder after exit
+        println!("Spawn cmd to delete app folder after exit");
     let cmd = format!(
-        r#"/C ping 127.0.0.1 -n 3 > nul && rmdir /s /q "{}""#,
+        r#"/C ping 127.0.0.1 -n 5 > nul && rmdir /s /q "{}""#,
         app_dir
     );
 

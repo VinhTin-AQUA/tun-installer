@@ -18,3 +18,6 @@ pub use uninstall_commands::*;
 
 pub mod installer_args_commands;
 pub use installer_args_commands::*;
+
+pub mod window_commands;
+pub use window_commands::*;

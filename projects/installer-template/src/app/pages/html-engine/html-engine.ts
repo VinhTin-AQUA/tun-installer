@@ -144,7 +144,7 @@ export class HtmlEngine {
                 this.finishInstall.bind(this),
 
                 this.uninstall.bind(this),
-                this.finishUnintall.bind(this),
+                this.finishUninstall.bind(this),
 
                 this.data,
             );
@@ -227,7 +227,7 @@ export class HtmlEngine {
         }
     }
 
-    async finishUnintall() {
+    async finishUninstall() {
         await this.windowService.closeCurrentWindow();
     }
 

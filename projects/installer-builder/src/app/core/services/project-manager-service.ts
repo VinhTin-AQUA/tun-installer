@@ -118,7 +118,7 @@ export class ProjectManagerService {
                     {
                         name: 'UninstallString',
                         type: RegistryValueType.REG_SZ,
-                        data: `C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}\\uninstall.exe`,
+                        data: `C:\\Program Files\\${this.installerPropertyDataModel().publisher}\\${this.installerPropertyDataModel().productName}\\uninstall.exe  --status uninstall`,
                         default: true,
                     },
                 ];
