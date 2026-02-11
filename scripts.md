@@ -55,6 +55,12 @@
     cargo new shared-lib --lib
     ```
 
+- run project
+
+    ```bash
+    cargo run -p cleaner
+    ```
+
 ### Add prop binding in template
 
 ## Project Structure
