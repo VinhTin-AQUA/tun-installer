@@ -1,3 +1,6 @@
+@REM build lib
+call npm run build-all-lib
+
 @REM build exe template
 call npm run tauri:build:template
 

@@ -6,6 +6,7 @@ pub fn create_shortcuts(
     target: &str,
     args: Option<&str>,
     icon: Option<&str>,
+    run_as_admin: bool,
 ) -> Result<()> {
     Ok(())
 }

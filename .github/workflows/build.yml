@@ -58,11 +58,8 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            - name: Build libs
-              run: npm run build-all-lib
-
-            - name: Build exe template
-              run: npm run tauri:build:template
+            - name: Build
+              run: build_window.bat
 
             - name: Rename exe template file
               shell: cmd
@@ -76,20 +73,17 @@ jobs:
                   name: exe-template
                   path: target\x86_64-pc-windows-msvc\release\${{ env.EXE_TEMPLATE_FILE_NAME }}
 
-            - name: Build tun-installer
-              run: npm run tauri:build:builder
-
             - name: Rename exe tun-installer file
               shell: cmd
               run: |
-                  set "dir=target\x86_64-pc-windows-msvc\release"
-                  ren "%dir%\installer_builder.exe" "%EXE_TUN_INSTALLER%"
+                  set "dir=target\release\bundle\nsis"
+                  ren "%dir%\Tun Installer_0.1.0_x64-setup.exe" "%EXE_TUN_INSTALLER%"
 
             - name: Upload tun-installer artifact
               uses: actions/upload-artifact@v4
               with:
                   name: tun-installer
-                  path: target\x86_64-pc-windows-msvc\release\${{ env.EXE_TUN_INSTALLER }}
+                  path: target\release\bundle\nsis\${{ env.EXE_TUN_INSTALLER }}
 
     publish-release:
         runs-on: windows-latest
