@@ -1,8 +1,8 @@
 {
     "$schema": "../../../node_modules/@tauri-apps/cli/config.schema.json",
-    "productName": "Installer Builder",
+    "productName": "Tun Installer",
     "version": "0.1.0",
-    "identifier": "com.newtun.installerbuilder",
+    "identifier": "com.newtun.tuninstaller",
     "build": {
         "frontendDist": "../../../dist/installer-builder/browser",
         "devUrl": "http://localhost:4200",
@@ -12,7 +12,7 @@
     "app": {
         "windows": [
             {
-                "title": "Installer Builder",
+                "title": "Tun Installer",
                 "width": 600,
                 "height": 400,
                 "resizable": true,
@@ -28,7 +28,7 @@
     },
     "bundle": {
         "active": true,
-        "targets": "all",
+        "targets": "nsis",
         "icon": [
             "icons/32x32.png",
             "icons/128x128.png",
@@ -36,6 +36,12 @@
             "icons/icon.icns",
             "icons/icon.ico"
         ],
-        "resources": ["resources/"]
+        "resources": ["resources/"],
+        "windows": {
+            "nsis": {
+                "installMode": "perMachine",
+                "installerIcon": "icons/icon.ico"
+            }
+        }
     }
 }

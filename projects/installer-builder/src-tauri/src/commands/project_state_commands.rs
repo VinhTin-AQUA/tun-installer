@@ -17,8 +17,11 @@ pub async fn update_project_state_command(
     project_state.config_file = data.config_file;
     project_state.project_file = data.project_file;
     project_state.project_dir = data.project_dir;
+    project_state.project_name = data.project_name;
 
     project_state.is_dirty = data.is_dirty;
+
+    println!("project_state = {:?}", project_state);
     Ok(Some(true))
 }
 

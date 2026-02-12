@@ -1,6 +1,6 @@
 use domain::{InstallerDocument, CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
 use helpers::get_current_exe;
-use std::{env, path::PathBuf};
+use std::{env};
 
 use crate::{
     enums::InstallerStatus,

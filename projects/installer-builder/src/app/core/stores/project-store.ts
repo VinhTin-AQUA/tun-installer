@@ -30,6 +30,7 @@ export const ProjectStore = signalStore(
                 projectDir: `${baseDir}/${projectName}`,
                 configFile: `${baseDir}/${projectName}/${ProjectFolders.configs}/config.json`,
                 projectFile: `${baseDir}/${projectName}/${projectName}.tunins`,
+                projectName: projectName,
                 isDirty: false,
             }));
         }

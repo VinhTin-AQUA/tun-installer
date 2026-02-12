@@ -29,7 +29,7 @@ pub async fn compress_installer_command(
     drop(project_state); // 🔥 tránh giữ lock quá lâu
 
     // ---- Prepare paths ----
-    let mut paths: Vec<PathBuf> = vec![
+    let paths: Vec<PathBuf> = vec![
         PathBuf::from(config_dir.clone()),
         PathBuf::from(page_dir),
         PathBuf::from(prerequisite_dir),
@@ -45,7 +45,7 @@ pub async fn compress_installer_command(
         .to_string_lossy()
         .to_string();
 
-    let output_dir = PathBuf::from(format!("{}{}", project_dir, "output"));
+    let output_dir = PathBuf::from(project_dir.clone()).join("output");
 
     copy_file_to_dir(exe_template, output_dir.clone(), exe_template_name.clone())
         .await
