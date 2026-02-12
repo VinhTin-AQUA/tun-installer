@@ -62,12 +62,6 @@
         "path": "./libs/angular/service/tsconfig.spec.json"
       },
       {
-        "path": "./libs/angular/tauri/tsconfig.lib.json"
-      },
-      {
-        "path": "./libs/angular/tauri/tsconfig.spec.json"
-      },
-      {
         "path": "./libs/angular/api-contracts/tsconfig.lib.json"
       },
       {

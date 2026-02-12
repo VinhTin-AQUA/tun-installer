@@ -6,7 +6,6 @@ mod services;
 mod states;
 use std::{env, sync::Arc};
 
-use clap::Parser;
 use commands::*;
 use service::Compressor;
 use tauri::Manager;
@@ -14,7 +13,6 @@ use tokio::sync::Mutex;
 
 use crate::{
     adapters::TauriProgressReporter,
-    models::Args,
     states::{app_state::AppState, ProjectState},
 };
 
@@ -25,6 +23,7 @@ pub fn run() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(

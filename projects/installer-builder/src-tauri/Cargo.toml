@@ -39,6 +39,7 @@ zstd = "0.13"
 quick-xml = { version = "0.31", features = ["serialize"] }
 chrono = "0.4"
 clap = { version = "4.5", features = ["derive"] }
+tauri-plugin-shell = "2"
 
 domain = { path = "../../../libs/rust/domain" }
 service = { path = "../../../libs/rust/service" }

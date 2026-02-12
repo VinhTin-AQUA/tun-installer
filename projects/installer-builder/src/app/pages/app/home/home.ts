@@ -7,6 +7,7 @@ import { ProjectManagerService } from '../../../core/services/project-manager-se
 import { ProjectStateService } from '../../../core/services/project-state-service';
 import { DialogStore } from '../../../core/stores/dialog.store';
 import { FileHelper } from '../../../shared/helpers/file.helper';
+import { Command, open } from '@tauri-apps/plugin-shell';
 
 @Component({
     selector: 'app-home',
@@ -81,5 +82,9 @@ export class Home {
     openCreateNewProject() {
         this.openMenu = null;
         this.dialogStore.update({ createNewProjectDialog: true });
+    }
+
+    async openDocument() {
+        await open('https://github.com/VinhTin-AQUA/tun-installer/blob/main/README.md');
     }
 }
