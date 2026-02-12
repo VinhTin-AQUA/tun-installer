@@ -7,14 +7,16 @@ mod helpers;
 mod services;
 mod states;
 
-use ::helpers::get_current_exe;
 use clap::Parser;
 use commands::*;
 use domain::InstallerDocument;
+use ::helpers::get_current_exe;
 use service::Compressor;
 use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, process::Command, sync::Arc};
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use tokio::sync::Mutex;
+
+use runas::Command as RunasCommand;
 
 use crate::{
     adapters::TauriProgressReporter,
@@ -162,7 +164,7 @@ fn log_to_file(message: &str) {
 }
 
 fn is_admin() -> bool {
-    Command::new("net")
+    std::process::Command::new("net")
         .arg("session")
         .output()
         .map(|o| o.status.success())
@@ -170,17 +172,12 @@ fn is_admin() -> bool {
 }
 
 fn elevate() {
-    let exe_path = get_current_exe();
+    let exe = get_current_exe();
 
-    Command::new("powershell")
-        .args([
-            "Start-Process",
-            exe_path.to_str().unwrap(),
-            "-Verb",
-            "runAs",
-        ])
-        .spawn()
-        .unwrap();
+    RunasCommand::new(exe)
+        .gui(true) // không mở console
+        .status()
+        .expect("failed to elevate");
 
     std::process::exit(0);
 }

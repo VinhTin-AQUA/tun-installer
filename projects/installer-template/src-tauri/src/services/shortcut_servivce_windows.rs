@@ -10,11 +10,46 @@ pub fn create_shortcuts(
     target: &str,
     args: Option<&str>,
     icon: Option<&str>,
-    run_as_admin: bool, // <-- thêm tham số
+    run_as_admin: bool, // thêm tham số
 ) -> windows::core::Result<()> {
     unsafe {
         CoInitializeEx(None, COINIT_APARTMENTTHREADED).ok()?;
 
+        // Desktop public
+        let public_desktop = known_folder(&FOLDERID_PublicDesktop)?;
+        create_one_shortcut(
+            &public_desktop.join(format!("{app_name}.lnk")),
+            target,
+            args,
+            icon,
+            run_as_admin,
+        )?;
+
+        // Start menu common
+        let common_programs = known_folder(&FOLDERID_CommonPrograms)?;
+        create_one_shortcut(
+            &common_programs.join(format!("{app_name}.lnk")),
+            target,
+            args,
+            icon,
+            run_as_admin,
+        )?;
+
+        CoUninitialize();
+    }
+
+    Ok(())
+}
+
+fn create_one_shortcut(
+    shortcut_path: &PathBuf,
+    target: &str,
+    args: Option<&str>,
+    icon: Option<&str>,
+    run_as_admin: bool,
+) -> windows::core::Result<()> {
+    unsafe {
+        // TẠO MỚI ShellLink cho từng shortcut (rất quan trọng)
         let shell_link: IShellLinkW = CoCreateInstance(&ShellLink, None, CLSCTX_INPROC_SERVER)?;
 
         shell_link.SetPath(&HSTRING::from(target))?;
@@ -27,29 +62,21 @@ pub fn create_shortcuts(
             shell_link.SetIconLocation(&HSTRING::from(icon_path), 0)?;
         }
 
-        // ===== THÊM PHẦN RUN AS ADMIN =====
+        // ===== RUN AS ADMIN =====
         if run_as_admin {
             let data_list: IShellLinkDataList = shell_link.cast()?;
-
-            // GetFlags trả về u32
             let mut flags = data_list.GetFlags()?;
-
-            // Cast sang u32 trước khi OR
             flags |= SLDF_RUNAS_USER.0 as u32;
-
             data_list.SetFlags(flags)?;
         }
-        // ===================================
+        // =========================
 
         let persist: IPersistFile = shell_link.cast()?;
 
-        let public_desktop = known_folder(&FOLDERID_PublicDesktop)?;
-        save_link(&persist, &public_desktop, app_name)?;
-
-        let common_programs = known_folder(&FOLDERID_CommonPrograms)?;
-        save_link(&persist, &common_programs, app_name)?;
-
-        CoUninitialize();
+        persist.Save(
+            &HSTRING::from(shortcut_path.to_string_lossy().to_string()),
+            true,
+        )?;
     }
 
     Ok(())
@@ -60,19 +87,6 @@ fn known_folder(id: &GUID) -> windows::core::Result<PathBuf> {
         let path = SHGetKnownFolderPath(id, KNOWN_FOLDER_FLAG(0), HANDLE(0))?;
         Ok(PathBuf::from(path.to_string()?))
     }
-}
-
-fn save_link(persist: &IPersistFile, dir: &PathBuf, name: &str) -> windows::core::Result<()> {
-    let link_path = dir.join(format!("{name}.lnk"));
-
-    unsafe {
-        persist.Save(
-            &HSTRING::from(link_path.to_string_lossy().to_string()),
-            true,
-        )?;
-    }
-
-    Ok(())
 }
 
 pub fn remove_shortcuts(app_name: &str) -> Result<()> {
