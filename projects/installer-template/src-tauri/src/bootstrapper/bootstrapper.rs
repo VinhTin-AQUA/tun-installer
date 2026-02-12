@@ -1,4 +1,5 @@
 use domain::{InstallerDocument, CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
+use helpers::get_current_exe;
 use std::{env, path::PathBuf};
 
 use crate::{
@@ -20,7 +21,7 @@ pub fn extract_data_inner(
 
 pub fn init_project_state(app_state: &AppState) -> Result<ProjectState, String> {
     let compressor = app_state.compressor.clone();
-    let exe_path_buf = get_exe_path();
+    let exe_path_buf = get_current_exe();
 
     let installer_document: InstallerDocument = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
@@ -62,7 +63,7 @@ pub fn init_project_state(app_state: &AppState) -> Result<ProjectState, String> 
 
 fn extract_installer_res(app_state: &AppState) -> Result<InstallerDocument, String> {
     let compressor = app_state.compressor.clone();
-    let exe_path_buf = get_exe_path();
+    let exe_path_buf = get_current_exe();
 
     let installer_document: InstallerDocument = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
@@ -91,7 +92,7 @@ fn extract_installer_res(app_state: &AppState) -> Result<InstallerDocument, Stri
 
 fn extract_uninstaller_res(app_state: &AppState) -> Result<InstallerDocument, String> {
     let compressor = app_state.compressor.clone();
-    let exe_path_buf = get_exe_path();
+    let exe_path_buf = get_current_exe();
 
     let installer_document: InstallerDocument = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
@@ -113,9 +114,3 @@ fn extract_uninstaller_res(app_state: &AppState) -> Result<InstallerDocument, St
     Ok(installer_document)
 }
 
-fn get_exe_path() -> PathBuf {
-    let exe_path_buf = std::env::current_exe().expect("Không lấy được đường dẫn file exe");
-    // let exe_path_buf = PathBuf::from("C:/Users/tinhv/Downloads/exe_template_v1.0.0.exe");
-
-    exe_path_buf
-}

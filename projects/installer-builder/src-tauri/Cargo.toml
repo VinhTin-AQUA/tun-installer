@@ -42,4 +42,5 @@ clap = { version = "4.5", features = ["derive"] }
 
 domain = { path = "../../../libs/rust/domain" }
 service = { path = "../../../libs/rust/service" }
+helpers = { path = "../../../libs/rust/helpers" }
 

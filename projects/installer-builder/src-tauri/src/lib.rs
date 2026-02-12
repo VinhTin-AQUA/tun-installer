@@ -8,14 +8,12 @@ use std::{env, sync::Arc};
 
 use commands::*;
 use service::Compressor;
-use tauri::Manager;
+use tauri::{Manager, path::BaseDirectory};
 use tokio::sync::Mutex;
 use clap::Parser;
 
 use crate::{
-    adapters::TauriProgressReporter,
-    models::Args,
-    states::{app_state::AppState, ProjectState},
+    adapters::TauriProgressReporter, helpers::resource_path, models::Args, states::{ProjectState, app_state::AppState}
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -33,6 +31,7 @@ pub fn run() {
                         .build(),
                 )?;
             }
+
             app.manage(Mutex::new(ProjectState::default()));
 
             let reporter = TauriProgressReporter::new(app.handle().clone());

@@ -43,3 +43,5 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+projects/installer-builder/src-tauri/resources/exe_template_v1.0.0.exe

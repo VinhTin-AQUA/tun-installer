@@ -7,11 +7,12 @@ mod helpers;
 mod services;
 mod states;
 
+use ::helpers::get_current_exe;
 use clap::Parser;
 use commands::*;
 use domain::InstallerDocument;
 use service::Compressor;
-use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, sync::Arc};
+use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, process::Command, sync::Arc};
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use tokio::sync::Mutex;
 
@@ -68,6 +69,10 @@ fn run_inner() {
                         .level(log::LevelFilter::Info)
                         .build(),
                 )?;
+            }
+
+            if !is_admin() {
+                elevate();
             }
 
             let start = std::time::Instant::now();
@@ -154,4 +159,28 @@ fn log_to_file(message: &str) {
     if let Ok(mut file) = OpenOptions::new().create(true).append(true).open(log_path) {
         let _ = writeln!(file, "{}", message);
     }
+}
+
+fn is_admin() -> bool {
+    Command::new("net")
+        .arg("session")
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false)
+}
+
+fn elevate() {
+    let exe_path = get_current_exe();
+
+    Command::new("powershell")
+        .args([
+            "Start-Process",
+            exe_path.to_str().unwrap(),
+            "-Verb",
+            "runAs",
+        ])
+        .spawn()
+        .unwrap();
+
+    std::process::exit(0);
 }

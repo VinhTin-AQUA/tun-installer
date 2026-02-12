@@ -164,9 +164,13 @@ project-names
 // /media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app
 // C:/Users/tinhv/Desktop/f/tun-installer/examples/first-app
 
-
 ## Chạy exe với tham số
 
 ```bash
 exe_template_v1.0.0.exe --status uninstall
 ```
+
+### rcedit-x64.exe
+
+- Chỉnh sửa resource của file exe
+- link: https://github.com/electron/rcedit

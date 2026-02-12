@@ -1,4 +1,5 @@
 use domain::{event_consts, InstallerDocument, PREREQUISITE_DIR, RESOURCES_DIR};
+use helpers::{copy_file_to_dir, get_current_exe};
 use service::Progress;
 use std::{env, path::PathBuf};
 use tauri::{command, AppHandle, State};
@@ -25,8 +26,9 @@ pub async fn install(
     //     PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app");
 
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
-    let exe_path_buf = std::env::current_exe().map_err(|e| e.to_string())?;
-    // let exe_path_buf = PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app/template.exe");
+    let exe_path_buf = get_current_exe();
+    let exe_path_buf_to_copy = exe_path_buf.clone();
+    
     let temp_app_dir_to_delete_temp_folder = temp_app_dir.clone();
 
     let resource_path_buf = temp_app_dir.clone().join(RESOURCES_DIR);
@@ -64,6 +66,8 @@ pub async fn install(
         .await
         .map_err(|e| e.to_string());
 
+    let _ = copy_file_to_dir(&exe_path_buf_to_copy, &installation_location, "uninstall.exe").await;
+
     // installer prerequisites
     let prerequisites = installer_document.prerequisites.clone();
     for prerequisite in prerequisites {
@@ -94,18 +98,13 @@ pub async fn install(
                 .clone(),
         ),
     );
-    let icon = installation_location.join(
-        installer_document
-            .properties
-            .icon
-            .clone(),
-    );
+    let icon = installation_location.join(installer_document.properties.icon.clone());
     _ = create_shortcuts(
         &installer_document.properties.product_name.clone(), // tên shortcut
         &run_app_file.to_string_lossy().to_string(),
         None,
-        Some(&icon.to_string_lossy().to_string()), // icon
-                                                   // Some(r"C:\Users\tinhv\Desktop\labtest-offline-setup\build\out\icon.ico") // icon
+        Some(&icon.to_string_lossy().to_string()), 
+        installer_document.properties.shortcut_in_desktop.run_as_admin
     )
     .map_err(|x| x.to_string())?;
 

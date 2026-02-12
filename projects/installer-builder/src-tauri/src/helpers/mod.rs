@@ -1,2 +1,2 @@
-pub mod xml_helper;
-pub use xml_helper::*;
+pub mod resource_helper;
+pub use resource_helper::*;

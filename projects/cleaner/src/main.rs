@@ -39,15 +39,32 @@ async fn main() -> io::Result<()> {
     //======================
 
     //=== copy file vao thu muc khac
-    let source = "scripts.md";
 
-    copy_file_to_dir(
-        source,
-        "backup/2026/02/11",
-        "main.ts"
-    ).await?;
+    // let source = "scripts.md";
+
+    // copy_file_to_dir(
+    //     source,
+    //     "backup/2026/02/11",
+    //     "main.ts"
+    // ).await?;
 
     //======================
+
+    //=== doi icon
+
+    // let exe_path = "C:/Users/tinhv/Downloads/test.exe";
+    // let icon_path = "C:/Users/tinhv/Downloads/earth.ico";
+
+    // set_exe_icon(exe_path, icon_path).unwrap();
+
+    //======================
+
+    //=== doi ten file
+
+    // rename_file("C:/Users/tinhv/Downloads/test.exe", "new.exe").await?;
+    // rename_file_keep_dir("C:/Users/tinhv/Downloads/test.exe", "new.exe").await?;
+
+    //======================n
 
     Ok(())
 }
@@ -123,4 +140,57 @@ pub async fn copy_file_to_dir(
 
     // Copy file
     fs::copy(source, &destination).await
+}
+
+fn set_exe_icon(exe_path: &str, icon_path: &str) -> Result<(), String> {
+    let status = Command::new("C:/Users/tinhv/Desktop/f/tun-installer/rcedit.exe")
+        .arg(exe_path)
+        .arg("--set-icon")
+        .arg(icon_path)
+        .status()
+        .map_err(|e| format!("Không chạy được rcedit: {}", e))?;
+
+    if status.success() {
+        Ok(())
+    } else {
+        Err("rcedit chạy nhưng đổi icon thất bại".to_string())
+    }
+}
+
+fn refresh_icon_cache() {
+    Command::new("ie4uinit.exe")
+        .arg("-ClearIconCache")
+        .status()
+        .ok();
+
+    Command::new("ie4uinit.exe").arg("-show").status().ok();
+}
+
+pub async fn rename_file(old_path: &str, new_path: &str) -> io::Result<()> {
+    if !Path::new(old_path).exists() {
+        return Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "File nguồn không tồn tại",
+        ));
+    }
+
+    fs::rename(old_path, new_path).await?;
+    Ok(())
+}
+
+pub async fn rename_file_keep_dir(
+    old_path: &str,
+    new_file_name: &str,
+) -> io::Result<()> {
+    let old_path = Path::new(old_path);
+
+    // Lấy thư mục cha
+    let parent_dir = old_path
+        .parent()
+        .ok_or_else(|| io::Error::new(io::ErrorKind::Other, "Không tìm thấy thư mục cha"))?;
+
+    // Tạo đường dẫn mới = thư mục cũ + tên file mới
+    let new_path: PathBuf = parent_dir.join(new_file_name);
+
+    fs::rename(old_path, new_path).await
 }

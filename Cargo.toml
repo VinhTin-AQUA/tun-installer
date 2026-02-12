@@ -5,5 +5,5 @@ members = [
   "projects/installer-builder/src-tauri", 
   "projects/cleaner", 
   "libs/rust/domain", 
-  "libs/rust/service", 
+  "libs/rust/service", "libs/rust/helpers", 
 ]
