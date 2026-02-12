@@ -7,6 +7,8 @@ import { ProjectStore } from '../../../core/stores/project-store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ProjectStateService } from '../../../core/services/project-state-service';
 import { ToastService } from 'service';
+import { Router } from '@angular/router';
+import { MainRoutes } from '../../../core/enums/routes.enum';
 
 @Component({
     selector: 'app-create-new-project-dialog',
@@ -33,6 +35,7 @@ export class CreateNewProjectDialog {
         private toastService: ToastService,
         private projectManagerService: ProjectManagerService,
         private projectStateService: ProjectStateService,
+        private router: Router,
     ) {}
 
     closeDialog() {
@@ -69,5 +72,6 @@ export class CreateNewProjectDialog {
             baseDir: '',
             projectName: '',
         });
+        this.router.navigateByUrl(`${MainRoutes.Main}/${MainRoutes.ProductDetails}`);
     }
 }

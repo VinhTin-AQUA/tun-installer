@@ -59,6 +59,7 @@ jobs:
               run: npm install
 
             - name: Build
+              shell: cmd
               run: build_window.bat
 
             - name: Rename exe template file

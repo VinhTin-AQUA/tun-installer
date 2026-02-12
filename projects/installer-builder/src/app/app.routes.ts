@@ -4,13 +4,26 @@ import { HtmlEngine } from './pages/html-engine/html-engine';
 import { ProductDetails } from './pages/product-details/product-details';
 import { FilesAndFolders } from './pages/files-and-folders/files-and-folders';
 import { Registry } from './pages/registry/registry';
-import { MainRoutes } from './core/enums/routes.enum';
+import { AppRoutes, MainRoutes } from './core/enums/routes.enum';
 import { Settings } from './pages/settings/settings';
 import { PreviewInstallerUi } from './pages/preview-installer-ui/preview-installer-ui';
 import { BuildInstaller } from './pages/build-installer/build-installer';
 import { Prerequisites } from './pages/prerequisites/prerequisites';
+import { Home } from './pages/home/home';
+import { AppLayout } from './shared/layout/app-layout/app-layout';
 
 export const routes: Routes = [
+    {
+        path: AppRoutes.App,
+        component: AppLayout,
+        children: [
+            {
+                path: AppRoutes.Home,
+                component: Home,
+            },
+            { path: '', redirectTo: AppRoutes.Home, pathMatch: 'full' },
+        ],
+    },
     {
         path: MainRoutes.Main,
         component: MainLayout,
@@ -50,5 +63,5 @@ export const routes: Routes = [
         path: 'preview-installer-ui',
         component: PreviewInstallerUi,
     },
-    { path: '**', redirectTo: '' },
+    { path: '**', redirectTo: AppRoutes.App },
 ];

@@ -1,4 +1,13 @@
-<div class="h-screen flex flex-col bg-gray-100">
+
+
+
+@if (isLoading()) {
+    <div class="app-loading">
+        <p>Đang khởi tạo ứng dụng...</p>
+        <!-- spinner -->
+    </div>
+} @else {
+   <div class="h-screen flex flex-col bg-gray-100">
     <!-- Header -->
     <!-- <header class="h-10 bg-white shadow flex items-center gap-2 px-6 shrink-0">
         <h1 class="text-xl font-semibold">My App</h1>
@@ -13,7 +22,7 @@
         </div>
     </header> -->
 
-    <app-title-bar></app-title-bar>
+    <app-main-title-bar></app-main-title-bar>
 
     <!-- Body -->
     <div class="flex flex-1 overflow-hidden">
@@ -39,3 +48,4 @@
         </main>
     </div>
 </div>
+}
