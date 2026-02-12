@@ -4,7 +4,7 @@ export enum MainRoutes {
     ProductDetails = 'product-details',
     FilesAndFolders = 'files-and-folders',
     Registry = 'registry',
-    Settings = 'settings',
+
     BuildInstaller = 'build-installer',
     Prerequisites = 'prerequisites',
 }
@@ -12,4 +12,5 @@ export enum MainRoutes {
 export enum AppRoutes {
     App = 'app',
     Home = 'home',
+    Settings = 'settings',
 }

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Prerequisite, PrerequisiteStore } from 'data-access';
-import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ToastService } from 'service';
 
 @Component({

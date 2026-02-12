@@ -54,10 +54,6 @@ export class MainLayout {
                 name: 'menuSidebar.buildInstaller',
                 url: MainRoutes.BuildInstaller,
             },
-            {
-                name: 'menuSidebar.settings',
-                url: MainRoutes.Settings,
-            },
         ];
 
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {

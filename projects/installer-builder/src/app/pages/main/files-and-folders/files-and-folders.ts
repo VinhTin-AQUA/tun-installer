@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { FolderNode, FileItem } from '../../core/models/directory-tree';
+import { FolderNode, FileItem } from '../../../core/models/directory-tree';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'data-access';
-import { ProjectStore } from '../../core/stores/project-store';
-import { ResourceFiletore } from '../../core/stores/resource-file.store';
-import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { ResourceFiletore } from '../../../core/stores/resource-file.store';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ProjectManagerCommands, TauriCommandService } from 'service';
 
 @Component({

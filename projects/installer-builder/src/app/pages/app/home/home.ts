@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { FileHelper } from '../../shared/helpers/file.helper';
-import { ProjectManagerService } from '../../core/services/project-manager-service';
-import { ProjectStateService } from '../../core/services/project-state-service';
 import { InstallerPropertyStore } from 'data-access';
-import { DialogStore } from '../../core/stores/dialog.store';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import { Router } from '@angular/router';
-import { MainRoutes } from '../../core/enums/routes.enum';
+import { Router, RouterLink } from '@angular/router';
+import { AppRoutes, MainRoutes } from '../../../core/enums/routes.enum';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
+import { ProjectStateService } from '../../../core/services/project-state-service';
+import { DialogStore } from '../../../core/stores/dialog.store';
+import { FileHelper } from '../../../shared/helpers/file.helper';
 
 @Component({
     selector: 'app-home',
-    imports: [],
+    imports: [RouterLink],
     templateUrl: './home.html',
     styleUrl: './home.css',
 })
@@ -24,6 +24,9 @@ export class Home {
 
     installerPropertyStore = inject(InstallerPropertyStore);
     dialogStore = inject(DialogStore);
+
+    //routes
+    settingRoute = `/${AppRoutes.App}/${AppRoutes.Settings}`;
 
     constructor(
         private projectManagerService: ProjectManagerService,

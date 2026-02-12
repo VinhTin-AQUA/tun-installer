@@ -1,27 +1,29 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { HtmlPage } from '../../core/models/html-page';
-import { InstallerPropertyStore, PageType, WindowInfos, WindowInfoStore } from 'data-access';
-import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
-import { ToastService } from 'service';
-import { ProjectStore } from '../../core/stores/project-store';
-import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { InstallerPropertyStore, PageType, WindowInfoStore } from 'data-access';
+import { HtmlPage } from '../../../core/models/html-page';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { LoadHtmlPage } from '../../../core/models/tauri-payloads/load-html-pages';
+import { ApiContracts } from 'api-contracts';
+import { ToastService, WindowService } from 'service';
+import { ActivatedRoute } from '@angular/router';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
-import {ApiContracts} from 'api-contracts'
-
-type WindowKey = keyof WindowInfos;
 
 @Component({
-    selector: 'app-html-engine',
+    selector: 'app-preview-installer-ui',
     imports: [],
-    templateUrl: './html-engine.html',
-    styleUrl: './html-engine.css',
+    templateUrl: './preview-installer-ui.html',
+    styleUrl: './preview-installer-ui.css',
 })
-export class HtmlEngine {
+export class PreviewInstallerUi {
     @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
 
-    index = 0;
+    // htmlPages: HtmlPage[] = [];
+    // index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
+    windowInfoStore = inject(WindowInfoStore);
+
     progress = signal<number>(0);
+
     data = {
         installationLocation: this.installerPropertyStore.installationLocation(),
         productName: this.installerPropertyStore.productName(),
@@ -38,41 +40,10 @@ export class HtmlEngine {
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    windowInfoStore = inject(WindowInfoStore);
+    iframeWidth = signal<number>(800);
+    iframeHeight = signal<number>(600);
     projectStore = inject(ProjectStore);
-
-    configSections: {
-        id: PageType;
-        label: string;
-        pages: () => { name: string }[];
-    }[] = [
-        {
-            id: 'firstInstall',
-            label: 'First Time Install',
-            pages: () => this.firstInstallPages(),
-        },
-        {
-            id: 'maintenance',
-            label: 'Maintenance',
-            pages: () => this.maintenancePages(),
-        },
-    ];
-
-    activeSection: PageType | '' = 'firstInstall';
-    activePageType = signal<PageType>('firstInstall');
-
-    PAGE_TO_WINDOW_KEY: Record<PageType, WindowKey> = {
-        firstInstall: 'installerWindow',
-        maintenance: 'uninstallerWindow',
-    };
-
-    private get activeWindowKey(): WindowKey {
-        return this.PAGE_TO_WINDOW_KEY[this.activePageType()];
-    }
-
-    get activeWindow() {
-        return this.windowInfoStore[this.activeWindowKey]();
-    }
+    pageType: PageType = 'firstInstall';
 
     // test
 
@@ -81,7 +52,8 @@ export class HtmlEngine {
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
-        private projectManagerService: ProjectManagerService,
+        private activatedRoute: ActivatedRoute,
+        private windowService: WindowService
     ) {
         effect(() => {
             const progress = this.progress();
@@ -95,19 +67,18 @@ export class HtmlEngine {
         //     productName: 'MyApp',
         //     productVersion: '1.0.1',
         // });
+        // page_type = 'firstInstall';
+        // page_type = 'maintenance';
+
+        this.activatedRoute.queryParams.subscribe((res: any) => {
+            console.log(res);
+            this.pageType = res.pageType;
+        });
     }
 
     async ngAfterViewInit() {
         await this.loadPages();
     }
-
-    /* ================ others ================= */
-
-    toggleSection(id: PageType) {
-        this.activeSection = this.activeSection === id ? '' : id;
-    }
-
-    /* ================ load pages ================= */
 
     private async loadFirstInstallPages() {
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
@@ -116,13 +87,15 @@ export class HtmlEngine {
             loadHtmlPage,
         );
 
-        if (!pages || pages.length == 0) {
+        if (!pages) {
             return;
         }
 
         this.firstInstallPages.set(pages);
-        this.loadPage(pages[0].name, 'firstInstall');
-        this.windowInfoStore.updateWindow('installerWindow', { title: pages[0].name });
+
+        if (this.pageType === 'firstInstall') {
+            this.loadPage(this.windowInfoStore.installerWindow().startPage, 'firstInstall');
+        }
     }
 
     private async loadMaintenancePages() {
@@ -137,15 +110,19 @@ export class HtmlEngine {
         }
 
         this.maintenancePages.set(pages);
-        // this.loadPage();
+
+        if (this.pageType === 'maintenance') {
+            this.loadPage(this.windowInfoStore.uninstallerWindow().startPage, 'maintenance');
+        }
     }
 
     async loadPages() {
         await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
     }
 
-    loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
-        this.activePageType.set(type);
+    /* ================ api implements ================= */
+
+    loadPage(pageName: string, type: PageType) {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
@@ -153,9 +130,10 @@ export class HtmlEngine {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
-                async () => {},
+                this.finishInstall.bind(this),
                 this.uninstall.bind(this),
-                async () => {},
+                this.finishUninstall.bind(this),
+
                 this.data,
             );
         };
@@ -180,7 +158,7 @@ export class HtmlEngine {
 
     /* ================ api implements ================= */
 
-    navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
+    navigateTo(pageName: string, type: PageType) {
         this.loadPage(pageName, type);
     }
 
@@ -199,6 +177,10 @@ export class HtmlEngine {
         }, 500);
     }
 
+    async finishInstall() {
+        await this.windowService.closeCurrentWindow();
+    }
+
     async uninstall(afterUninstallPage: string | null) {
         this.intervalId = setInterval(() => {
             this.progress.update((x) => x + 5);
@@ -214,15 +196,18 @@ export class HtmlEngine {
         }, 500);
     }
 
+    async finishUninstall() {
+        await this.windowService.closeCurrentWindow();
+    }
+
     /* ================================= */
 
     async preview() {
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
-                pageType: this.activePageType(),
-                width: this.windowInfoStore.getData().installerWindow.width + 72,
-                height: this.windowInfoStore.getData().installerWindow.height + 54,
+                width: this.iframeWidth() + 72,
+                height: this.iframeHeight() + 54,
             },
         );
     }
@@ -231,69 +216,19 @@ export class HtmlEngine {
         const value =
             event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
 
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { width: Number(value) });
+        this.iframeWidth.set(Number(value));
     }
 
     updateFrameHeight(event: any) {
         const value =
             event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
 
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { height: Number(value) });
-    }
-
-    updateWindowTitle(event: any) {
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { title: event.target.value });
-    }
-
-    updateStartPage(event: any) {
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { startPage: event.target.value });
-    }
-
-    updateAlwaysOnTop(event: any) {
-        const checked = (event.target as HTMLInputElement).checked;
-
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { alwaysOnTop: checked });
+        this.iframeHeight.set(Number(value));
     }
 
     reset() {
         this.loadPages();
         this.ngOnDestroy();
-    }
-
-    private propDataBindind(text: string): string {
-        const replacements: Record<string, string> = {
-            '{{installationLocation}}': this.data.installationLocation,
-            '{{productName}}': this.data.productName,
-            '{{icon}}': this.data.icon,
-            '{{productVersion}}': this.data.productVersion,
-            '{{publisher}}': this.data.publisher,
-            '{{supportLink}}': this.data.supportLink,
-            '{{supportEmail}}': this.data.supportEmail,
-            '{{comment}}': this.data.comment,
-            '{{launchFile}}': this.data.launchFile,
-            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
-            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
-            '{{progress}}': this.data.progress.toString(),
-        };
-
-        const pattern = new RegExp(
-            Object.keys(replacements)
-                .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // escape regex
-                .join('|'),
-            'g',
-        );
-
-        return text.replace(pattern, (match) => replacements[match]);
-    }
-
-    async save() {
-        const r = await this.projectManagerService.saveInstallerDocument();
-        if (!r) {
-            this.toastService.show('Something error', 'error');
-            return;
-        }
-
-        this.toastService.show('Save', 'success');
     }
 
     ngOnDestroy() {

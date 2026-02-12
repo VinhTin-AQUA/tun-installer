@@ -3,9 +3,9 @@ import { Field } from '@angular/forms/signals';
 import { ToastService } from 'service';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DialogStore } from '../../core/stores/dialog.store';
-import { ProjectManagerService } from '../../core/services/project-manager-service';
-import { ResourceFiletore } from '../../core/stores/resource-file.store';
+import { DialogStore } from '../../../core/stores/dialog.store';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
+import { ResourceFiletore } from '../../../core/stores/resource-file.store';
 
 @Component({
     selector: 'app-product-details',

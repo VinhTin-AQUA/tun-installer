@@ -1,29 +1,27 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore, PageType, WindowInfoStore } from 'data-access';
-import { HtmlPage } from '../../core/models/html-page';
-import { ProjectStore } from '../../core/stores/project-store';
-import { LoadHtmlPage } from '../../core/models/tauri-payloads/load-html-pages';
-import { ApiContracts } from 'api-contracts';
-import { ToastService, WindowService } from 'service';
-import { ActivatedRoute } from '@angular/router';
+import { HtmlPage } from '../../../core/models/html-page';
+import { InstallerPropertyStore, PageType, WindowInfos, WindowInfoStore } from 'data-access';
+import { LoadHtmlPage } from '../../../core/models/tauri-payloads/load-html-pages';
+import { ToastService } from 'service';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
+import {ApiContracts} from 'api-contracts'
+
+type WindowKey = keyof WindowInfos;
 
 @Component({
-    selector: 'app-preview-installer-ui',
+    selector: 'app-html-engine',
     imports: [],
-    templateUrl: './preview-installer-ui.html',
-    styleUrl: './preview-installer-ui.css',
+    templateUrl: './html-engine.html',
+    styleUrl: './html-engine.css',
 })
-export class PreviewInstallerUi {
+export class HtmlEngine {
     @ViewChild('viewer') iframe!: ElementRef<HTMLIFrameElement>;
 
-    // htmlPages: HtmlPage[] = [];
-    // index = 0;
+    index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
-    windowInfoStore = inject(WindowInfoStore);
-
     progress = signal<number>(0);
-
     data = {
         installationLocation: this.installerPropertyStore.installationLocation(),
         productName: this.installerPropertyStore.productName(),
@@ -40,10 +38,41 @@ export class PreviewInstallerUi {
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
-    iframeWidth = signal<number>(800);
-    iframeHeight = signal<number>(600);
+    windowInfoStore = inject(WindowInfoStore);
     projectStore = inject(ProjectStore);
-    pageType: PageType = 'firstInstall';
+
+    configSections: {
+        id: PageType;
+        label: string;
+        pages: () => { name: string }[];
+    }[] = [
+        {
+            id: 'firstInstall',
+            label: 'First Time Install',
+            pages: () => this.firstInstallPages(),
+        },
+        {
+            id: 'maintenance',
+            label: 'Maintenance',
+            pages: () => this.maintenancePages(),
+        },
+    ];
+
+    activeSection: PageType | '' = 'firstInstall';
+    activePageType = signal<PageType>('firstInstall');
+
+    PAGE_TO_WINDOW_KEY: Record<PageType, WindowKey> = {
+        firstInstall: 'installerWindow',
+        maintenance: 'uninstallerWindow',
+    };
+
+    private get activeWindowKey(): WindowKey {
+        return this.PAGE_TO_WINDOW_KEY[this.activePageType()];
+    }
+
+    get activeWindow() {
+        return this.windowInfoStore[this.activeWindowKey]();
+    }
 
     // test
 
@@ -52,8 +81,7 @@ export class PreviewInstallerUi {
     constructor(
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
-        private activatedRoute: ActivatedRoute,
-        private windowService: WindowService
+        private projectManagerService: ProjectManagerService,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -67,18 +95,19 @@ export class PreviewInstallerUi {
         //     productName: 'MyApp',
         //     productVersion: '1.0.1',
         // });
-        // page_type = 'firstInstall';
-        // page_type = 'maintenance';
-
-        this.activatedRoute.queryParams.subscribe((res: any) => {
-            console.log(res);
-            this.pageType = res.pageType;
-        });
     }
 
     async ngAfterViewInit() {
         await this.loadPages();
     }
+
+    /* ================ others ================= */
+
+    toggleSection(id: PageType) {
+        this.activeSection = this.activeSection === id ? '' : id;
+    }
+
+    /* ================ load pages ================= */
 
     private async loadFirstInstallPages() {
         const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
@@ -87,15 +116,13 @@ export class PreviewInstallerUi {
             loadHtmlPage,
         );
 
-        if (!pages) {
+        if (!pages || pages.length == 0) {
             return;
         }
 
         this.firstInstallPages.set(pages);
-
-        if (this.pageType === 'firstInstall') {
-            this.loadPage(this.windowInfoStore.installerWindow().startPage, 'firstInstall');
-        }
+        this.loadPage(pages[0].name, 'firstInstall');
+        this.windowInfoStore.updateWindow('installerWindow', { title: pages[0].name });
     }
 
     private async loadMaintenancePages() {
@@ -110,19 +137,15 @@ export class PreviewInstallerUi {
         }
 
         this.maintenancePages.set(pages);
-
-        if (this.pageType === 'maintenance') {
-            this.loadPage(this.windowInfoStore.uninstallerWindow().startPage, 'maintenance');
-        }
+        // this.loadPage();
     }
 
     async loadPages() {
         await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
     }
 
-    /* ================ api implements ================= */
-
-    loadPage(pageName: string, type: PageType) {
+    loadPage(pageName: string, type: 'firstInstall' | 'maintenance') {
+        this.activePageType.set(type);
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
@@ -130,10 +153,9 @@ export class PreviewInstallerUi {
                 this.iframe,
                 this.navigateTo.bind(this),
                 this.install.bind(this),
-                this.finishInstall.bind(this),
+                async () => {},
                 this.uninstall.bind(this),
-                this.finishUninstall.bind(this),
-
+                async () => {},
                 this.data,
             );
         };
@@ -158,7 +180,7 @@ export class PreviewInstallerUi {
 
     /* ================ api implements ================= */
 
-    navigateTo(pageName: string, type: PageType) {
+    navigateTo(pageName: string, type: 'firstInstall' | 'maintenance') {
         this.loadPage(pageName, type);
     }
 
@@ -177,10 +199,6 @@ export class PreviewInstallerUi {
         }, 500);
     }
 
-    async finishInstall() {
-        await this.windowService.closeCurrentWindow();
-    }
-
     async uninstall(afterUninstallPage: string | null) {
         this.intervalId = setInterval(() => {
             this.progress.update((x) => x + 5);
@@ -196,18 +214,15 @@ export class PreviewInstallerUi {
         }, 500);
     }
 
-    async finishUninstall() {
-        await this.windowService.closeCurrentWindow();
-    }
-
     /* ================================= */
 
     async preview() {
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
-                width: this.iframeWidth() + 72,
-                height: this.iframeHeight() + 54,
+                pageType: this.activePageType(),
+                width: this.windowInfoStore.getData().installerWindow.width + 72,
+                height: this.windowInfoStore.getData().installerWindow.height + 54,
             },
         );
     }
@@ -216,19 +231,69 @@ export class PreviewInstallerUi {
         const value =
             event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
 
-        this.iframeWidth.set(Number(value));
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { width: Number(value) });
     }
 
     updateFrameHeight(event: any) {
         const value =
             event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
 
-        this.iframeHeight.set(Number(value));
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { height: Number(value) });
+    }
+
+    updateWindowTitle(event: any) {
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { title: event.target.value });
+    }
+
+    updateStartPage(event: any) {
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { startPage: event.target.value });
+    }
+
+    updateAlwaysOnTop(event: any) {
+        const checked = (event.target as HTMLInputElement).checked;
+
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { alwaysOnTop: checked });
     }
 
     reset() {
         this.loadPages();
         this.ngOnDestroy();
+    }
+
+    private propDataBindind(text: string): string {
+        const replacements: Record<string, string> = {
+            '{{installationLocation}}': this.data.installationLocation,
+            '{{productName}}': this.data.productName,
+            '{{icon}}': this.data.icon,
+            '{{productVersion}}': this.data.productVersion,
+            '{{publisher}}': this.data.publisher,
+            '{{supportLink}}': this.data.supportLink,
+            '{{supportEmail}}': this.data.supportEmail,
+            '{{comment}}': this.data.comment,
+            '{{launchFile}}': this.data.launchFile,
+            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
+            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
+            '{{progress}}': this.data.progress.toString(),
+        };
+
+        const pattern = new RegExp(
+            Object.keys(replacements)
+                .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // escape regex
+                .join('|'),
+            'g',
+        );
+
+        return text.replace(pattern, (match) => replacements[match]);
+    }
+
+    async save() {
+        const r = await this.projectManagerService.saveInstallerDocument();
+        if (!r) {
+            this.toastService.show('Something error', 'error');
+            return;
+        }
+
+        this.toastService.show('Save', 'success');
     }
 
     ngOnDestroy() {

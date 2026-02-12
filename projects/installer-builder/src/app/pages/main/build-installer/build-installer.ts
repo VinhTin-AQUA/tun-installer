@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Progress } from '../../core/models/progress';
+import { Progress } from '../../../core/models/progress';
 import { ToastService } from 'service';
 import { CompressCommands, TauriCommandService, TauriEventService } from 'service';
 

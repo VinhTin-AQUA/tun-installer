@@ -7,7 +7,7 @@ import {
 } from 'data-access';
 import { ToastService } from 'service';
 import { CommonModule } from '@angular/common';
-import { ProjectManagerService } from '../../core/services/project-manager-service';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-registry',
