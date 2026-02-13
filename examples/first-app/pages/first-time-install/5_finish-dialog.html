@@ -82,6 +82,7 @@
                     "
                 >
                     <input
+                        id="lauch-app-now"
                         type="checkbox"
                         checked
                         style="width: 18px; height: 18px; margin-right: 12px"
@@ -116,6 +117,12 @@
 
         <script>
             function finishInstall() {
+                const checkbox = document.getElementById('lauch-app-now');
+
+                if (checkbox.checked) {
+                    window.App.launchAppNow();
+                }
+
                 window.App.finishInstall();
             }
         </script>

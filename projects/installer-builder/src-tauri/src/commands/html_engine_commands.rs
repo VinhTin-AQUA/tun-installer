@@ -1,12 +1,17 @@
 use domain::HtmlPage;
 use service::{load_html_first_time_install_pages, load_html_maintenance_pages};
-use tauri::{command, AppHandle, WebviewUrl, WebviewWindowBuilder};
+use tauri::{command, AppHandle, State, WebviewUrl, WebviewWindowBuilder};
+use tokio::sync::Mutex;
+
+use crate::states::ProjectState;
 
 #[command]
 pub async fn load_html_first_time_install_pages_command(
-    project_dir: String,
+    project_state: State<'_, Mutex<ProjectState>>,
 ) -> Result<Option<Vec<HtmlPage>>, String> {
-    let pages = load_html_first_time_install_pages(project_dir)
+    let project_state = project_state.lock().await;
+
+    let pages = load_html_first_time_install_pages(project_state.project_dir.clone())
         .await
         .map_err(|e| e.to_string());
     return pages;
@@ -14,16 +19,22 @@ pub async fn load_html_first_time_install_pages_command(
 
 #[command]
 pub async fn load_html_maintenance_pages_command(
-    project_dir: String,
+    project_state: State<'_, Mutex<ProjectState>>,
 ) -> Result<Option<Vec<HtmlPage>>, String> {
-    let pages = load_html_maintenance_pages(project_dir)
+    let project_state = project_state.lock().await;
+    let pages = load_html_maintenance_pages(project_state.project_dir.clone())
         .await
         .map_err(|e| e.to_string());
     return pages;
 }
 
 #[command]
-pub async fn preview_installer_ui_command(app: AppHandle, page_type: String, width: f64, height: f64) {
+pub async fn preview_installer_ui_command(
+    app: AppHandle,
+    page_type: String,
+    width: f64,
+    height: f64,
+) {
     // let webview_window =
     WebviewWindowBuilder::new(
         &app,

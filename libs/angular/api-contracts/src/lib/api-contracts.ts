@@ -29,6 +29,8 @@ declare global {
             uninstall: (afterUninstallPage: string | null) => Promise<void>;
             finishUninstall: () => Promise<void>;
 
+            launchAppNow: () => Promise<void>;
+
             logData: () => void;
             data: any;
         };
@@ -44,14 +46,18 @@ export class ApiContracts {
 
     public static injectAPIs(
         iframe: ElementRef<HTMLIFrameElement>,
-        navigateTo: (pageName: string, type: PageType) => void,
+        methods: {
+            navigateTo: (pageName: string, type: PageType) => void;
 
-        install: (afterInstallPage: string | null) => Promise<void>,
-        finishInstall: () => Promise<void>,
+            install: (afterInstallPage: string | null) => Promise<void>;
+            finishInstall: () => Promise<void>;
 
-        uninstall: (afterUninstallPage: string | null) => Promise<void>,
-        finishUninstall: () => Promise<void>,
-        
+            uninstall: (afterUninstallPage: string | null) => Promise<void>;
+            finishUninstall: () => Promise<void>;
+
+            launchAppNow: () => Promise<void>;
+        },
+
         data: any,
     ) {
         const win = iframe.nativeElement.contentWindow!;
@@ -59,19 +65,22 @@ export class ApiContracts {
 
         this.win.App = {
             navigateTo: (pageName: string, type: PageType) => {
-                navigateTo(pageName, type);
+                methods.navigateTo(pageName, type);
             },
             install: async (afterInstallPage: string | null) => {
-                await install(afterInstallPage);
+                await methods.install(afterInstallPage);
             },
             finishInstall: async () => {
-                await finishInstall();
+                await methods.finishInstall();
             },
             uninstall: async (afterUninstallPage: string | null) => {
-                await uninstall(afterUninstallPage);
+                await methods.uninstall(afterUninstallPage);
             },
             finishUninstall: async () => {
-                await finishUninstall();
+                await methods.finishUninstall();
+            },
+            launchAppNow: async () => {
+                await methods.launchAppNow();
             },
             logData: () => {
                 console.log('Test Install');

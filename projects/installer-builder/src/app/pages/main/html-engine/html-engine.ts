@@ -6,7 +6,7 @@ import { ToastService } from 'service';
 import { ProjectStore } from '../../../core/stores/project-store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
-import {ApiContracts} from 'api-contracts'
+import { ApiContracts } from 'api-contracts';
 
 type WindowKey = keyof WindowInfos;
 
@@ -151,11 +151,14 @@ export class HtmlEngine {
         iframeEl.onload = () => {
             ApiContracts.injectAPIs(
                 this.iframe,
-                this.navigateTo.bind(this),
-                this.install.bind(this),
-                async () => {},
-                this.uninstall.bind(this),
-                async () => {},
+                {
+                    navigateTo: this.navigateTo.bind(this),
+                    install: this.install.bind(this),
+                    finishInstall: this.finishInstall.bind(this),
+                    uninstall: this.uninstall.bind(this),
+                    finishUninstall: this.finishUninstall.bind(this),
+                    launchAppNow: this.launchAppNow.bind(this),
+                },
                 this.data,
             );
         };
@@ -199,6 +202,10 @@ export class HtmlEngine {
         }, 500);
     }
 
+    async finishInstall() {
+        alert('Finish Install');
+    }
+
     async uninstall(afterUninstallPage: string | null) {
         this.intervalId = setInterval(() => {
             this.progress.update((x) => x + 5);
@@ -214,15 +221,31 @@ export class HtmlEngine {
         }, 500);
     }
 
+    async finishUninstall() {
+        alert('Finish Uninstall');
+    }
+
+    async launchAppNow() {
+        alert('Lauch APP');
+    }
+
     /* ================================= */
 
     async preview() {
+        const width =
+            this.activePageType() === 'firstInstall'
+                ? this.windowInfoStore.getData().installerWindow.width + 72
+                : this.windowInfoStore.getData().uninstallerWindow.width + 54;
+        const height =
+            this.activePageType() === 'firstInstall'
+                ? this.windowInfoStore.getData().installerWindow.height + 72
+                : this.windowInfoStore.getData().uninstallerWindow.height + 54;
         await this.tauriCommandService.invokeCommand(
             HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
             {
                 pageType: this.activePageType(),
-                width: this.windowInfoStore.getData().installerWindow.width + 72,
-                height: this.windowInfoStore.getData().installerWindow.height + 54,
+                width: width,
+                height: height,
             },
         );
     }
@@ -258,32 +281,6 @@ export class HtmlEngine {
     reset() {
         this.loadPages();
         this.ngOnDestroy();
-    }
-
-    private propDataBindind(text: string): string {
-        const replacements: Record<string, string> = {
-            '{{installationLocation}}': this.data.installationLocation,
-            '{{productName}}': this.data.productName,
-            '{{icon}}': this.data.icon,
-            '{{productVersion}}': this.data.productVersion,
-            '{{publisher}}': this.data.publisher,
-            '{{supportLink}}': this.data.supportLink,
-            '{{supportEmail}}': this.data.supportEmail,
-            '{{comment}}': this.data.comment,
-            '{{launchFile}}': this.data.launchFile,
-            '{{runAsAdmin}}': this.data.runAsAdmin ? 'true' : 'false',
-            '{{launchApp}}': this.data.launchApp ? 'true' : 'false',
-            '{{progress}}': this.data.progress.toString(),
-        };
-
-        const pattern = new RegExp(
-            Object.keys(replacements)
-                .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // escape regex
-                .join('|'),
-            'g',
-        );
-
-        return text.replace(pattern, (match) => replacements[match]);
     }
 
     async save() {

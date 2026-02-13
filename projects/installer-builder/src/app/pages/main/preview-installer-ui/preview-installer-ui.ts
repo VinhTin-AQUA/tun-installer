@@ -7,6 +7,8 @@ import { ApiContracts } from 'api-contracts';
 import { ToastService, WindowService } from 'service';
 import { ActivatedRoute } from '@angular/router';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
+import { ProjectStateService } from '../../../core/services/project-state-service';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-preview-installer-ui',
@@ -53,7 +55,9 @@ export class PreviewInstallerUi {
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
         private activatedRoute: ActivatedRoute,
-        private windowService: WindowService
+        private windowService: WindowService,
+        private projectStateService: ProjectStateService,
+        private projectManagerService: ProjectManagerService,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -63,28 +67,25 @@ export class PreviewInstallerUi {
     }
 
     async ngOnInit() {
-        // this.installerPropertyStore.update({
-        //     productName: 'MyApp',
-        //     productVersion: '1.0.1',
-        // });
-        // page_type = 'firstInstall';
-        // page_type = 'maintenance';
-
-        this.activatedRoute.queryParams.subscribe((res: any) => {
-            console.log(res);
+        this.activatedRoute.queryParams.subscribe(async (res: any) => {
             this.pageType = res.pageType;
+
+            await this.init();
+            await this.loadPages();
         });
+
+        await this.init();
     }
 
-    async ngAfterViewInit() {
-        await this.loadPages();
+    private async init() {
+        await this.projectStateService.getProjectState();
+        await this.projectManagerService.init();
     }
 
     private async loadFirstInstallPages() {
-        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
-        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], LoadHtmlPage>(
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], undefined>(
             HtmlEngineCommands.LOAD_HTML_FIRST_TIME_INSTALL_PAGES_COMMAND,
-            loadHtmlPage,
+            undefined,
         );
 
         if (!pages) {
@@ -92,17 +93,15 @@ export class PreviewInstallerUi {
         }
 
         this.firstInstallPages.set(pages);
-
         if (this.pageType === 'firstInstall') {
             this.loadPage(this.windowInfoStore.installerWindow().startPage, 'firstInstall');
         }
     }
 
     private async loadMaintenancePages() {
-        const loadHtmlPage: LoadHtmlPage = { projectDir: this.projectStore.projectDir() };
-        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], LoadHtmlPage>(
+        let pages = await this.tauriCommandService.invokeCommand<HtmlPage[], undefined>(
             HtmlEngineCommands.LOAD_HTML_MAINTENANCE_PAGES_COMMAND,
-            loadHtmlPage,
+            undefined,
         );
 
         if (!pages) {
@@ -120,19 +119,20 @@ export class PreviewInstallerUi {
         await Promise.all([this.loadFirstInstallPages(), this.loadMaintenancePages()]);
     }
 
-    /* ================ api implements ================= */
-
     loadPage(pageName: string, type: PageType) {
         const iframeEl = this.iframe.nativeElement;
 
         iframeEl.onload = () => {
             ApiContracts.injectAPIs(
                 this.iframe,
-                this.navigateTo.bind(this),
-                this.install.bind(this),
-                this.finishInstall.bind(this),
-                this.uninstall.bind(this),
-                this.finishUninstall.bind(this),
+                {
+                    navigateTo: this.navigateTo.bind(this),
+                    install: this.install.bind(this),
+                    finishInstall: this.finishInstall.bind(this),
+                    uninstall: this.uninstall.bind(this),
+                    finishUninstall: this.finishUninstall.bind(this),
+                    launchAppNow: this.launchAppNow.bind(this),
+                },
 
                 this.data,
             );
@@ -198,6 +198,10 @@ export class PreviewInstallerUi {
 
     async finishUninstall() {
         await this.windowService.closeCurrentWindow();
+    }
+
+    async launchAppNow() {
+        alert('Lauch APP');
     }
 
     /* ================================= */
