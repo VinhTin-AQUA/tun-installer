@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Field } from '@angular/forms/signals';
+import { FormField } from '@angular/forms/signals';
 import { ToastService } from 'service';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -9,7 +9,7 @@ import { ResourceFiletore } from '../../../core/stores/resource-file.store';
 
 @Component({
     selector: 'app-product-details',
-    imports: [Field, FormsModule, TranslatePipe],
+    imports: [FormField, FormsModule, TranslatePipe],
     templateUrl: './product-details.html',
     styleUrl: './product-details.css',
 })

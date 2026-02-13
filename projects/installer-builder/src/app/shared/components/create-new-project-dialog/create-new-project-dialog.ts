@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { DialogStore } from '../../../core/stores/dialog.store';
-import { Field, form, readonly, required } from '@angular/forms/signals';
+import { FormField, form, readonly, required } from '@angular/forms/signals';
 import { FolderHelper } from '../../helpers/folder.helper';
 import { CreateTunInstallerProject } from '../../../core/models/tauri-payloads/create-tuninstaller-project';
 import { ProjectStore } from '../../../core/stores/project-store';
@@ -12,7 +12,7 @@ import { MainRoutes } from '../../../core/enums/routes.enum';
 
 @Component({
     selector: 'app-create-new-project-dialog',
-    imports: [Field],
+    imports: [FormField],
     templateUrl: './create-new-project-dialog.html',
     styleUrl: './create-new-project-dialog.css',
 })

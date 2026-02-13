@@ -33,7 +33,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Product Name</label>
                 <input
-                    [field]="installerPropertyDataForm.productName"
+                    [formField]="installerPropertyDataForm.productName"
                     class="input"
                     placeholder="Your App"
                 />
@@ -56,7 +56,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Icon</label>
                 <input
-                    [field]="installerPropertyDataForm.icon"
+                    [formField]="installerPropertyDataForm.icon"
                     class="input"
                     placeholder="icon.ico"
                 />
@@ -65,7 +65,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Product Version</label>
                 <input
-                    [field]="installerPropertyDataForm.productVersion"
+                    [formField]="installerPropertyDataForm.productVersion"
                     class="input"
                     placeholder="1.0.0"
                 />
@@ -88,7 +88,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Publisher</label>
                 <input
-                    [field]="installerPropertyDataForm.publisher"
+                    [formField]="installerPropertyDataForm.publisher"
                     class="input"
                     placeholder="Your company"
                 />
@@ -111,7 +111,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Support Link</label>
                 <input
-                    [field]="installerPropertyDataForm.supportLink"
+                    [formField]="installerPropertyDataForm.supportLink"
                     class="input"
                     placeholder="https://example.com"
                 />
@@ -120,7 +120,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Support Email</label>
                 <input
-                    [field]="installerPropertyDataForm.supportEmail"
+                    [formField]="installerPropertyDataForm.supportEmail"
                     class="input"
                     placeholder="example@gmail.com"
                 />
@@ -129,7 +129,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Launch File</label>
                 <input
-                    [field]="installerPropertyDataForm.launchFile"
+                    [formField]="installerPropertyDataForm.launchFile"
                     class="input"
                     placeholder="yourapp.exe"
                 />
@@ -153,7 +153,7 @@
         <!-- Comment -->
         <div>
             <label class="block text-sm font-medium text-gray-700">Comment</label>
-            <textarea [field]="installerPropertyDataForm.comment" rows="3" class="input"></textarea>
+            <textarea [formField]="installerPropertyDataForm.comment" rows="3" class="input"></textarea>
         </div>
 
         <!-- Checkboxes -->
@@ -161,7 +161,7 @@
             <label class="flex items-center gap-2 text-sm text-gray-700">
                 <input
                     type="checkbox"
-                    [field]="installerPropertyDataForm.runAsAdmin"
+                    [formField]="installerPropertyDataForm.runAsAdmin"
                     class="checkbox"
                 />
                 Run as Administrator
@@ -175,7 +175,7 @@
                 <label class="flex items-center gap-2 font-medium text-sm">
                     <input
                         type="checkbox"
-                        [field]="installerPropertyDataForm.shortcutInDesktop.isCreated"
+                        [formField]="installerPropertyDataForm.shortcutInDesktop.isCreated"
                         class="checkbox"
                     />
                     Create Shortcut in Desktop
@@ -187,7 +187,7 @@
                         <label class="flex items-center gap-2 text-sm text-gray-600">
                             <input
                                 type="checkbox"
-                                [field]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
+                                [formField]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
                                 class="checkbox"
                             />
                             Run as Administrator
@@ -196,7 +196,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input
                                 type="text"
-                                [field]="installerPropertyDataForm.shortcutInDesktop.shortcutName"
+                                [formField]="installerPropertyDataForm.shortcutInDesktop.shortcutName"
                                 placeholder="Shortcut name"
                                 class="input input-bordered w-full"
                             />
@@ -204,7 +204,7 @@
                             <input
                                 list="listFiles"
                                 type="text"
-                                [field]="installerPropertyDataForm.shortcutInDesktop.runFile"
+                                [formField]="installerPropertyDataForm.shortcutInDesktop.runFile"
                                 placeholder="Run file path"
                                 class="input input-bordered w-full"
                             />
@@ -224,7 +224,7 @@
                 <label class="flex items-center gap-2 font-medium text-sm">
                     <input
                         type="checkbox"
-                        [field]="installerPropertyDataForm.shortcutInApplicationShortcut.isCreated"
+                        [formField]="installerPropertyDataForm.shortcutInApplicationShortcut.isCreated"
                         class="checkbox"
                     />
                     Create Shortcut in Application Shortcut
@@ -236,7 +236,7 @@
                         <label class="flex items-center gap-2 text-sm text-gray-600">
                             <input
                                 type="checkbox"
-                                [field]="
+                                [formField]="
                                     installerPropertyDataForm.shortcutInApplicationShortcut
                                         .runAsAdmin
                                 "
@@ -248,7 +248,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input
                                 type="text"
-                                [field]="
+                                [formField]="
                                     installerPropertyDataForm.shortcutInApplicationShortcut
                                         .shortcutName
                                 "
@@ -259,7 +259,7 @@
                             <input
                                 list="listFiles"
                                 type="text"
-                                [field]="
+                                [formField]="
                                     installerPropertyDataForm.shortcutInApplicationShortcut.runFile
                                 "
                                 placeholder="Run file path"
