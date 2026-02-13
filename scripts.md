@@ -181,3 +181,20 @@ exe_template_v1.0.0.exe --status uninstall
 
 - trong libs\rust\helpers\src\file_helper.rs
 đổi exe_path_buf thành file exe đã được nén
+
+### Data send to client
+{
+    "installationLocation": "C:\\Program Files\\Newtun\\First App",
+    "productName": "First App",
+    "icon": "icon.ico",
+    "productVersion": "1.0.0",
+    "publisher": "Newtun",
+    "supportLink": "https://support.mycompany.com",
+    "supportEmail": "support@mycompany.com",
+    "comment": "Default installer comment",
+    "launchFile": "FirstApp.exe",
+    "runAsAdmin": false,
+    "launchApp": true,
+    "progress": 97.08,
+    "message": "Delete app folder after exit..."
+}

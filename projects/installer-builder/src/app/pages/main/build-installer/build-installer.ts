@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Progress } from '../../../core/models/progress';
 import { ToastService } from 'service';
 import { CompressCommands, TauriCommandService, TauriEventService } from 'service';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { ProjectManagerService } from '../../../core/services/project-manager-service';
 
 @Component({
     selector: 'app-build-installer',
@@ -14,23 +16,31 @@ export class BuildInstaller {
     isCompleted = signal<boolean>(false);
     logs = signal<string[]>([]);
     progress = signal<number>(0);
-    outputPath = signal<string>(''); // đường dẫn lưu build
+    outputPath = signal<string>('');
     unlisten: any;
+    projectStore = inject(ProjectStore);
 
     constructor(
         private tauriEventService: TauriEventService,
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
+        private projectManagerService: ProjectManagerService,
     ) {}
 
     ngOnInit() {}
 
     async startBuild() {
+        const formValid = this.projectManagerService.validateInstallerPropertyDataForm();
+
+        if (!formValid) {
+            return;
+        }
+        
         this.isBuilding.set(true);
         this.isCompleted.set(false);
         this.logs.set([]);
         this.progress.set(0);
-        this.outputPath.set('');
+        this.outputPath.set(`${this.projectStore.projectDir()}output`.replace(/\\/g, '/'));
 
         this.logs.update((x) => {
             return [...x, '🚀 Build started...'];
@@ -53,18 +63,17 @@ export class BuildInstaller {
         );
 
         this.toastService.show('Build success fully', 'success');
-
         this.logs.update((x) => {
             return [...x, 'Done !!'];
         });
+        this.isBuilding.set(false);
+        this.isCompleted.set(true);
     }
 
     async stopBuild() {
         this.toastService.show('Stop', 'warning');
-
-        // this.unlisten();
+        this.unlisten();
         await this.tauriCommandService.invokeCommand(CompressCommands.CANCEL_COMPRESS_COMMAND, {});
-        console.log(345);
 
         this.logs.update((x) => {
             return [...x, `⛔ Build stopped at ${this.progress}%`];

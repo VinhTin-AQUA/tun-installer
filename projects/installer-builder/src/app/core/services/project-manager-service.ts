@@ -11,7 +11,7 @@ import {
     RegistryValueType,
     WindowInfoStore,
 } from 'data-access';
-import { ProjectManagerCommands, TauriCommandService } from 'service';
+import { ProjectManagerCommands, TauriCommandService, ToastService } from 'service';
 import { form, readonly, required } from '@angular/forms/signals';
 import {
     InstallerConfig,
@@ -49,7 +49,10 @@ export class ProjectManagerService {
         // required(f.launchApp);
     });
 
-    constructor(private tauriCommandService: TauriCommandService) {
+    constructor(
+        private tauriCommandService: TauriCommandService,
+        private toastService: ToastService,
+    ) {
         effect(() => {
             const projectDir = this.installerPropertyDataModel().comment;
 
@@ -227,6 +230,28 @@ export class ProjectManagerService {
 
         /* =========== get files in resources ==============  */
         await this.getResourceFiles();
+    }
+
+    validateInstallerPropertyDataForm(): boolean {
+        const keys = Object.keys(this.installerPropertyDataForm) as Array<
+            keyof InstallerProperties
+        >;
+
+        for (let key of keys) {
+            const r = this.installerPropertyDataForm[key];
+            if (!r().valid()) {
+                const messages = r()
+                    .errors()
+                    .map((x) => {
+                        return x.message;
+                    })
+                    .join(',');
+                this.toastService.show(messages, 'error');
+                return false;
+            }
+        }
+
+        return true;
     }
 
     //========== project ===========

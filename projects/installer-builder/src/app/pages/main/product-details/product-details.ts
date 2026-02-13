@@ -26,11 +26,10 @@ export class ProductDetails {
     constructor(private toastService: ToastService) {}
 
     async ngOnInit() {
-        // await this.fileStateConfigService.openFileConfig(this.workingConfigFileStore.filePath());
     }
 
     async onSaveInstallerConfig() {
-        const formValid = this.formValid();
+        const formValid = this.projectManagerService.validateInstallerPropertyDataForm();
         if (!formValid) {
             return;
         }
@@ -50,65 +49,5 @@ export class ProductDetails {
         }
 
         this.toastService.show('Save', 'success');
-    }
-
-    private formValid() {
-        if (!this.installerPropertyDataForm.installationLocation().valid()) {
-            const messages = this.installerPropertyDataForm
-                .installationLocation()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
-        if (!this.installerPropertyDataForm.productName().valid()) {
-            const messages = this.installerPropertyDataForm
-                .productName()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
-        if (!this.installerPropertyDataForm.productVersion().valid()) {
-            const messages = this.installerPropertyDataForm
-                .productVersion()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
-        if (!this.installerPropertyDataForm.publisher().valid()) {
-            const messages = this.installerPropertyDataForm
-                .publisher()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
-
-        if (!this.installerPropertyDataForm.launchFile().valid()) {
-            const messages = this.installerPropertyDataForm
-                .launchFile()
-                .errors()
-                .map((x) => {
-                    return x.message;
-                })
-                .join(',');
-            this.toastService.show(messages, 'error');
-            return false;
-        }
-        return true;
     }
 }

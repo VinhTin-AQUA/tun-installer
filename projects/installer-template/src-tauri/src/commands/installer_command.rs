@@ -21,16 +21,10 @@ pub async fn install(
 ) -> Result<bool, String> {
     let installer_document = installer_document_state.lock().await;
     let compressor = app_state.compressor.clone();
-
-    // let base_dir: PathBuf =
-    //     PathBuf::from("/media/newtun/Data/Dev/custom installer/tun-installer/examples/first-app");
-
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
     let exe_path_buf = get_current_exe();
     let exe_path_buf_to_copy = exe_path_buf.clone();
-
     let temp_app_dir_to_delete_temp_folder = temp_app_dir.clone();
-
     let resource_path_buf = temp_app_dir.clone().join(RESOURCES_DIR);
     let prerequisite_path_buf = temp_app_dir.clone().join(PREREQUISITE_DIR);
 

@@ -209,21 +209,21 @@ export class HtmlEngine {
     }
 
     async uninstall(afterUninstallPage: string | null) {
-        // this.unlisten = await this.tauriEventService.listenEvent<Progress>(
-        //     EventSystemConsts.install,
-        //     (event) => {
-        //         // console.log(event.payload);
-        //         const progress = event.payload;
+        this.unlisten = await this.tauriEventService.listenEvent<Progress>(
+            EventSystemConsts.install,
+            (event) => {
+                // console.log(event.payload);
+                const progress = event.payload;
 
-        //         this.progress.set(Math.round(progress.percent * 100) / 100);
-        //         this.data.message = progress.message;
-        //         // this.logs.update((x) => {
-        //         //     return [...x, progress.message];
-        //         // });
+                this.progress.set(Math.round(progress.percent * 100) / 100);
+                this.data.message = progress.message;
+                // this.logs.update((x) => {
+                //     return [...x, progress.message];
+                // });
 
-        //         ApiContracts.updateIframe(this.data);
-        //     },
-        // );
+                ApiContracts.updateIframe(this.data);
+            },
+        );
 
         const r = await this.uninstallerService.uninstall();
 

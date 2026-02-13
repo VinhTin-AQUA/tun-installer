@@ -86,6 +86,7 @@
             };
 
             window.render = function (data) {
+                console.log(data);
                 const el = document.getElementById('progress');
 
                 if (!el) {
@@ -93,13 +94,11 @@
                 }
 
                 el.innerText = `Progress: ${data.progress}%`;
-
                 const progressBar = document.getElementById('progress-bar');
 
                 if (!progressBar) {
                     return;
                 }
-
                 progressBar.style.width = data.progress + '%';
             };
         </script>
