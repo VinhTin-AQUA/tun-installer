@@ -8,10 +8,11 @@ import { ProjectStateService } from '../../../core/services/project-state-servic
 import { DialogStore } from '../../../core/stores/dialog.store';
 import { FileHelper } from '../../../shared/helpers/file.helper';
 import { Command, open } from '@tauri-apps/plugin-shell';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-home',
-    imports: [RouterLink],
+    imports: [RouterLink, TranslatePipe],
     templateUrl: './home.html',
     styleUrl: './home.css',
 })
@@ -85,6 +86,6 @@ export class Home {
     }
 
     async openDocument() {
-        await open('https://github.com/VinhTin-AQUA/tun-installer/blob/main/README.md');
+        await open('https://github.com/VinhTin-AQUA/tun-installer');
     }
 }

@@ -1,126 +1,53 @@
 <div class="h-screen bg-gray-100 flex">
-    <!-- Sidebar -->
-    <!-- <aside class="w-64 bg-white shadow-lg flex flex-col">
-        <div class="p-6 border-b">
-            <h1 class="text-2xl font-bold text-indigo-600">MyApp</h1>
-            <p class="text-sm text-gray-500">Desktop Application</p>
-        </div>
-
-        <nav class="flex-1 p-4 space-y-2">
-            <button
-                class="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition"
-            >
-                🏠 Trang chủ
-            </button>
-            <button
-                class="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition"
-            >
-                📁 Dự án
-            </button>
-            <button
-                class="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition"
-            >
-                ⚙ Cài đặt
-            </button>
-            <button
-                class="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition"
-            >
-                ❓ Trợ giúp
-            </button>
-        </nav>
-
-        <div class="p-4 border-t text-sm text-gray-400">Version 1.0.0</div>
-    </aside> -->
-
     <!-- Main Content -->
     <main class="flex-1 p-10 overflow-auto">
         <!-- Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-800">Welcome to Tun Installer 👋</h2>
-            <p class="text-gray-500 mt-1">Bắt đầu bằng cách tạo dự án mới hoặc mở dự án hiện có.</p>
+            <h2 class="text-3xl font-bold text-gray-800">{{ 'app.home.title' | translate }}</h2>
+            <p class="text-gray-500 mt-1">{{ 'app.home.introduce' | translate }}</p>
         </div>
 
         <!-- Action Buttons -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <!-- New Project -->
-            <button
-                (click)="openCreateNewProject()"
-                class="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition transform text-left"
-            >
-                <div class="text-4xl mb-4">🚀</div>
-                <h3 class="text-xl font-semibold mb-2">Tạo dự án mới</h3>
-                <p class="text-gray-500 text-sm">Khởi tạo một dự án hoàn toàn mới.</p>
+            <button (click)="openCreateNewProject()" class="card">
+                <div class="card-icon">🚀</div>
+                <h3 class="card-title">{{ 'app.home.createNewProjectTitle' | translate }}</h3>
+                <p class="card-content">{{ 'app.home.createNewProjectContent' | translate }}</p>
             </button>
 
             <!-- Open Project -->
-            <button
-                (click)="openProject()"
-                class="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition transform text-left"
-            >
-                <div class="text-4xl mb-4">📂</div>
-                <h3 class="text-xl font-semibold mb-2">Mở dự án</h3>
-                <p class="text-gray-500 text-sm">Mở một dự án đã có sẵn trên máy.</p>
+            <button (click)="openProject()" class="card">
+                <div class="card-icon">📂</div>
+                <h3 class="card-title">
+                    {{ 'app.home.openProjectTitle' | translate }}
+                </h3>
+                <p class="card-content">
+                    {{ 'app.home.openProjectContent' | translate }}
+                </p>
             </button>
 
             <!-- Settings -->
-            <a
-                [routerLink]="settingRoute"
-                class="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition transform text-left"
-            >
-                <div class="text-4xl mb-4">⚙</div>
-                <h3 class="text-xl font-semibold mb-2">Cài đặt</h3>
-                <p class="text-gray-500 text-sm">Tùy chỉnh cấu hình ứng dụng.</p>
+            <a [routerLink]="settingRoute" class="card">
+                <div class="card-icon">⚙</div>
+                <h3 class="card-title">
+                    {{ 'app.home.settingsTitle' | translate }}
+                </h3>
+                <p class="card-content">
+                    {{ 'app.home.settingsContent' | translate }}
+                </p>
             </a>
 
-            <!-- Recent -->
-            <button
-                class="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition transform text-left"
-            >
-                <div class="text-4xl mb-4">🕘</div>
-                <h3 class="text-xl font-semibold mb-2">Dự án gần đây</h3>
-                <p class="text-gray-500 text-sm">Xem và mở nhanh dự án đã làm gần đây.</p>
-            </button>
-
             <!-- Documentation -->
-            <button
-                (click)="openDocument()"
-                class="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition transform text-left"
-            >
-                <div class="text-4xl mb-4">📘</div>
-                <h3 class="text-xl font-semibold mb-2">Tài liệu</h3>
-                <p class="text-gray-500 text-sm">Xem hướng dẫn sử dụng ứng dụng.</p>
-            </button>
-
-            <!-- Exit -->
-            <button
-                class="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition transform text-left"
-            >
-                <div class="text-4xl mb-4">🔒</div>
-                <h3 class="text-xl font-semibold mb-2">Thoát</h3>
-                <p class="text-gray-500 text-sm">Đóng ứng dụng.</p>
+            <button (click)="openDocument()" class="card">
+                <div class="card-icon">📘</div>
+                <h3 class="card-title">
+                    {{ 'app.home.documentationTitle' | translate }}
+                </h3>
+                <p class="card-content">
+                    {{ 'app.home.documentationContent' | translate }}
+                </p>
             </button>
         </div>
-
-        <!-- Recent Projects Section -->
-        <!-- <div>
-            <h3 class="text-2xl font-semibold mb-4 text-gray-700">📁 Dự án gần đây</h3>
-
-            <div class="bg-white rounded-xl shadow-md divide-y">
-                <div class="p-4 hover:bg-gray-50 cursor-pointer">
-                    <h4 class="font-medium">Project A</h4>
-                    <p class="text-sm text-gray-500">Cập nhật lần cuối: 12/02/2026</p>
-                </div>
-
-                <div class="p-4 hover:bg-gray-50 cursor-pointer">
-                    <h4 class="font-medium">Project B</h4>
-                    <p class="text-sm text-gray-500">Cập nhật lần cuối: 10/02/2026</p>
-                </div>
-
-                <div class="p-4 hover:bg-gray-50 cursor-pointer">
-                    <h4 class="font-medium">Project C</h4>
-                    <p class="text-sm text-gray-500">Cập nhật lần cuối: 05/02/2026</p>
-                </div>
-            </div>
-        </div> -->
     </main>
 </div>

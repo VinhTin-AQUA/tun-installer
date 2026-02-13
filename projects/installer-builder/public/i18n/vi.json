@@ -1,0 +1,50 @@
+{
+    "app": {
+        "home": {
+            "title": "Welcome to Tun Installer",
+            "introduce": "Tạo trình cài đặt .exe đẹp mắt, chuyên nghiệp",
+            "createNewProjectTitle": "Tạo dự án mới",
+            "createNewProjectContent": "Khởi tạo một dự án hoàn toàn mới",
+            "openProjectTitle": "Mở dự án",
+            "openProjectContent": "Mở một dự án đã có sẵn trên máy.",
+            "settingsTitle": "Cài đặt",
+            "settingsContent": "Tùy chỉnh cấu hình ứng dụng.",
+            "documentationTitle": "Tài liệu",
+            "documentationContent": "Xem hướng dẫn sử dụng ứng dụng."
+        }
+    },
+
+    "main": {
+        "productDetails": {
+            "title": "Thuộc tính trình cài đặt",
+            "installationLocation": "Vị trí cài đặt",
+            "productName": "Tên sản phẩm",
+            "icon": "Biểu tượng",
+            "productVersion": "Phiên bản sản phẩm",
+            "publisher": "Nhà phát hành",
+            "supportLink": "Liên kết hỗ trợ",
+            "supportEmail": "Email hỗ trợ",
+            "launchFile": "Tệp khởi chạy",
+            "comment": "Ghi chú",
+            "runAsAdmin": "Chạy với quyền quản trị",
+            "createShortcutDesktop": "Tạo shortcut trên Desktop",
+            "shortcutRunAsAdmin": "Chạy với quyền quản trị",
+            "shortcutNamePlaceholder": "Tên shortcut",
+            "save": "Lưu"
+        }
+    },
+
+    "menuSidebar": {
+        "productDetails": "Product Details",
+        "settings": "Settings",
+        "uiEditor": "UI Editor",
+        "filesAndFolders": "Files And Folders",
+        "registry": "Registry",
+        "htmlEngine": "Html Engine",
+        "buildInstaller": "Build Installer",
+        "prerequisites": "Prerequisites"
+    },
+    "product-details": {
+        "input-config-file": "Input Config File Name"
+    }
+}

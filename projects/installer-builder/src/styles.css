@@ -3,8 +3,18 @@
 @import 'tailwindcss';
 
 * {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-family:
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol';
 }
 
 html,
@@ -21,15 +31,396 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-@layer components {
-    .input {
-        @apply mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+@layer base {
+    /* Primary = “màu đại diện cho sản phẩm” */
+    /* Accent thường khác primary để tạo contrast, tạo điểm nhấn phụ */
+    /* SUCCESS biểu thị trạng thái thành công */
+    /* WARNING cảnh báo nhưng chưa nghiêm trọng */
+    /* ERROR Trạng thái lỗi / nguy hiểm / thất bại */
+    /* NEUTRAL Màu trung tính — dùng cho text, background, border. */
+
+    /* muted	Giảm độ nổi bật (secondary info) */
+    /* subtle	Nhẹ hơn cả muted (background nhẹ) */
+    /* inverse	Dùng khi nền tối / đảo màu */
+    /* strong	Đậm hơn mức mặc định */
+
+    /* ========================= LIGHT THEME ========================= */
+    [data-theme='light'] {
+        /* ===================================================== */
+        /* ===================================================== */
+        /* PRIMARY */
+        /* ===================================================== */
+        --color-primary: #3b82f6; /* 59 130 246 */
+        --color-primary-strong: #2563eb; /* 37 99 235 */
+        --color-primary-muted: #60a5fa; /* 96 165 250 */
+        --color-primary-subtle: #dbeafe; /* 219 234 254 */
+        --color-primary-inverse: #ffffff; /* 255 255 255 */
+
+        /* ===================================================== */
+        /* ACCENT */
+        /* ===================================================== */
+        --color-accent: #8b5cf6; /* 139 92 246 */
+        --color-accent-strong: #7c3aed; /* 124 58 237 */
+        --color-accent-muted: #a78bfa; /* 167 139 250 */
+        --color-accent-subtle: #ede9fe; /* 237 233 254 */
+        --color-accent-inverse: #ffffff;
+
+        /* ===================================================== */
+        /* SUCCESS */
+        /* ===================================================== */
+        --color-success: #22c55e;
+        --color-success-strong: #16a34a;
+        --color-success-muted: #4ade80;
+        --color-success-subtle: #dcfce7;
+        --color-success-inverse: #ffffff;
+
+        /* ===================================================== */
+        /* WARNING */
+        /* ===================================================== */
+        --color-warning: #eab308;
+        --color-warning-strong: #ca8a04;
+        --color-warning-muted: #facc15;
+        --color-warning-subtle: #fef9c3;
+        --color-warning-inverse: #000000;
+
+        /* ===================================================== */
+        /* ERROR */
+        /* ===================================================== */
+        --color-error: #ef4444;
+        --color-error-strong: #dc2626;
+        --color-error-muted: #f87171;
+        --color-error-subtle: #fee2e2;
+        --color-error-inverse: #ffffff;
+
+        /* ===================================================== */
+        /* NEUTRAL */
+        /* ===================================================== */
+        --color-neutral: #111827;
+        --color-neutral-strong: #000000;
+        --color-neutral-muted: #6b7280;
+        --color-neutral-subtle: #f3f4f6;
+        --color-neutral-inverse: #ffffff;
+
+        /* BORDER */
+        --color-border: #e5e7eb;
+        --color-border-strong: #d1d5db;
+        --color-border-muted: #f3f4f6;
+        --color-border-subtle: #f9fafb;
+        --color-border-inverse: #374151;
     }
 
-    .checkbox {
-        @apply h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500;
+    /* ========================= DARK THEME ========================= */
+    [data-theme='dark'] {
     }
+}
+
+@layer components {
+    /* ================================ card ================================ */
+
+    .card {
+        @apply shadow-md rounded-2xl p-6 hover:shadow-xl transition transform text-left;
+        border: 1px solid var(--color-border);
+        background: var(--color-neutral-inverse);
+    }
+
+    /* Icon */
+    .card-icon {
+        @apply text-4xl mb-4;
+        /* background: var(--color-neutral-subtle); */
+        /* color: var(--color-neutral); */
+    }
+
+    /* Body */
+    .card-body {
+        flex: 1;
+    }
+
+    /* Title */
+    .card-title {
+        @apply text-xl font-semibold mb-2;
+        color: var(--color-neutral);
+    }
+
+    /* Content */
+    .card-content {
+        @apply text-sm;
+        color: var(--color-neutral-muted);
+    }
+
+    /* ================================ input ================================ */
+
+    /* Wrapper để dễ mở rộng nếu cần icon */
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* Label */
+    .input-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-neutral);
+    }
+
+    /* Base Input */
+    .input {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--color-border);
+        background: var(--color-neutral-inverse);
+        color: var(--color-neutral);
+        transition: all 0.2s ease;
+        outline: none;
+    }
+
+    /* Placeholder */
+    .input::placeholder {
+        color: var(--color-neutral-muted);
+    }
+
+    /* Hover */
+    .input:hover {
+        border-color: var(--color-border-strong);
+    }
+
+    /* Focus */
+    .input:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
+    }
+
+    /* Disabled */
+    .input:disabled {
+        background: var(--color-neutral-subtle);
+        color: var(--color-neutral-muted);
+        cursor: not-allowed;
+    }
+
+    .input-success {
+        border-color: var(--color-success);
+    }
+
+    .input-success:focus {
+        border-color: var(--color-success-strong);
+        box-shadow: 0 0 0 3px var(--color-success) / 0.15;
+    }
+
+    .input-error {
+        border-color: var(--color-error);
+    }
+
+    .input-error:focus {
+        border-color: var(--color-error-strong);
+        box-shadow: 0 0 0 3px var(--color-error) / 0.15;
+    }
+
+    .input-warning {
+        border-color: var(--color-warning);
+    }
+
+    .input-warning:focus {
+        border-color: var(--color-warning-strong);
+        box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
+    }
+
+    /* ================================ text area ================================ */
+
+    /* Wrapper để dễ mở rộng nếu cần icon */
+    .textarea-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* Label */
+    .textarea-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-neutral);
+    }
+
+    /* Base textarea */
+    .textarea {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--color-border);
+        background: var(--color-neutral-inverse);
+        color: var(--color-neutral);
+        transition: all 0.2s ease;
+        outline: none;
+    }
+
+    /* Placeholder */
+    .textarea::placeholder {
+        color: var(--color-neutral-muted);
+    }
+
+    /* Hover */
+    .textarea:hover {
+        border-color: var(--color-border-strong);
+    }
+
+    /* Focus */
+    .textarea:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
+    }
+
+    /* Disabled */
+    .textarea:disabled {
+        background: var(--color-neutral-subtle);
+        color: var(--color-neutral-muted);
+        cursor: not-allowed;
+    }
+
+    .textarea-success {
+        border-color: var(--color-success);
+    }
+
+    .textarea-success:focus {
+        border-color: var(--color-success-strong);
+        box-shadow: 0 0 0 3px var(--color-success) / 0.15;
+    }
+
+    .textarea-error {
+        border-color: var(--color-error);
+    }
+
+    .textarea-error:focus {
+        border-color: var(--color-error-strong);
+        box-shadow: 0 0 0 3px var(--color-error) / 0.15;
+    }
+
+    .textarea-warning {
+        border-color: var(--color-warning);
+    }
+
+    .textarea-warning:focus {
+        border-color: var(--color-warning-strong);
+        box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
+    }
+
+    /* ================================ checkbox ================================ */
+
+    /* Wrapper */
+    .checkbox {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+        font-size: 14px;
+        color: var(--color-neutral);
+    }
+
+    .checkbox-label {
+        line-height: 1;
+    }
+
+    /* Ẩn checkbox mặc định */
+    .checkbox input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* Box */
+    .checkbox-box {
+        width: 18px;
+        height: 18px;
+        border-radius: 6px;
+        border: 1.5px solid var(--color-border-strong);
+        background: var(--color-neutral-inverse);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    /* Hover */
+    .checkbox:hover .checkbox-box {
+        border-color: var(--color-primary);
+    }
+
+    /* Check icon */
+    .checkbox-box::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: var(--color-primary-inverse);
+        transform: scale(0);
+        transition: transform 0.15s ease;
+    }
+
+    /* Checked state */
+    .checkbox input:checked + .checkbox-box {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+    }
+
+    .checkbox input:checked + .checkbox-box::after {
+        transform: scale(1);
+    }
+
+    /* Focus */
+    .checkbox input:focus-visible + .checkbox-box {
+        box-shadow: 0 0 0 3px var(--color-primary) / 0.2;
+    }
+
+    /* Disabled */
+    .checkbox input:disabled + .checkbox-box {
+        background: var(--color-neutral-subtle);
+        border-color: var(--color-border);
+        cursor: not-allowed;
+    }
+
+    .checkbox input:disabled ~ .checkbox-label {
+        color: var(--color-neutral-muted);
+        cursor: not-allowed;
+    }
+
+    /* Variants */
+    .checkbox-success input:checked + .checkbox-box {
+        background: var(--color-success);
+        border-color: var(--color-success);
+    }
+
+    .checkbox-success input:focus-visible + .checkbox-box {
+        box-shadow: 0 0 0 3px var(--color-success) / 0.2;
+    }
+
+    .checkbox-error input:checked + .checkbox-box {
+        background: var(--color-error);
+        border-color: var(--color-error);
+    }
+
+    .checkbox-error input:focus-visible + .checkbox-box {
+        box-shadow: 0 0 0 3px var(--color-error) / 0.2;
+    }
+
+    .checkbox-warning input:checked + .checkbox-box {
+        background: var(--color-warning);
+        border-color: var(--color-warning);
+    }
+
+    .checkbox-warning input:focus-visible + .checkbox-box {
+        box-shadow: 0 0 0 3px var(--color-warning) / 0.2;
+    }
+
+    /* ================================ button ================================ */
+
+    /* ================================ table ================================ */
+}
+
+@layer utilities {
 }
 
 /* scroll bar */
@@ -48,11 +439,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #0f172a; /* color of the scroll thumb on hover */
-}
-
-
-.input {
-    @apply w-full px-3 py-2 rounded-lg border border-slate-300
-           focus:outline-none focus:ring-2 focus:ring-blue-500
-           disabled:bg-slate-200 disabled:text-slate-500;
 }

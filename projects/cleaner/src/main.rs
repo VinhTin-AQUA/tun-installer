@@ -6,10 +6,20 @@ use tokio::fs;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let path = PathBuf::from("C:\\Program Files\\Newtun\\First App").join("FirstApp.exe");
+    let path: PathBuf = PathBuf::from("C:\\Program Files\\Newtun\\First App").join("FirstApp.exe");
     let t = run_exe_installer_file(path, "", false).await;
     Ok(())
 }
+
+#[cfg(target_os = "linux")]
+pub async fn run_exe_installer_file(
+    path: PathBuf,
+    arg_input: &str,
+    run_as_admin: bool,
+) -> Result<bool, String> {
+    Ok(true)
+}
+
 
 #[cfg(target_os = "windows")]
 pub async fn run_exe_installer_file(

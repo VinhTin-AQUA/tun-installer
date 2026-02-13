@@ -1,11 +1,15 @@
 <div class="">
     <div class="mx-auto p-6 bg-white rounded-xl shadow space-y-6">
-        <h2 class="text-xl font-semibold text-gray-800">Installer Properties</h2>
+        <h2 class="text-xl font-semibold text-gray-800">
+            {{ 'main.productDetails.title' | translate }}
+        </h2>
 
         <!-- Text Inputs -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Installation Location</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.installationLocation' | translate }}
+                </label>
                 <input
                     [value]="
                         `${installerPropertyDataForm.installationLocation().value()}\\${installerPropertyDataForm.publisher().value()}\\${installerPropertyDataForm.productName().value()}`
@@ -19,7 +23,7 @@
                     installerPropertyDataForm.installationLocation().touched() &&
                     installerPropertyDataForm.installationLocation().invalid()
                 ) {
-                    <div class="text-red-500">
+                    <div class="text-(--color-error)">
                         @for (
                             error of installerPropertyDataForm.installationLocation().errors();
                             track error
@@ -30,8 +34,10 @@
                 }
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.productName' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.productName"
                     class="input"
@@ -42,7 +48,7 @@
                     installerPropertyDataForm.productName().touched() &&
                     installerPropertyDataForm.productName().invalid()
                 ) {
-                    <div class="text-red-500">
+                    <div class="text-(--color-error)">
                         @for (
                             error of installerPropertyDataForm.productName().errors();
                             track error
@@ -53,8 +59,10 @@
                 }
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Icon</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.icon' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.icon"
                     class="input"
@@ -62,8 +70,10 @@
                 />
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Product Version</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.productVersion' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.productVersion"
                     class="input"
@@ -74,7 +84,7 @@
                     installerPropertyDataForm.productVersion().touched() &&
                     installerPropertyDataForm.productVersion().invalid()
                 ) {
-                    <div class="text-red-500">
+                    <div class="text-(--color-error)">
                         @for (
                             error of installerPropertyDataForm.productVersion().errors();
                             track error
@@ -85,8 +95,10 @@
                 }
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Publisher</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.publisher' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.publisher"
                     class="input"
@@ -97,7 +109,7 @@
                     installerPropertyDataForm.publisher().touched() &&
                     installerPropertyDataForm.publisher().invalid()
                 ) {
-                    <div class="text-red-500">
+                    <div class="text-(--color-error)">
                         @for (
                             error of installerPropertyDataForm.publisher().errors();
                             track error
@@ -108,8 +120,10 @@
                 }
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Support Link</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.supportLink' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.supportLink"
                     class="input"
@@ -117,8 +131,10 @@
                 />
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Support Email</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.supportEmail' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.supportEmail"
                     class="input"
@@ -126,8 +142,10 @@
                 />
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Launch File</label>
+            <div class="input-group">
+                <label class="input-label">
+                    {{ 'main.productDetails.launchFile' | translate }}
+                </label>
                 <input
                     [formField]="installerPropertyDataForm.launchFile"
                     class="input"
@@ -138,7 +156,7 @@
                     installerPropertyDataForm.launchFile().touched() &&
                     installerPropertyDataForm.launchFile().invalid()
                 ) {
-                    <div class="text-red-500">
+                    <div class="text-(--color-error)">
                         @for (
                             error of installerPropertyDataForm.launchFile().errors();
                             track error
@@ -151,53 +169,62 @@
         </div>
 
         <!-- Comment -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700">Comment</label>
-            <textarea [formField]="installerPropertyDataForm.comment" rows="3" class="input"></textarea>
+        <div class="textarea-group">
+            <label class="textarea-label">
+                {{ 'main.productDetails.comment' | translate }}
+            </label>
+            <textarea
+                [formField]="installerPropertyDataForm.comment"
+                rows="3"
+                class="textarea"
+            ></textarea>
         </div>
 
-        <!-- Checkboxes -->
-        <div class="flex gap-6">
-            <label class="flex items-center gap-2 text-sm text-gray-700">
-                <input
-                    type="checkbox"
-                    [formField]="installerPropertyDataForm.runAsAdmin"
-                    class="checkbox"
-                />
-                Run as Administrator
+        <!-- Run as admin -->
+        <div>
+            <label class="checkbox">
+                <input type="checkbox" [formField]="installerPropertyDataForm.runAsAdmin" />
+                <span class="checkbox-box"></span>
+                <span class="checkbox-label">
+                    {{ 'main.productDetails.runAsAdmin' | translate }}
+                </span>
             </label>
         </div>
 
-        <!-- shortcut -->
+        <!-- Shortcut -->
         <div class="flex flex-col gap-4">
-            <div class="border rounded-lg p-4 space-y-3">
-                <!-- Create shortcut -->
-                <label class="flex items-center gap-2 font-medium text-sm">
+            <div class="border border-gray-200 rounded-lg p-4 space-y-3">
+                <label class="checkbox">
                     <input
                         type="checkbox"
                         [formField]="installerPropertyDataForm.shortcutInDesktop.isCreated"
-                        class="checkbox"
                     />
-                    Create Shortcut in Desktop
+                    <span class="checkbox-box"></span>
+                    <span class="checkbox-label">
+                        {{ 'main.productDetails.createShortcutDesktop' | translate }}
+                    </span>
                 </label>
 
-                <!-- Detail -->
                 @if (installerPropertyDataForm.shortcutInDesktop().value().isCreated) {
                     <div class="ml-6 space-y-3">
-                        <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <label class="checkbox">
                             <input
                                 type="checkbox"
                                 [formField]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
-                                class="checkbox"
                             />
-                            Run as Administrator
+                            <span class="checkbox-box"></span>
+                            <span class="checkbox-label">
+                                {{ 'main.productDetails.shortcutRunAsAdmin' | translate }}
+                            </span>
                         </label>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input
                                 type="text"
-                                [formField]="installerPropertyDataForm.shortcutInDesktop.shortcutName"
-                                placeholder="Shortcut name"
+                                [formField]="
+                                    installerPropertyDataForm.shortcutInDesktop.shortcutName
+                                "
+                                [placeholder]="'main.productDetails.shortcutNamePlaceholder' | translate"
                                 class="input input-bordered w-full"
                             />
 
@@ -218,7 +245,7 @@
                 (click)="onSaveInstallerConfig()"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
-                Save
+                {{ 'main.productDetails.save' | translate }}
             </button>
         </div>
     </div>

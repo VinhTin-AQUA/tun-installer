@@ -17,7 +17,7 @@ export class LanguageService {
         const codes = LanguageService.LANGUAGES.map((x) => x.code);
         this.translate.addLangs(codes);
         this.translate.setFallbackLang('en');
-        this.translate.use('en'); // sử dụng ngôn ngữ khi mở ứng dụng
+        this.translate.use('en');
     }
 
     use(lang: string) {

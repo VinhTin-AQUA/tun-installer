@@ -13,7 +13,7 @@
     "launchApp": true,
     "shortcutInDesktop": {
       "isCreated": true,
-      "runAsAdmin": true,
+      "runAsAdmin": false,
       "shortcutName": "First App"
     }
   },

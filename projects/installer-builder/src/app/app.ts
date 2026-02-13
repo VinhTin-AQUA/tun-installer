@@ -12,6 +12,7 @@ import { Dialogs } from './shared/components/dialogs/dialogs';
 })
 export class App {
     protected readonly title = signal('installer-builder');
+    light = signal<string>('light');
 
     constructor(private languageService: LanguageService) {}
 }

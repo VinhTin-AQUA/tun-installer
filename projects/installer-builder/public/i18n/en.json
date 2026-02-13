@@ -1,7 +1,39 @@
 {
     "app": {
-        "title": "Bill Insight"
+        "home": {
+            "title": "Welcome to Tun Installer",
+            "introduce": "Create beautiful, professional .exe installers easily",
+            "createNewProjectTitle": "Create New Project",
+            "createNewProjectContent": "Create a completely new project",
+            "openProjectTitle": "Open Project",
+            "openProjectContent": "Open an existing project on your device.",
+            "settingsTitle": "Settings",
+            "settingsContent": "Customize application configuration.",
+            "documentationTitle": "Documentation",
+            "documentationContent": "View the user guide of the application."
+        }
     },
+
+    "main": {
+        "productDetails": {
+            "title": "Installer Properties",
+            "installationLocation": "Installation Location",
+            "productName": "Product Name",
+            "icon": "Icon",
+            "productVersion": "Product Version",
+            "publisher": "Publisher",
+            "supportLink": "Support Link",
+            "supportEmail": "Support Email",
+            "launchFile": "Launch File",
+            "comment": "Comment",
+            "runAsAdmin": "Run as Administrator",
+            "createShortcutDesktop": "Create Shortcut in Desktop",
+            "shortcutRunAsAdmin": "Run as Administrator",
+            "shortcutNamePlaceholder": "Shortcut name",
+            "save": "Save"
+        }
+    },
+
     "menuSidebar": {
         "productDetails": "Product Details",
         "settings": "Settings",
