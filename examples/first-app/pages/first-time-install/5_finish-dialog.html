@@ -118,12 +118,7 @@
         <script>
             function finishInstall() {
                 const checkbox = document.getElementById('lauch-app-now');
-
-                if (checkbox.checked) {
-                    window.App.launchAppNow();
-                }
-
-                window.App.finishInstall();
+                window.App.finishInstall(checkbox.checked);
             }
         </script>
     </body>

@@ -24,12 +24,10 @@ declare global {
             navigateTo: (pageName: string, type: PageType) => void;
 
             install: (afterInstallPage: string | null) => Promise<void>;
-            finishInstall: () => Promise<void>;
+            finishInstall: (launchAppNow: boolean) => Promise<void>;
 
             uninstall: (afterUninstallPage: string | null) => Promise<void>;
             finishUninstall: () => Promise<void>;
-
-            launchAppNow: () => Promise<void>;
 
             logData: () => void;
             data: any;
@@ -50,12 +48,10 @@ export class ApiContracts {
             navigateTo: (pageName: string, type: PageType) => void;
 
             install: (afterInstallPage: string | null) => Promise<void>;
-            finishInstall: () => Promise<void>;
+            finishInstall: (launchAppNow: boolean) => Promise<void>;
 
             uninstall: (afterUninstallPage: string | null) => Promise<void>;
             finishUninstall: () => Promise<void>;
-
-            launchAppNow: () => Promise<void>;
         },
 
         data: any,
@@ -70,17 +66,14 @@ export class ApiContracts {
             install: async (afterInstallPage: string | null) => {
                 await methods.install(afterInstallPage);
             },
-            finishInstall: async () => {
-                await methods.finishInstall();
+            finishInstall: async (launchAppNow: boolean) => {
+                await methods.finishInstall(launchAppNow);
             },
             uninstall: async (afterUninstallPage: string | null) => {
                 await methods.uninstall(afterUninstallPage);
             },
             finishUninstall: async () => {
                 await methods.finishUninstall();
-            },
-            launchAppNow: async () => {
-                await methods.launchAppNow();
             },
             logData: () => {
                 console.log('Test Install');

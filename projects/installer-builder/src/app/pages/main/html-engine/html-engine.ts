@@ -157,7 +157,6 @@ export class HtmlEngine {
                     finishInstall: this.finishInstall.bind(this),
                     uninstall: this.uninstall.bind(this),
                     finishUninstall: this.finishUninstall.bind(this),
-                    launchAppNow: this.launchAppNow.bind(this),
                 },
                 this.data,
             );
@@ -202,7 +201,10 @@ export class HtmlEngine {
         }, 500);
     }
 
-    async finishInstall() {
+    async finishInstall(launchAppNow: boolean) {
+        if (launchAppNow) {
+            alert('Lauch APP');
+        }
         alert('Finish Install');
     }
 
@@ -223,10 +225,6 @@ export class HtmlEngine {
 
     async finishUninstall() {
         alert('Finish Uninstall');
-    }
-
-    async launchAppNow() {
-        alert('Lauch APP');
     }
 
     /* ================================= */

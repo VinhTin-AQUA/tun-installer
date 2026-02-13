@@ -1,6 +1,6 @@
 use domain::{InstallerDocument, CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
 use helpers::get_current_exe;
-use std::{env};
+use std::{env, path::PathBuf};
 
 use crate::{
     enums::InstallerStatus,
@@ -22,7 +22,6 @@ pub fn extract_data_inner(
 pub fn init_project_state(app_state: &AppState) -> Result<ProjectState, String> {
     let compressor = app_state.compressor.clone();
     let exe_path_buf = get_current_exe();
-
     let installer_document: InstallerDocument = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
             let s = String::from_utf8(data)?;
@@ -30,6 +29,11 @@ pub fn init_project_state(app_state: &AppState) -> Result<ProjectState, String> 
         })
         .map_err(|e| e.to_string())?;
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
+    
+    /* redirect to project to test */ 
+    // let temp_app_dir = PathBuf::from("C:/Users/tinhv/Desktop/f/tun-installer/examples/first-app");
+    // println!("temp_app_dir = {:?}", temp_app_dir);
+
 
     let r = ProjectState {
         project_dir: temp_app_dir.to_string_lossy().to_string(),

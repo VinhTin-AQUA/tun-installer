@@ -131,7 +131,6 @@ export class PreviewInstallerUi {
                     finishInstall: this.finishInstall.bind(this),
                     uninstall: this.uninstall.bind(this),
                     finishUninstall: this.finishUninstall.bind(this),
-                    launchAppNow: this.launchAppNow.bind(this),
                 },
 
                 this.data,
@@ -177,7 +176,10 @@ export class PreviewInstallerUi {
         }, 500);
     }
 
-    async finishInstall() {
+    async finishInstall(launchAppNow: boolean) {
+        if (launchAppNow) {
+            alert('Lauch APP');
+        }
         await this.windowService.closeCurrentWindow();
     }
 
@@ -198,10 +200,6 @@ export class PreviewInstallerUi {
 
     async finishUninstall() {
         await this.windowService.closeCurrentWindow();
-    }
-
-    async launchAppNow() {
-        alert('Lauch APP');
     }
 
     /* ================================= */

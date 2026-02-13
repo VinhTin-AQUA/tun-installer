@@ -28,7 +28,7 @@ pub async fn install(
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
     let exe_path_buf = get_current_exe();
     let exe_path_buf_to_copy = exe_path_buf.clone();
-    
+
     let temp_app_dir_to_delete_temp_folder = temp_app_dir.clone();
 
     let resource_path_buf = temp_app_dir.clone().join(RESOURCES_DIR);
@@ -66,17 +66,19 @@ pub async fn install(
         .await
         .map_err(|e| e.to_string());
 
-    let _ = copy_file_to_dir(&exe_path_buf_to_copy, &installation_location, "uninstall.exe").await;
+    let _ = copy_file_to_dir(
+        &exe_path_buf_to_copy,
+        &installation_location,
+        "uninstall.exe",
+    )
+    .await;
 
     // installer prerequisites
     let prerequisites = installer_document.prerequisites.clone();
     for prerequisite in prerequisites {
         println!("Installing {}", prerequisite.name);
 
-        let exe_path = prerequisite_path_buf
-            .join(&prerequisite.name)
-            .to_string_lossy()
-            .to_string();
+        let exe_path = prerequisite_path_buf.join(&prerequisite.name);
 
         run_exe_installer_file(exe_path, "/S", prerequisite.run_as_admin).await?;
     }
@@ -103,8 +105,11 @@ pub async fn install(
         &installer_document.properties.product_name.clone(), // tên shortcut
         &run_app_file.to_string_lossy().to_string(),
         None,
-        Some(&icon.to_string_lossy().to_string()), 
-        installer_document.properties.shortcut_in_desktop.run_as_admin
+        Some(&icon.to_string_lossy().to_string()),
+        installer_document
+            .properties
+            .shortcut_in_desktop
+            .run_as_admin,
     )
     .map_err(|x| x.to_string())?;
 
@@ -114,13 +119,34 @@ pub async fn install(
     Ok(true)
 }
 
+#[command]
+pub async fn launch_app_now(
+    installer_document_state: State<'_, Mutex<InstallerDocument>>,
+) -> Result<bool, String> {
+    let installer_document = installer_document_state.lock().await;
+    let run_app_path = PathBuf::from(installer_document.properties.installation_location.clone())
+        .join(installer_document.properties.launch_file.clone());
+
+    let _ = run_exe_detached(run_app_path.clone(), "").await?;
+
+    Ok(true)
+}
+
 //====================================================
 
 #[cfg(target_os = "linux")]
 pub async fn run_exe_installer_file(
-    path: String,
+    path: PathBuf,
     arg_input: &str,
     run_as_admin: bool,
+) -> Result<bool, String> {
+    Ok(true)
+}
+
+#[cfg(target_os = "linux")]
+pub async fn run_exe_detached(
+    path: PathBuf,
+    arg_input: &str,
 ) -> Result<bool, String> {
     Ok(true)
 }
@@ -129,7 +155,7 @@ pub async fn run_exe_installer_file(
 // crate: shlex = "1"
 #[cfg(target_os = "windows")]
 pub async fn run_exe_installer_file(
-    path: String,
+    path: PathBuf,
     arg_input: &str,
     run_as_admin: bool,
 ) -> Result<bool, String> {
@@ -147,8 +173,9 @@ pub async fn run_exe_installer_file(
                 .args([
                     "-Command",
                     &format!(
-                        "Start-Process '{}' -ArgumentList '{}' -Verb runAs -Wait",
-                        path, arg_list
+                        "Start-Process -FilePath '{}' -ArgumentList '{}' -Verb runAs -Wait",
+                        path.display(),
+                        arg_list
                     ),
                 ])
                 .spawn()
@@ -159,7 +186,7 @@ pub async fn run_exe_installer_file(
             use std::process::Command;
 
             Command::new(&path)
-                .args(args)
+                .args(&args)
                 .spawn()
                 .map_err(|e| e.to_string())?
                 .wait()
@@ -175,4 +202,34 @@ pub async fn run_exe_installer_file(
 // parse input args
 fn parse_args(input: &str) -> Vec<String> {
     shlex::split(input).unwrap_or_default()
+}
+
+// run app without await
+#[cfg(target_os = "windows")]
+pub async fn run_exe_detached(
+    path: PathBuf,
+    arg_input: &str,
+) -> Result<bool, String> {
+
+    let arg_input = arg_input.to_string();
+
+    tokio::task::spawn_blocking(move || {
+        use std::process::Command;
+        use std::os::windows::process::CommandExt;
+
+        const DETACHED_PROCESS: u32 = 0x00000008;
+        const CREATE_NEW_PROCESS_GROUP: u32 = 0x00000200;
+
+        let args = parse_args(&arg_input);
+
+        Command::new(&path)
+            .args(&args)
+            .creation_flags(DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
+            .spawn()
+            .map_err(|e| e.to_string())?;
+
+        Ok(true)
+    })
+    .await
+    .map_err(|e| e.to_string())?
 }

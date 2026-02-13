@@ -15,6 +15,14 @@ export class InstallerService {
         return r;
     }
 
+    async launchAppNow() {
+        const r = await this.tauriCommandService.invokeCommand<boolean, undefined>(
+            InstallCommands.LAUNCH_APP_NOW,
+            undefined,
+        );
+        return r;
+    }
+
     async uninstall() {}
 
     async cancelInstall() {}

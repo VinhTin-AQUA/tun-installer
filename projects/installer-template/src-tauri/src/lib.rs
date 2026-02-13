@@ -12,7 +12,7 @@ use commands::*;
 use domain::InstallerDocument;
 use ::helpers::get_current_exe;
 use service::Compressor;
-use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, process::Command, sync::Arc};
+use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, sync::Arc};
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use tokio::sync::Mutex;
 
@@ -141,6 +141,7 @@ fn run_inner() {
             cancel_extract_command,
             is_cancelled_command,
             install,
+            launch_app_now,
             uninstall_command,
             clean_uninstall_command,
             get_installer_args_command,

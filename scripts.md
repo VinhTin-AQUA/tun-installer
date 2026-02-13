@@ -174,3 +174,10 @@ exe_template_v1.0.0.exe --status uninstall
 
 - Chỉnh sửa resource của file exe
 - link: https://github.com/electron/rcedit
+
+### Để test mà không cần build exe template
+- trong projects\installer-template\src-tauri\src\bootstrapper\bootstrapper.rs
+đổi temp_app_dir thành đường dẫn dự án
+
+- trong libs\rust\helpers\src\file_helper.rs
+đổi exe_path_buf thành file exe đã được nén

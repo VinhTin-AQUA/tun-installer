@@ -34,6 +34,7 @@ export enum InstallerDocumentCommands {
 
 export enum InstallCommands {
     INSTALL = 'install',
+    LAUNCH_APP_NOW = 'launch_app_now'
 }
 
 export enum UninstallCommands {

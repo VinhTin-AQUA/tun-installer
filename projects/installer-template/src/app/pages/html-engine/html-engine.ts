@@ -57,7 +57,7 @@ export class HtmlEngine {
         private tauriEventService: TauriEventService,
         private windowService: WindowService,
         private installerArgsService: InstallerArgsService,
-        private uninstallerService: UninstallerService
+        private uninstallerService: UninstallerService,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -138,13 +138,15 @@ export class HtmlEngine {
         iframeEl.onload = () => {
             ApiContracts.injectAPIs(
                 this.iframe,
-                this.navigateTo.bind(this),
+                {
+                    navigateTo: this.navigateTo.bind(this),
 
-                this.install.bind(this),
-                this.finishInstall.bind(this),
+                    install: this.install.bind(this),
+                    finishInstall: this.finishInstall.bind(this),
 
-                this.uninstall.bind(this),
-                this.finishUninstall.bind(this),
+                    uninstall: this.uninstall.bind(this),
+                    finishUninstall: this.finishUninstall.bind(this),
+                },
 
                 this.data,
             );
@@ -199,7 +201,10 @@ export class HtmlEngine {
         }
     }
 
-    async finishInstall() {
+    async finishInstall(launchAppNow: boolean) {
+        if (launchAppNow) {
+            await this.installerService.launchAppNow();
+        }
         await this.windowService.closeCurrentWindow();
     }
 

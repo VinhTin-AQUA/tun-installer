@@ -10,7 +10,7 @@
         "build-all-lib": "ng build data-access && ng build api-contracts && ng build service",
         "tauri": "tauri",
         "tauri:dev:builder": "tauri dev --config projects/installer-builder/src-tauri/tauri.conf.json -- --package installer_builder --bin installer_builder -- --debug-mode --channel beta --env production",
-        "tauri:dev:template": "tauri dev --config projects/installer-template/src-tauri/tauri.conf.json -- --package installer_template --bin installer_template -- --status uninstall",
+        "tauri:dev:template": "tauri dev --config projects/installer-template/src-tauri/tauri.conf.json -- --package installer_template --bin installer_template -- --status install",
         "tauri:build:builder": "tauri build --config projects/installer-builder/src-tauri/tauri.conf.json -- --package installer_builder --bin installer_builder",
         "tauri:build:template": "tauri build --no-bundle --config projects/installer-template/src-tauri/tauri.conf.json -- --target x86_64-pc-windows-msvc --package installer_template --bin installer_template",
         "cargo:build:builder": "cargo build -p installer_builder --bin installer_builder",
