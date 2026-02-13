@@ -14,14 +14,7 @@
     "shortcutInDesktop": {
       "isCreated": true,
       "runAsAdmin": true,
-      "shortcutName": "First App",
-      "runFile": "FirstApp.exe"
-    },
-    "shortcutInApplicationShortcut": {
-      "isCreated": true,
-      "runAsAdmin": false,
-      "shortcutName": "First App",
-      "runFile": "FirstApp.exe"
+      "shortcutName": "First App"
     }
   },
   "registryKeys": {

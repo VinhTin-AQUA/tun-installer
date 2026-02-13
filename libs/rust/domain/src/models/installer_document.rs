@@ -2,7 +2,7 @@ use crate::{
     WindowInfo,
     models::{
         InstallerProperties, Prerequisite, RegistryKey, RegistryKeys, RegistryValue,
-        RegistryValueType, ShortcutInApplicationShortcut, ShortcutInDesktop, WindowInfos,
+        RegistryValueType, ShortcutInDesktop, WindowInfos,
     },
 };
 use serde::{Deserialize, Serialize};
@@ -34,13 +34,6 @@ pub fn create_default_installer_document() -> InstallerDocument {
                 is_created: true,
                 run_as_admin: false,
                 shortcut_name: "My Application".into(),
-                run_file: "".into(),
-            },
-            shortcut_in_application_shortcut: ShortcutInApplicationShortcut {
-                is_created: true,
-                run_as_admin: false,
-                shortcut_name: "My Application".into(),
-                run_file: "".into(),
             },
         },
 

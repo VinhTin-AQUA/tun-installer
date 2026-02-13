@@ -15,7 +15,6 @@ pub struct InstallerProperties {
     pub run_as_admin: bool,            // run as administrator
     pub launch_app: bool,              // run app after install
     pub shortcut_in_desktop: ShortcutInDesktop,
-    pub shortcut_in_application_shortcut: ShortcutInApplicationShortcut,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -24,14 +23,5 @@ pub struct ShortcutInDesktop {
     pub is_created: bool,
     pub run_as_admin: bool,
     pub shortcut_name: String,
-    pub run_file: String,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ShortcutInApplicationShortcut {
-    pub is_created: bool,
-    pub run_as_admin: bool,
-    pub shortcut_name: String,
-    pub run_file: String,
-}

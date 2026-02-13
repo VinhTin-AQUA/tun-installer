@@ -10,20 +10,11 @@ export interface InstallerProperties {
     launchFile: string; // exe file
     runAsAdmin: boolean; // run as administrator
     launchApp: boolean; // run app after install
-    shortcutInDesktop: ShortcutInDesktop,
-    shortcutInApplicationShortcut: ShortcutInApplicationShortcut
+    shortcutInDesktop: ShortcutInDesktop
 }
 
 export interface ShortcutInDesktop {
     isCreated: boolean;
     runAsAdmin: boolean;
     shortcutName: string;
-    runFile: string;
-}
-
-export interface ShortcutInApplicationShortcut {
-    isCreated: boolean;
-    runAsAdmin: boolean;
-    shortcutName: string;
-    runFile: string;
 }

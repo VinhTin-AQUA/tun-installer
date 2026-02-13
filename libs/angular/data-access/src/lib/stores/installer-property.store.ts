@@ -15,13 +15,6 @@ const initialState: InstallerProperties = {
     shortcutInDesktop: {
         isCreated: false,
         runAsAdmin: false,
-        runFile: '',
-        shortcutName: '',
-    },
-    shortcutInApplicationShortcut: {
-        isCreated: false,
-        runAsAdmin: false,
-        runFile: '',
         shortcutName: '',
     },
     installationLocation: '',
@@ -53,7 +46,6 @@ export const InstallerPropertyStore = signalStore(
                 runAsAdmin: store.runAsAdmin(),
                 launchApp: store.launchApp(),
                 shortcutInDesktop: store.shortcutInDesktop(),
-                shortcutInApplicationShortcut: store.shortcutInApplicationShortcut(),
             };
 
             return data;

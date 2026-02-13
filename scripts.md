@@ -198,3 +198,38 @@ exe_template_v1.0.0.exe --status uninstall
     "progress": 97.08,
     "message": "Delete app folder after exit..."
 }
+
+## Docu
+
+backend
+- thư mục temp khi cài đặt chưa xóa hết
+- thư mục ứng dụng gỡ cài đặt vẫn chưa xóa hết
+
+
+front end
+- style giao diện
+
+readme
+- hướng dẫn dự án cơ bản
+- các hàm api
+- cách phát triển
+- giải thích các thuộc tính
+
+
+- hỗ trợ CLI 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

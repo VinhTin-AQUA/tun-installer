@@ -74,8 +74,6 @@ export class ProjectManagerService {
                     runAsAdmin: this.installerPropertyDataModel().runAsAdmin,
                     launchApp: this.installerPropertyDataModel().launchApp,
                     shortcutInDesktop: this.installerPropertyDataModel().shortcutInDesktop,
-                    shortcutInApplicationShortcut:
-                        this.installerPropertyDataModel().shortcutInApplicationShortcut,
                 });
 
                 const configRegistry: RegistryValue[] = [
@@ -199,9 +197,7 @@ export class ProjectManagerService {
         this.installerPropertyDataForm
             .shortcutInDesktop()
             .value.set(installerDocumentConfig.properties.shortcutInDesktop);
-        this.installerPropertyDataForm
-            .shortcutInApplicationShortcut()
-            .value.set(installerDocumentConfig.properties.shortcutInApplicationShortcut);
+       
 
         this.installerPropertyStore.update({
             installationLocation: installerDocumentConfig.properties.installationLocation,
@@ -216,8 +212,6 @@ export class ProjectManagerService {
             runAsAdmin: installerDocumentConfig.properties.runAsAdmin,
             launchApp: installerDocumentConfig.properties.launchApp,
             shortcutInDesktop: installerDocumentConfig.properties.shortcutInDesktop,
-            shortcutInApplicationShortcut:
-                installerDocumentConfig.properties.shortcutInApplicationShortcut,
         });
 
         this.registryKeyStore.setRegistry({

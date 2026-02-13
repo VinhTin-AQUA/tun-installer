@@ -49,8 +49,7 @@ pub async fn uninstall_command(
 
     let app_exe_name = &installer_document
         .properties
-        .shortcut_in_application_shortcut
-        .run_file;
+        .launch_file;
     let _ = Command::new("taskkill")
         .args(["/IM", app_exe_name, "/F", "/T"])
         .status();

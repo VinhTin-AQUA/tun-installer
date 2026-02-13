@@ -201,70 +201,11 @@
                                 class="input input-bordered w-full"
                             />
 
-                            <input
-                                list="listFiles"
-                                type="text"
-                                [formField]="installerPropertyDataForm.shortcutInDesktop.runFile"
-                                placeholder="Run file path"
-                                class="input input-bordered w-full"
-                            />
-
                             <datalist id="listFiles">
                                 @for (n of resourceFiletore.getAll(); track $index) {
                                     <option [value]="n.name">{{ n.name }}</option>
                                 }
                             </datalist>
-                        </div>
-                    </div>
-                }
-            </div>
-
-            <div class="border rounded-lg p-4 space-y-3">
-                <!-- Create shortcut -->
-                <label class="flex items-center gap-2 font-medium text-sm">
-                    <input
-                        type="checkbox"
-                        [formField]="installerPropertyDataForm.shortcutInApplicationShortcut.isCreated"
-                        class="checkbox"
-                    />
-                    Create Shortcut in Application Shortcut
-                </label>
-
-                <!-- Detail -->
-                @if (installerPropertyDataForm.shortcutInApplicationShortcut().value().isCreated) {
-                    <div class="ml-6 space-y-3">
-                        <label class="flex items-center gap-2 text-sm text-gray-600">
-                            <input
-                                type="checkbox"
-                                [formField]="
-                                    installerPropertyDataForm.shortcutInApplicationShortcut
-                                        .runAsAdmin
-                                "
-                                class="checkbox"
-                            />
-                            Run as Administrator
-                        </label>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input
-                                type="text"
-                                [formField]="
-                                    installerPropertyDataForm.shortcutInApplicationShortcut
-                                        .shortcutName
-                                "
-                                placeholder="Shortcut name"
-                                class="input input-bordered w-full"
-                            />
-
-                            <input
-                                list="listFiles"
-                                type="text"
-                                [formField]="
-                                    installerPropertyDataForm.shortcutInApplicationShortcut.runFile
-                                "
-                                placeholder="Run file path"
-                                class="input input-bordered w-full"
-                            />
                         </div>
                     </div>
                 }
