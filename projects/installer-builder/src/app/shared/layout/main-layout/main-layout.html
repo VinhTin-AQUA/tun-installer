@@ -1,15 +1,12 @@
-
-
-
 @if (isLoading()) {
     <div class="app-loading">
         <p>Đang khởi tạo ứng dụng...</p>
         <!-- spinner -->
     </div>
 } @else {
-   <div class="h-screen flex flex-col bg-gray-100">
-    <!-- Header -->
-    <!-- <header class="h-10 bg-white shadow flex items-center gap-2 px-6 shrink-0">
+    <div class="h-screen flex flex-col bg-gray-100">
+        <!-- Header -->
+        <!-- <header class="h-10 bg-white shadow flex items-center gap-2 px-6 shrink-0">
         <h1 class="text-xl font-semibold">My App</h1>
         <div class="font-semibold">
             @if(!installerDocumentStore.filePath()) {
@@ -22,30 +19,30 @@
         </div>
     </header> -->
 
-    <app-main-title-bar></app-main-title-bar>
+        <app-main-title-bar></app-main-title-bar>
 
-    <!-- Body -->
-    <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar -->
-        <aside class="w-52 bg-gray-800 text-white shrink-0 overflow-y-auto">
-            <nav class="p-4 space-y-2">
-                @for (navItem of navItems; track $index) {
-                    <a
-                        class="block px-4 py-2 rounded hover:bg-gray-700"
-                        routerLinkActive="active"
-                        [routerLink]="navItem.url"
-                        >{{ navItem.name | translate }}</a
-                    >
-                }
-            </nav>
-        </aside>
+        <!-- Body -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Sidebar -->
+            <aside class="w-52 bg-gray-800 text-white shrink-0 overflow-y-auto">
+                <nav class="p-4 space-y-2">
+                    @for (navItem of navItems; track $index) {
+                        <a
+                            class="block px-4 py-2 rounded hover:bg-gray-700"
+                            routerLinkActive="active"
+                            [routerLink]="navItem.url"
+                            >{{ navItem.name | translate }}</a
+                        >
+                    }
+                </nav>
+            </aside>
 
-        <!-- Main content (KHÔNG SCROLL) -->
-        <main class="flex-1 min-h-0 h-[calc(100vh-50px)] overflow-hidden p-2">
-            <div class="p-6 overflow-y-scroll w-full h-full">
-                <router-outlet></router-outlet>
-            </div>
-        </main>
+            <!-- Main content (KHÔNG SCROLL) -->
+            <main class="flex-1 min-h-0 h-[calc(100vh-50px)] overflow-hidden p-2">
+                <div class="p-6 overflow-y-scroll w-full h-full">
+                    <router-outlet></router-outlet>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
 }

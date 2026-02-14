@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FolderNode, FileItem } from '../../../core/models/directory-tree';
-import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { CommonModule, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { InstallerPropertyStore } from 'data-access';
 import { ProjectStore } from '../../../core/stores/project-store';
 import { ResourceFiletore } from '../../../core/stores/resource-file.store';
@@ -9,7 +9,7 @@ import { ProjectManagerCommands, TauriCommandService } from 'service';
 
 @Component({
     selector: 'app-files-and-folders',
-    imports: [NgTemplateOutlet, DecimalPipe],
+    imports: [NgTemplateOutlet, DecimalPipe, CommonModule],
     templateUrl: './files-and-folders.html',
     styleUrl: './files-and-folders.css',
 })

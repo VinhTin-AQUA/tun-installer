@@ -1,64 +1,38 @@
 .layout {
     display: flex;
-    height: 100vh;
 }
 
-.sidebar {
-    width: 250px;
-    border-right: 1px solid #ddd;
-    padding: 10px;
-}
-
-.folder {
-    cursor: pointer;
-    padding: 4px 6px;
-}
-
-.folder.active {
-    background: #e3f2fd;
-    font-weight: bold;
-}
-
-.content {
-    flex: 1;
-    padding: 10px;
-}
-
-.file-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.file-table th,
-.file-table td {
-    border: 1px solid #ddd;
-    padding: 6px;
-}
-
-.action-cell {
-    position: relative;
-}
-
-.context-menu {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background: white;
-    border: 1px solid #ccc;
-    width: 120px;
-    z-index: 10;
-}
-
-.context-menu div {
-    padding: 6px;
-    cursor: pointer;
-}
-
-.context-menu div:hover {
-    background: #f0f0f0;
-}
-
-.icon {
-    display: inline-flex;
+.file-toolbar {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    background: var(--color-neutral-inverse);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.file-toolbar__left {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.file-toolbar__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-primary);
+}
+
+.file-toolbar__meta {
+    font-size: 13px;
+    color: var(--color-neutral-muted);
+}
+
+.file-toolbar__right {
+    display: flex;
+    gap: 10px;
 }
