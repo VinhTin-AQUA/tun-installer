@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+.card {
+    @apply shadow-md rounded-2xl p-6 hover:shadow-xl transition transform text-left;
+    border: 1px solid var(--color-border);
+    background: var(--color-neutral-inverse);
+}
+
+/* Icon */
+.card-icon {
+    @apply text-4xl mb-4;
+    /* background: var(--color-neutral-subtle); */
+    /* color: var(--color-neutral); */
+}
+
+/* Body */
+.card-body {
+    flex: 1;
+}
+
+/* Title */
+.card-title {
+    @apply text-xl font-semibold mb-2;
+    color: var(--color-neutral);
+}
+
+/* Content */
+.card-content {
+    @apply text-sm;
+    color: var(--color-neutral-muted);
+}

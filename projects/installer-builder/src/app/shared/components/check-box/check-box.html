@@ -1,0 +1,20 @@
+<label class="checkbox">
+    @if (formField) {
+        <!-- MODE SIGNAL FORMS -->
+        <input type="checkbox" [formField]="formField" />
+    } @else {
+        <!-- MODE STANDALONE -->
+        <input
+            type="checkbox"
+            [checked]="checked()"
+            [disabled]="disabled"
+            (click)="onInputChange($event)"
+        />
+    }
+
+    <span class="checkbox-box"></span>
+
+    <span class="checkbox-label">
+        {{ label | translate }}
+    </span>
+</label>

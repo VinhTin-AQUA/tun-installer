@@ -1,0 +1,77 @@
+/* Wrapper để dễ mở rộng nếu cần icon */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 10px;
+}
+
+/* Label */
+.input-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-neutral);
+}
+
+/* Base Input */
+.input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background: var(--color-neutral-inverse);
+    color: var(--color-neutral);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+/* Placeholder */
+.input::placeholder {
+    color: var(--color-neutral-muted);
+}
+
+/* Hover */
+.input:hover {
+    border-color: var(--color-border-strong);
+}
+
+/* Focus */
+.input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
+}
+
+/* Disabled */
+.input:disabled {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-muted);
+    cursor: not-allowed;
+}
+
+.input-success {
+    border-color: var(--color-success);
+}
+
+.input-success:focus {
+    border-color: var(--color-success-strong);
+    box-shadow: 0 0 0 3px var(--color-success) / 0.15;
+}
+
+.input-error {
+    border-color: var(--color-error);
+}
+
+.input-error:focus {
+    border-color: var(--color-error-strong);
+    box-shadow: 0 0 0 3px var(--color-error) / 0.15;
+}
+
+.input-warning {
+    border-color: var(--color-warning);
+}
+
+.input-warning:focus {
+    border-color: var(--color-warning-strong);
+    box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
+}

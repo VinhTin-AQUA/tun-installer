@@ -80,55 +80,44 @@
             </div>
 
             <!-- window title -->
-            <div>
-                <label class="block text-sm font-medium"> Title </label>
-                <input
-                    type="text"
-                    class="w-full px-3 py-2 border rounded"
-                    [value]="activeWindow.title"
-                    (input)="updateWindowTitle($event)"
-                />
-            </div>
+            <app-text-input
+                label="Title"
+                [value]="activeWindow.title"
+                (input)="updateWindowTitle($event)"
+            ></app-text-input>
 
             <!-- Start page -->
-            <div>
-                <label class="block text-sm font-medium"> Start Page </label>
-                <input
-                    type="text"
-                    class="w-full px-3 py-2 border rounded"
-                    [value]="activeWindow.startPage"
-                    (input)="updateStartPage($event)"
-                />
-            </div>
+            <app-text-input
+                label="Start Page"
+                [value]="activeWindow.startPage"
+                (input)="updateStartPage($event)"
+            ></app-text-input>
 
             <!-- always on top -->
-            <div>
-                <label class="block text-sm font-medium"> Always On Top </label>
-                <input
-                    type="checkbox"
-                    class="mt-2"
-                    [checked]="activeWindow.alwaysOnTop"
-                    (change)="updateAlwaysOnTop($event)"
-                />
-            </div>
+
+            <app-check-box
+                label="Always On Top"
+                [checked]="activeWindow.alwaysOnTop"
+                (change)="updateAlwaysOnTop($event)"
+            ></app-check-box>
 
             <!-- actions -->
             <div class="flex gap-2">
-                <button
-                    (click)="preview()"
-                    class="flex-1 px-3 py-2 bg-green-600 text-white rounded"
-                >
-                    Preview
-                </button>
-                <button (click)="reset()" class="flex-1 px-3 py-2 bg-red-500 text-white rounded">
-                    Reset
-                </button>
+                <app-button
+                    (buttonClick)="preview()"
+                    label="Preview"
+                    variant="primary"
+                ></app-button>
+                <app-button (buttonClick)="reset()" label="Reset" variant="warning"></app-button>
             </div>
 
             <div>
-                <button (click)="save()" class="w-full px-3 py-2 bg-green-600 text-white rounded">
-                    Save
-                </button>
+                <app-button
+                    class="w-full"
+                    (buttonClick)="save()"
+                    label="Save"
+                    variant="success"
+                ></app-button>
             </div>
         </div>
     </div>

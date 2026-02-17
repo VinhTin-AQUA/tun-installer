@@ -8,50 +8,56 @@
     <div class="bg-white rounded-xl shadow p-4">
         <h2 class="text-lg font-medium mb-4">Prerequisites list</h2>
 
-        <table class="w-full text-sm">
+        <table class="table">
             <thead class="border-b">
                 <tr class="text-left">
                     <th class="py-2">File name</th>
                     <th>Phase</th>
                     <th>Size</th>
-                    <th>Admin</th>
+                    <th>{{ 'main.productDetails.runAsAdmin' | translate }}</th>
                     <th></th>
                 </tr>
             </thead>
-      <tbody>
-    @for (p of prerequisiteStore.getData(); track p.name) {
-        <tr class="border-b last:border-0">
-            <td class="py-2">{{ p.name }}</td>
+            <tbody>
+                @for (p of prerequisiteStore.getData(); track p.name) {
+                    <tr class="border-b last:border-0">
+                        <td class="py-2">{{ p.name }}</td>
 
-            <!-- installPhase -->
-            <td>
-                <select
-                    class="border rounded px-2 py-1"
-                    [value]="p.installPhase"
-                    (change)="updatePhase(p.name, $any($event.target).value)"
-                >
-                    <option value="Before">Before</option>
-                    <option value="After">After</option>
-                </select>
-            </td>
+                        <!-- installPhase -->
+                        <td>
+                            <div class="select-group">
+                                <!-- <label class="select-label">Chọn danh mục</label> -->
+                                <div class="select-wrapper">
+                                    <select
+                                        class="select"
+                                        [value]="p.installPhase"
+                                        (change)="updatePhase(p.name, $any($event.target).value)"
+                                    >
+                                        <option value="Before">Before</option>
+                                        <option value="After">After</option>
+                                    </select>
+                                </div>
+                                <!-- <p class="select-hint">Thông tin mô tả thêm</p> -->
+                            </div>
+                        </td>
 
-            <!-- size -->
-            <td>{{ p.size }} MB</td>
+                        <!-- size -->
+                        <td>{{ p.size }} MB</td>
 
-            <!-- runAsAdmin -->
-            <td>
-                <input
-                    type="checkbox"
-                    [checked]="p.runAsAdmin"
-                    (change)="updateRunAsAdmin(p.name, $any($event.target).checked)"
-                />
-            </td>
+                        <td>
+                            <div>
+                                <app-check-box
+                                    [checked]="p.runAsAdmin"
+                                    (valueChange)="updateRunAsAdmin(p.name, $event)"
+                                    [label]="'main.productDetails.runAsAdmin'"
+                                ></app-check-box>
+                            </div>
+                        </td>
 
-            <td></td>
-        </tr>
-    }
-</tbody>
-
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
 
@@ -61,7 +67,7 @@
             (click)="save()"
             class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700"
         >
-            Reload
+            Save
         </button>
     </div>
 </div>

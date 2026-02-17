@@ -1,0 +1,24 @@
+<div class="textarea-group">
+    <label class="textarea-label">
+        {{ label | translate }}
+    </label>
+    @if (formField) {
+        <textarea
+            [formField]="formField"
+            rows="3"
+            class="textarea"
+            [placeholder]="placeholder"
+            (input)="onInputChange($event)"
+        ></textarea>
+    } @else {
+        <textarea
+            rows="3"
+            class="textarea"
+            [placeholder]="placeholder"
+            (input)="onInputChange($event)"
+            [value]="value"
+            [disabled]="disabled"
+            [readonly]="readonly"
+        ></textarea>
+    }
+</div>

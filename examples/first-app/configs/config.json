@@ -5,7 +5,7 @@
     "icon": "icon.ico",
     "productVersion": "1.0.0",
     "publisher": "Newtun",
-    "supportLink": "https://support.mycompany.com",
+    "supportLink": "z",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
     "launchFile": "FirstApp.exe",
@@ -93,5 +93,18 @@
       "alwaysOnTop": true
     }
   },
-  "prerequisites": []
+  "prerequisites": [
+    {
+      "name": "first-app (copy).tunins",
+      "runAsAdmin": false,
+      "installPhase": "Before",
+      "size": 0.0
+    },
+    {
+      "name": "first-app.tunins",
+      "runAsAdmin": true,
+      "installPhase": "Before",
+      "size": 0.0
+    }
+  ]
 }

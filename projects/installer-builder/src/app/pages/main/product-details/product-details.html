@@ -6,227 +6,93 @@
 
         <!-- Text Inputs -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.installationLocation' | translate }}
-                </label>
-                <input
-                    [value]="
-                        `${installerPropertyDataForm.installationLocation().value()}\\${installerPropertyDataForm.publisher().value()}\\${installerPropertyDataForm.productName().value()}`
-                    "
-                    readonly
-                    class="input"
-                    placeholder="C:/Program Files"
-                />
+            <app-text-input
+                [label]="'main.productDetails.installationLocation'"
+                [value]="
+                    `${installerPropertyDataForm.installationLocation().value()}\\${installerPropertyDataForm.publisher().value()}\\${installerPropertyDataForm.productName().value()}`
+                "
+                [readonly]="true"
+                placeholder="C:/Program Files"
+            ></app-text-input>
 
-                @if (
-                    installerPropertyDataForm.installationLocation().touched() &&
-                    installerPropertyDataForm.installationLocation().invalid()
-                ) {
-                    <div class="text-(--color-error)">
-                        @for (
-                            error of installerPropertyDataForm.installationLocation().errors();
-                            track error
-                        ) {
-                            <p>{{ error.message }}</p>
-                        }
-                    </div>
-                }
-            </div>
+            <app-text-input
+                [label]="'main.productDetails.productName'"
+                [formField]="installerPropertyDataForm.productName"
+                placeholder="Your App"
+            ></app-text-input>
 
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.productName' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.productName"
-                    class="input"
-                    placeholder="Your App"
-                />
+            <app-text-input
+                [label]="'main.productDetails.icon'"
+                [formField]="installerPropertyDataForm.icon"
+                placeholder="icon.ico"
+            ></app-text-input>
 
-                @if (
-                    installerPropertyDataForm.productName().touched() &&
-                    installerPropertyDataForm.productName().invalid()
-                ) {
-                    <div class="text-(--color-error)">
-                        @for (
-                            error of installerPropertyDataForm.productName().errors();
-                            track error
-                        ) {
-                            <p>{{ error.message }}</p>
-                        }
-                    </div>
-                }
-            </div>
+            <app-text-input
+                [label]="'main.productDetails.productVersion'"
+                [formField]="installerPropertyDataForm.productVersion"
+                placeholder="1.0.0"
+            ></app-text-input>
 
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.icon' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.icon"
-                    class="input"
-                    placeholder="icon.ico"
-                />
-            </div>
+            <app-text-input
+                [label]="'main.productDetails.publisher'"
+                [formField]="installerPropertyDataForm.publisher"
+                placeholder="Your company"
+            ></app-text-input>
 
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.productVersion' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.productVersion"
-                    class="input"
-                    placeholder="1.0.0"
-                />
+            <app-text-input
+                [label]="'main.productDetails.supportLink'"
+                [formField]="installerPropertyDataForm.supportLink"
+                placeholder="https://example.com"
+            ></app-text-input>
 
-                @if (
-                    installerPropertyDataForm.productVersion().touched() &&
-                    installerPropertyDataForm.productVersion().invalid()
-                ) {
-                    <div class="text-(--color-error)">
-                        @for (
-                            error of installerPropertyDataForm.productVersion().errors();
-                            track error
-                        ) {
-                            <p>{{ error.message }}</p>
-                        }
-                    </div>
-                }
-            </div>
+            <app-text-input
+                [label]="'main.productDetails.supportEmail'"
+                [formField]="installerPropertyDataForm.supportEmail"
+                placeholder="example@gmail.com"
+            ></app-text-input>
 
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.publisher' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.publisher"
-                    class="input"
-                    placeholder="Your company"
-                />
-
-                @if (
-                    installerPropertyDataForm.publisher().touched() &&
-                    installerPropertyDataForm.publisher().invalid()
-                ) {
-                    <div class="text-(--color-error)">
-                        @for (
-                            error of installerPropertyDataForm.publisher().errors();
-                            track error
-                        ) {
-                            <p>{{ error.message }}</p>
-                        }
-                    </div>
-                }
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.supportLink' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.supportLink"
-                    class="input"
-                    placeholder="https://example.com"
-                />
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.supportEmail' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.supportEmail"
-                    class="input"
-                    placeholder="example@gmail.com"
-                />
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">
-                    {{ 'main.productDetails.launchFile' | translate }}
-                </label>
-                <input
-                    [formField]="installerPropertyDataForm.launchFile"
-                    class="input"
-                    placeholder="yourapp.exe"
-                />
-
-                @if (
-                    installerPropertyDataForm.launchFile().touched() &&
-                    installerPropertyDataForm.launchFile().invalid()
-                ) {
-                    <div class="text-(--color-error)">
-                        @for (
-                            error of installerPropertyDataForm.launchFile().errors();
-                            track error
-                        ) {
-                            <p>{{ error.message }}</p>
-                        }
-                    </div>
-                }
-            </div>
+            <app-text-input
+                [label]="'main.productDetails.launchFile'"
+                [formField]="installerPropertyDataForm.launchFile"
+                placeholder="yourapp.exe"
+            ></app-text-input>
         </div>
 
         <!-- Comment -->
-        <div class="textarea-group">
-            <label class="textarea-label">
-                {{ 'main.productDetails.comment' | translate }}
-            </label>
-            <textarea
-                [formField]="installerPropertyDataForm.comment"
-                rows="3"
-                class="textarea"
-            ></textarea>
-        </div>
+        <app-text-area
+            [label]="'main.productDetails.comment'"
+            [formField]="installerPropertyDataForm.comment"
+        ></app-text-area>
 
         <!-- Run as admin -->
-        <div>
-            <label class="checkbox">
-                <input type="checkbox" [formField]="installerPropertyDataForm.runAsAdmin" />
-                <span class="checkbox-box"></span>
-                <span class="checkbox-label">
-                    {{ 'main.productDetails.runAsAdmin' | translate }}
-                </span>
-            </label>
-        </div>
+        <app-check-box
+            [formField]="installerPropertyDataForm.runAsAdmin"
+            [label]="'main.productDetails.runAsAdmin'"
+        ></app-check-box>
 
         <!-- Shortcut -->
         <div class="flex flex-col gap-4">
             <div class="border border-gray-200 rounded-lg p-4 space-y-3">
-                <label class="checkbox">
-                    <input
-                        type="checkbox"
-                        [formField]="installerPropertyDataForm.shortcutInDesktop.isCreated"
-                    />
-                    <span class="checkbox-box"></span>
-                    <span class="checkbox-label">
-                        {{ 'main.productDetails.createShortcutDesktop' | translate }}
-                    </span>
-                </label>
+                <app-check-box
+                    [formField]="installerPropertyDataForm.shortcutInDesktop.isCreated"
+                    [label]="'main.productDetails.createShortcutDesktop'"
+                ></app-check-box>
 
                 @if (installerPropertyDataForm.shortcutInDesktop().value().isCreated) {
                     <div class="ml-6 space-y-3">
-                        <label class="checkbox">
-                            <input
-                                type="checkbox"
-                                [formField]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
-                            />
-                            <span class="checkbox-box"></span>
-                            <span class="checkbox-label">
-                                {{ 'main.productDetails.shortcutRunAsAdmin' | translate }}
-                            </span>
-                        </label>
+                        <app-check-box
+                            [formField]="installerPropertyDataForm.shortcutInDesktop.runAsAdmin"
+                            [label]="'main.productDetails.shortcutRunAsAdmin'"
+                        ></app-check-box>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input
-                                type="text"
+                            <app-text-input
+                                id="listFiles"
                                 [formField]="
                                     installerPropertyDataForm.shortcutInDesktop.shortcutName
                                 "
-                                [placeholder]="'main.productDetails.shortcutNamePlaceholder' | translate"
-                                class="input input-bordered w-full"
-                            />
+                                [placeholder]="'main.productDetails.shortcutNamePlaceholder'"
+                            ></app-text-input>
 
                             <datalist id="listFiles">
                                 @for (n of resourceFiletore.getAll(); track $index) {
@@ -241,12 +107,12 @@
 
         <!-- Submit -->
         <div class="text-right">
-            <button
-                (click)="onSaveInstallerConfig()"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-            >
-                {{ 'main.productDetails.save' | translate }}
-            </button>
+            <app-button
+                label="main.productDetails.save"
+                icon="trash"
+                variant="primary"
+                (buttonClick)="onSaveInstallerConfig()"
+            ></app-button>
         </div>
     </div>
 </div>

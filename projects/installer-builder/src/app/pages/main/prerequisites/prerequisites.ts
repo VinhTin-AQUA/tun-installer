@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { Prerequisite, PrerequisiteStore } from 'data-access';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ToastService } from 'service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CheckBox } from "../../../shared/components/check-box/check-box";
 
 @Component({
     selector: 'app-prerequisites',
-    imports: [FormsModule],
+    imports: [FormsModule, TranslatePipe, CheckBox],
     templateUrl: './prerequisites.html',
     styleUrl: './prerequisites.css',
 })
@@ -30,6 +32,8 @@ export class Prerequisites {
     }
 
     updateRunAsAdmin(name: string, value: boolean) {
+        console.log(value);
+        
         this.prerequisiteStore.update(name, {
             runAsAdmin: value,
         });
@@ -42,11 +46,8 @@ export class Prerequisites {
     }
 
     async save() {
-
-        console.log(this.prerequisiteStore.getData());
-
+    
         
-
         const newPrerequisites = await this.projectManagerService.getPrerequisites();
         if (!newPrerequisites) return;
 
@@ -62,8 +63,6 @@ export class Prerequisites {
         });
 
         this.prerequisiteStore.setList(merged);
-        console.log(this.prerequisiteStore.getData());
-
         const r = await this.projectManagerService.saveInstallerDocument();
         this.toastService.show(
             r ? 'Save Prerequisite Success' : 'Load Prerequisite Failed',

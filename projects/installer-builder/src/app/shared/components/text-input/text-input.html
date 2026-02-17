@@ -1,0 +1,34 @@
+<div class="input-group">
+    <label class="input-label">
+        {{ label | translate }}
+    </label>
+
+    @if (formField) {
+        <input
+            [id]="id"
+            class="input"
+            [placeholder]="placeholder | translate"
+            (input)="onInputChange($event)"
+            [formField]="formField"
+        />
+    } @else {
+        <input
+            [id]="id"
+            class="input"
+            [value]="value"
+            [placeholder]="placeholder | translate"
+            (input)="onInputChange($event)"
+            [disabled]="disabled"
+            [readonly]="readonly"
+        />
+    }
+
+    <!-- Errors -->
+    @if (formField && formField()!.touched() && formField()!.invalid()) {
+        <div class="text-(--color-error)">
+            @for (error of formField()!.errors(); track error) {
+                <p>{{ error.message }}</p>
+            }
+        </div>
+    }
+</div>

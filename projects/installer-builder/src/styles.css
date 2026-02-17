@@ -116,305 +116,9 @@ body {
 
 @layer components {
     /* ================================ card ================================ */
-
-    .card {
-        @apply shadow-md rounded-2xl p-6 hover:shadow-xl transition transform text-left;
-        border: 1px solid var(--color-border);
-        background: var(--color-neutral-inverse);
-    }
-
-    /* Icon */
-    .card-icon {
-        @apply text-4xl mb-4;
-        /* background: var(--color-neutral-subtle); */
-        /* color: var(--color-neutral); */
-    }
-
-    /* Body */
-    .card-body {
-        flex: 1;
-    }
-
-    /* Title */
-    .card-title {
-        @apply text-xl font-semibold mb-2;
-        color: var(--color-neutral);
-    }
-
-    /* Content */
-    .card-content {
-        @apply text-sm;
-        color: var(--color-neutral-muted);
-    }
-
     /* ================================ input ================================ */
-
-    /* Wrapper để dễ mở rộng nếu cần icon */
-    .input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    /* Label */
-    .input-label {
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--color-neutral);
-    }
-
-    /* Base Input */
-    .input {
-        width: 100%;
-        padding: 10px 14px;
-        font-size: 14px;
-        border-radius: 10px;
-        border: 1px solid var(--color-border);
-        background: var(--color-neutral-inverse);
-        color: var(--color-neutral);
-        transition: all 0.2s ease;
-        outline: none;
-    }
-
-    /* Placeholder */
-    .input::placeholder {
-        color: var(--color-neutral-muted);
-    }
-
-    /* Hover */
-    .input:hover {
-        border-color: var(--color-border-strong);
-    }
-
-    /* Focus */
-    .input:focus {
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
-    }
-
-    /* Disabled */
-    .input:disabled {
-        background: var(--color-neutral-subtle);
-        color: var(--color-neutral-muted);
-        cursor: not-allowed;
-    }
-
-    .input-success {
-        border-color: var(--color-success);
-    }
-
-    .input-success:focus {
-        border-color: var(--color-success-strong);
-        box-shadow: 0 0 0 3px var(--color-success) / 0.15;
-    }
-
-    .input-error {
-        border-color: var(--color-error);
-    }
-
-    .input-error:focus {
-        border-color: var(--color-error-strong);
-        box-shadow: 0 0 0 3px var(--color-error) / 0.15;
-    }
-
-    .input-warning {
-        border-color: var(--color-warning);
-    }
-
-    .input-warning:focus {
-        border-color: var(--color-warning-strong);
-        box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
-    }
-
     /* ================================ text area ================================ */
-
-    /* Wrapper để dễ mở rộng nếu cần icon */
-    .textarea-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    /* Label */
-    .textarea-label {
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--color-neutral);
-    }
-
-    /* Base textarea */
-    .textarea {
-        width: 100%;
-        padding: 10px 14px;
-        font-size: 14px;
-        border-radius: 10px;
-        border: 1px solid var(--color-border);
-        background: var(--color-neutral-inverse);
-        color: var(--color-neutral);
-        transition: all 0.2s ease;
-        outline: none;
-    }
-
-    /* Placeholder */
-    .textarea::placeholder {
-        color: var(--color-neutral-muted);
-    }
-
-    /* Hover */
-    .textarea:hover {
-        border-color: var(--color-border-strong);
-    }
-
-    /* Focus */
-    .textarea:focus {
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
-    }
-
-    /* Disabled */
-    .textarea:disabled {
-        background: var(--color-neutral-subtle);
-        color: var(--color-neutral-muted);
-        cursor: not-allowed;
-    }
-
-    .textarea-success {
-        border-color: var(--color-success);
-    }
-
-    .textarea-success:focus {
-        border-color: var(--color-success-strong);
-        box-shadow: 0 0 0 3px var(--color-success) / 0.15;
-    }
-
-    .textarea-error {
-        border-color: var(--color-error);
-    }
-
-    .textarea-error:focus {
-        border-color: var(--color-error-strong);
-        box-shadow: 0 0 0 3px var(--color-error) / 0.15;
-    }
-
-    .textarea-warning {
-        border-color: var(--color-warning);
-    }
-
-    .textarea-warning:focus {
-        border-color: var(--color-warning-strong);
-        box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
-    }
-
     /* ================================ checkbox ================================ */
-
-    /* Wrapper */
-    .checkbox {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        user-select: none;
-        font-size: 14px;
-        color: var(--color-neutral);
-    }
-
-    .checkbox-label {
-        line-height: 1;
-    }
-
-    /* Ẩn checkbox mặc định */
-    .checkbox input {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    /* Box */
-    .checkbox-box {
-        width: 18px;
-        height: 18px;
-        border-radius: 6px;
-        border: 1.5px solid var(--color-border-strong);
-        background: var(--color-neutral-inverse);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-
-    /* Hover */
-    .checkbox:hover .checkbox-box {
-        border-color: var(--color-primary);
-    }
-
-    /* Check icon */
-    .checkbox-box::after {
-        content: '';
-        width: 10px;
-        height: 10px;
-        border-radius: 3px;
-        background: var(--color-primary-inverse);
-        transform: scale(0);
-        transition: transform 0.15s ease;
-    }
-
-    /* Checked state */
-    .checkbox input:checked + .checkbox-box {
-        background: var(--color-primary);
-        border-color: var(--color-primary);
-    }
-
-    .checkbox input:checked + .checkbox-box::after {
-        transform: scale(1);
-    }
-
-    /* Focus */
-    .checkbox input:focus-visible + .checkbox-box {
-        box-shadow: 0 0 0 3px var(--color-primary) / 0.2;
-    }
-
-    /* Disabled */
-    .checkbox input:disabled + .checkbox-box {
-        background: var(--color-neutral-subtle);
-        border-color: var(--color-border);
-        cursor: not-allowed;
-    }
-
-    .checkbox input:disabled ~ .checkbox-label {
-        color: var(--color-neutral-muted);
-        cursor: not-allowed;
-    }
-
-    /* Variants */
-    .checkbox-success input:checked + .checkbox-box {
-        background: var(--color-success);
-        border-color: var(--color-success);
-    }
-
-    .checkbox-success input:focus-visible + .checkbox-box {
-        box-shadow: 0 0 0 3px var(--color-success) / 0.2;
-    }
-
-    .checkbox-error input:checked + .checkbox-box {
-        background: var(--color-error);
-        border-color: var(--color-error);
-    }
-
-    .checkbox-error input:focus-visible + .checkbox-box {
-        box-shadow: 0 0 0 3px var(--color-error) / 0.2;
-    }
-
-    .checkbox-warning input:checked + .checkbox-box {
-        background: var(--color-warning);
-        border-color: var(--color-warning);
-    }
-
-    .checkbox-warning input:focus-visible + .checkbox-box {
-        box-shadow: 0 0 0 3px var(--color-warning) / 0.2;
-    }
-
     /* ================================ table ================================ */
 
     /* TABLE WRAPPER (optional) */
@@ -530,192 +234,116 @@ body {
 
     /* ================================ button ================================ */
 
-    /* BASE BUTTON */
+    /* ================================ select box ================================ */
+    .select-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-family: inherit;
+    }
 
-    .btn {
-        @apply rounded-md;
-        
-        --btn-bg: var(--color-primary);
-        --btn-bg-hover: var(--color-primary-strong);
-        --btn-text: var(--color-primary-inverse);
-        --btn-border: transparent;
-        --btn-focus: var(--color-primary-subtle);
-
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-
-        padding: 0.6rem 1.25rem;
-        
-        border: 1px solid var(--btn-border);
-
+    .select-label {
+        font-size: 14px;
         font-weight: 500;
-        font-size: 0.95rem;
-        line-height: 1.2;
-
-        cursor: pointer;
-        user-select: none;
-
-        background: var(--btn-bg);
-        color: var(--btn-text);
-
-        transition:
-            background 0.2s ease,
-            transform 0.15s ease,
-            box-shadow 0.2s ease;
-
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        color: var(--color-neutral);
     }
 
-    /* Hover */
-    .btn:hover {
-        background: var(--btn-bg-hover);
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    .select-hint {
+        font-size: 13px;
+        color: var(--color-neutral-muted);
     }
 
-    /* Active */
-    .btn:active {
-        transform: translateY(0);
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
-    }
-
-    /* Focus */
-    .btn:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px var(--btn-focus);
-    }
-
-    /* Disabled */
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-
-    /* COLOR VARIANTS */
-
-    .btn-primary {
-        --btn-bg: var(--color-primary);
-        --btn-bg-hover: var(--color-primary-strong);
-        --btn-text: var(--color-primary-inverse);
-        --btn-focus: var(--color-primary-subtle);
-    }
-
-    .btn-accent {
-        --btn-bg: var(--color-accent);
-        --btn-bg-hover: var(--color-accent-strong);
-        --btn-text: var(--color-accent-inverse);
-        --btn-focus: var(--color-accent-subtle);
-    }
-
-    .btn-success {
-        --btn-bg: var(--color-success);
-        --btn-bg-hover: var(--color-success-strong);
-        --btn-text: var(--color-success-inverse);
-        --btn-focus: var(--color-success-subtle);
-    }
-
-    .btn-warning {
-        --btn-bg: var(--color-warning);
-        --btn-bg-hover: var(--color-warning-strong);
-        --btn-text: var(--color-warning-inverse);
-        --btn-focus: var(--color-warning-subtle);
-    }
-
-    .btn-error {
-        --btn-bg: var(--color-error);
-        --btn-bg-hover: var(--color-error-strong);
-        --btn-text: var(--color-error-inverse);
-        --btn-focus: var(--color-error-subtle);
-    }
-
-    .btn-neutral {
-        --btn-bg: var(--color-neutral);
-        --btn-bg-hover: var(--color-neutral-strong);
-        --btn-text: var(--color-neutral-inverse);
-        --btn-focus: var(--color-neutral-subtle);
-    }
-
-    /* OUTLINE BUTTON */
-
-    .btn-outline {
-        background: transparent;
-        border: 1px solid var(--btn-bg);
-        color: var(--btn-bg);
-    }
-
-    .btn-outline:hover {
-        background: var(--btn-bg);
-        color: var(--btn-text);
-    }
-
-    /* GHOST BUTTON */
-
-    .btn-ghost {
-        background: transparent;
-        color: var(--btn-bg);
-        border: 1px solid transparent;
-        box-shadow: none;
-    }
-
-    .btn-ghost:hover {
-        background: var(--color-neutral-subtle);
-    }
-
-    /* SIZE VARIANTS */
-
-    .btn-sm {
-        padding: 0.4rem 0.9rem;
-        font-size: 0.85rem;
-        border-radius: 0.6rem;
-    }
-
-    .btn-lg {
-        padding: 0.8rem 1.6rem;
-        font-size: 1.05rem;
-        border-radius: 0.9rem;
-    }
-
-    /* FULL WIDTH */
-
-    .btn-block {
+    .select-wrapper {
+        position: relative;
+        display: inline-block;
         width: 100%;
     }
 
-    /* ICON BUTTON */
-
-    .btn-icon {
-        padding: 0.6rem;
-        width: 2.6rem;
-        height: 2.6rem;
-    }
-
-    /* LOADING STATE */
-
-    .btn-loading {
-        pointer-events: none;
-        position: relative;
-        color: transparent !important;
-    }
-
-    .btn-loading::after {
+    /* Custom arrow */
+    .select-wrapper::after {
         content: '';
         position: absolute;
-        width: 1rem;
-        height: 1rem;
-        border-radius: 50%;
-        border: 2px solid var(--btn-text);
-        border-top-color: transparent;
-        animation: btn-spin 0.6s linear infinite;
+        top: 50%;
+        right: 14px;
+        width: 6px;
+        height: 6px;
+        border-right: 2px solid var(--color-neutral-muted);
+        border-bottom: 2px solid var(--color-neutral-muted);
+        transform: translateY(-50%) rotate(45deg);
+        pointer-events: none;
+        transition: 0.2s ease;
     }
 
-    @keyframes btn-spin {
-        to {
-            transform: rotate(360deg);
-        }
+    .select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        width: 100%;
+        padding: 10px 40px 10px 14px;
+
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--color-border);
+        background-color: #fff;
+        color: var(--color-neutral);
+
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    /* Hover */
+    .select:hover {
+        border-color: var(--color-primary-muted);
+    }
+
+    /* Focus */
+    .select:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-subtle);
+    }
+
+    .select:focus + .select-wrapper::after,
+    .select:focus ~ ::after {
+        border-color: var(--color-primary);
+    }
+
+    /* Disabled */
+    .select:disabled {
+        background-color: var(--color-neutral-subtle);
+        color: var(--color-neutral-muted);
+        cursor: not-allowed;
+    }
+
+    /* SUCCESS */
+    .select-success {
+        border-color: var(--color-success);
+    }
+
+    .select-success:focus {
+        border-color: var(--color-success-strong);
+        box-shadow: 0 0 0 3px var(--color-success-subtle);
+    }
+
+    /* ERROR */
+    .select-error {
+        border-color: var(--color-error);
+    }
+
+    .select-error:focus {
+        border-color: var(--color-error-strong);
+        box-shadow: 0 0 0 3px var(--color-error-subtle);
+    }
+
+    /* WARNING */
+    .select-warning {
+        border-color: var(--color-warning);
+    }
+
+    .select-warning:focus {
+        border-color: var(--color-warning-strong);
+        box-shadow: 0 0 0 3px var(--color-warning-subtle);
     }
 
     /* ================================ context menu ================================ */

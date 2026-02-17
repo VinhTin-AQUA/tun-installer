@@ -6,10 +6,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DialogStore } from '../../../core/stores/dialog.store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ResourceFiletore } from '../../../core/stores/resource-file.store';
+import { TextInput } from "../../../shared/components/text-input/text-input";
+import { TextArea } from "../../../shared/components/text-area/text-area";
+import { CheckBox } from "../../../shared/components/check-box/check-box";
+import { Button } from "../../../shared/components/button/button";
 
 @Component({
     selector: 'app-product-details',
-    imports: [FormField, FormsModule, TranslatePipe],
+    imports: [FormField, FormsModule, TranslatePipe, TextInput, TextArea, CheckBox, Button],
     templateUrl: './product-details.html',
     styleUrl: './product-details.css',
 })
