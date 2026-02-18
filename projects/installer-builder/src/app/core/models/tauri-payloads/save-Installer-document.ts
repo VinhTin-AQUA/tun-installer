@@ -1,4 +1,4 @@
-import { InstallerProperties, Prerequisite, RegistryKeys, WindowInfos, } from 'data-access';
+import { InstallerProperties, Prerequisite, RegistryKeys, WindowInfos } from 'data-access';
 
 export interface InstallerConfig {
     properties: InstallerProperties;

@@ -1,0 +1,47 @@
+@layer components {
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-weight: 500;
+        border: 1px solid transparent;
+    }
+
+    /* PRIMARY */
+    .badge[data-status='primary'] {
+        background: var(--color-primary-subtle);
+        color: var(--color-primary-strong);
+    }
+
+    /* ACCENT */
+    .badge[data-status='accent'] {
+        background: var(--color-accent-subtle);
+        color: var(--color-accent-strong);
+    }
+
+    /* SUCCESS */
+    .badge[data-status='success'] {
+        background: var(--color-success-subtle);
+        color: var(--color-success-strong);
+    }
+
+    /* WARNING */
+    .badge[data-status='warning'] {
+        background: var(--color-warning-subtle);
+        color: var(--color-warning-strong);
+    }
+
+    /* ERROR */
+    .badge[data-status='error'] {
+        background: var(--color-error-subtle);
+        color: var(--color-error-strong);
+    }
+
+    /* NEUTRAL */
+    .badge[data-status='neutral'] {
+        background: var(--color-neutral-subtle);
+        color: var(--color-neutral-muted);
+    }
+}

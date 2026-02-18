@@ -1,20 +1,29 @@
 <!-- prerequisite-manager.component.html -->
 <div class="max-w-4xl mx-auto p-6 space-y-6">
-    <h1 class="text-2xl font-semibold">Prerequisite Configuration</h1>
+    <h1 class="text-2xl font-semibold">
+        {{ 'main.prerequisites.title' | translate }}
+    </h1>
 
-    <!-- Add new prerequisite -->
-
-    <!-- List prerequisites -->
     <div class="bg-white rounded-xl shadow p-4">
-        <h2 class="text-lg font-medium mb-4">Prerequisites list</h2>
+        <h2 class="text-lg font-medium mb-4">
+            {{ 'main.prerequisites.listTitle' | translate }}
+        </h2>
 
         <table class="table">
             <thead class="border-b">
                 <tr class="text-left">
-                    <th class="py-2">File name</th>
-                    <th>Phase</th>
-                    <th>Size</th>
-                    <th>{{ 'main.productDetails.runAsAdmin' | translate }}</th>
+                    <th class="py-2">
+                        {{ 'main.prerequisites.fileName' | translate }}
+                    </th>
+                    <th>
+                        {{ 'main.prerequisites.phase' | translate }}
+                    </th>
+                    <th>
+                        {{ 'main.prerequisites.size' | translate }}
+                    </th>
+                    <th>
+                        {{ 'main.productDetails.runAsAdmin' | translate }}
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -23,25 +32,16 @@
                     <tr class="border-b last:border-0">
                         <td class="py-2">{{ p.name }}</td>
 
-                        <!-- installPhase -->
                         <td>
-                            <div class="select-group">
-                                <!-- <label class="select-label">Chọn danh mục</label> -->
-                                <div class="select-wrapper">
-                                    <select
-                                        class="select"
-                                        [value]="p.installPhase"
-                                        (change)="updatePhase(p.name, $any($event.target).value)"
-                                    >
-                                        <option value="Before">Before</option>
-                                        <option value="After">After</option>
-                                    </select>
-                                </div>
-                                <!-- <p class="select-hint">Thông tin mô tả thêm</p> -->
-                            </div>
+                            <app-select
+                                (change)="updatePhase(p.name, $any($event.target).value)"
+                                [value]="p.installPhase"
+                                [options]="prerequisitePhaseOptions"
+                                optionLabel="label"
+                                optionValue="value"
+                            ></app-select>
                         </td>
 
-                        <!-- size -->
                         <td>{{ p.size }} MB</td>
 
                         <td>
@@ -61,13 +61,9 @@
         </table>
     </div>
 
-    <!-- Save button -->
     <div class="flex justify-end gap-1">
-        <button
-            (click)="save()"
-            class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700"
-        >
-            Save
-        </button>
+        <app-button (buttonClick)="save()" status="success">
+            {{ 'main.prerequisites.save' | translate }}
+        </app-button>
     </div>
 </div>

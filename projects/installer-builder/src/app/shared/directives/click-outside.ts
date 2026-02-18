@@ -10,7 +10,7 @@ export class ClickOutside {
 
     @HostListener('document:click', ['$event.target'])
     public onClick(targetElement: EventTarget | null) {
-        if (!(targetElement instanceof HTMLElement)) return; 
+        if (!(targetElement instanceof HTMLElement)) return;
 
         const clickedInside = this.elementRef.nativeElement.contains(targetElement);
         if (!clickedInside) {

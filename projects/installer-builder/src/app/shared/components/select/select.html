@@ -1,0 +1,34 @@
+<div class="select-group">
+    <label class="select-label">
+        {{ label | translate }}
+    </label>
+
+    <div class="select-wrapper">
+        @if (formField) {
+            <select class="select" (change)="handleChange($event)" [formField]="formField">
+                @for (item of options; track $index) {
+                    <option [value]="item[optionValue]">
+                        {{ item[optionLabel] }}
+                    </option>
+                }
+            </select>
+        } @else {
+            <select
+                class="select"
+                [value]="value"
+                (change)="handleChange($event)"
+                [disabled]="disabled"
+            >
+                @for (item of options; track $index) {
+                    <option [value]="item[optionValue]">
+                        {{ item[optionLabel] }}
+                    </option>
+                }
+            </select>
+        }
+    </div>
+
+    <p class="select-hint">
+        {{ description | translate }}
+    </p>
+</div>

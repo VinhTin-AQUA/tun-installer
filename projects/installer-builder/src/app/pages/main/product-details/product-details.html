@@ -107,12 +107,9 @@
 
         <!-- Submit -->
         <div class="text-right">
-            <app-button
-                label="main.productDetails.save"
-                icon="trash"
-                variant="primary"
-                (buttonClick)="onSaveInstallerConfig()"
-            ></app-button>
+            <app-button icon="trash" status="primary" (buttonClick)="onSaveInstallerConfig()">
+                {{ 'main.productDetails.save' | translate }}</app-button
+            >
         </div>
     </div>
 </div>

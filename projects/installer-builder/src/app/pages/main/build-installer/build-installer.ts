@@ -4,10 +4,13 @@ import { ToastService } from 'service';
 import { CompressCommands, TauriCommandService, TauriEventService } from 'service';
 import { ProjectStore } from '../../../core/stores/project-store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
+import { Button } from '../../../shared/components/button/button';
+import { ClickOutside } from '../../../shared/directives/click-outside';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-build-installer',
-    imports: [],
+    imports: [Button, ClickOutside, TranslatePipe],
     templateUrl: './build-installer.html',
     styleUrl: './build-installer.css',
 })
@@ -35,7 +38,7 @@ export class BuildInstaller {
         if (!formValid) {
             return;
         }
-        
+
         this.isBuilding.set(true);
         this.isCompleted.set(false);
         this.logs.set([]);

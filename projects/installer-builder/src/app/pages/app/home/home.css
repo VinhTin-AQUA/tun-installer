@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@reference "../../../../styles.css";
 
 .card {
     @apply shadow-md rounded-2xl p-6 hover:shadow-xl transition transform text-left;

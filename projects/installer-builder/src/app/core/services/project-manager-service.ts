@@ -197,7 +197,6 @@ export class ProjectManagerService {
         this.installerPropertyDataForm
             .shortcutInDesktop()
             .value.set(installerDocumentConfig.properties.shortcutInDesktop);
-       
 
         this.installerPropertyStore.update({
             installationLocation: installerDocumentConfig.properties.installationLocation,

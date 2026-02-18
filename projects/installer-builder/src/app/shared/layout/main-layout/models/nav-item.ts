@@ -1,4 +1,4 @@
 export interface NavItem {
-	name: string;
-	url: string;
+    name: string;
+    url: string;
 }

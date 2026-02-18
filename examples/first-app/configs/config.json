@@ -69,9 +69,9 @@
           "default": true
         },
         {
-          "name": "đoán xem",
+          "name": "AAAA",
           "type": "REG_EXPAND_SZ",
-          "data": "ai biết gì đâu",
+          "data": "ABC",
           "default": false
         }
       ]
@@ -96,7 +96,7 @@
   "prerequisites": [
     {
       "name": "first-app (copy).tunins",
-      "runAsAdmin": false,
+      "runAsAdmin": true,
       "installPhase": "Before",
       "size": 0.0
     },

@@ -8,6 +8,5 @@ import { ToastService } from 'service';
     styleUrl: './toast.css',
 })
 export class Toast {
-    constructor(public toastService: ToastService) {
-    }
+    constructor(public toastService: ToastService) {}
 }

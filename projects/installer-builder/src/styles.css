@@ -115,10 +115,6 @@ body {
 }
 
 @layer components {
-    /* ================================ card ================================ */
-    /* ================================ input ================================ */
-    /* ================================ text area ================================ */
-    /* ================================ checkbox ================================ */
     /* ================================ table ================================ */
 
     /* TABLE WRAPPER (optional) */
@@ -235,116 +231,6 @@ body {
     /* ================================ button ================================ */
 
     /* ================================ select box ================================ */
-    .select-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        font-family: inherit;
-    }
-
-    .select-label {
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--color-neutral);
-    }
-
-    .select-hint {
-        font-size: 13px;
-        color: var(--color-neutral-muted);
-    }
-
-    .select-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-
-    /* Custom arrow */
-    .select-wrapper::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: 14px;
-        width: 6px;
-        height: 6px;
-        border-right: 2px solid var(--color-neutral-muted);
-        border-bottom: 2px solid var(--color-neutral-muted);
-        transform: translateY(-50%) rotate(45deg);
-        pointer-events: none;
-        transition: 0.2s ease;
-    }
-
-    .select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-
-        width: 100%;
-        padding: 10px 40px 10px 14px;
-
-        font-size: 14px;
-        border-radius: 10px;
-        border: 1px solid var(--color-border);
-        background-color: #fff;
-        color: var(--color-neutral);
-
-        transition: all 0.2s ease;
-        cursor: pointer;
-    }
-
-    /* Hover */
-    .select:hover {
-        border-color: var(--color-primary-muted);
-    }
-
-    /* Focus */
-    .select:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px var(--color-primary-subtle);
-    }
-
-    .select:focus + .select-wrapper::after,
-    .select:focus ~ ::after {
-        border-color: var(--color-primary);
-    }
-
-    /* Disabled */
-    .select:disabled {
-        background-color: var(--color-neutral-subtle);
-        color: var(--color-neutral-muted);
-        cursor: not-allowed;
-    }
-
-    /* SUCCESS */
-    .select-success {
-        border-color: var(--color-success);
-    }
-
-    .select-success:focus {
-        border-color: var(--color-success-strong);
-        box-shadow: 0 0 0 3px var(--color-success-subtle);
-    }
-
-    /* ERROR */
-    .select-error {
-        border-color: var(--color-error);
-    }
-
-    .select-error:focus {
-        border-color: var(--color-error-strong);
-        box-shadow: 0 0 0 3px var(--color-error-subtle);
-    }
-
-    /* WARNING */
-    .select-warning {
-        border-color: var(--color-warning);
-    }
-
-    .select-warning:focus {
-        border-color: var(--color-warning-strong);
-        box-shadow: 0 0 0 3px var(--color-warning-subtle);
-    }
 
     /* ================================ context menu ================================ */
 }

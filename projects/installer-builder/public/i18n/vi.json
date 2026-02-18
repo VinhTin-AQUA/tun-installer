@@ -15,6 +15,49 @@
     },
 
     "main": {
+        "build-installer": {
+            "buildButton": "Nén",
+            "stopBuildButton": "Dừng nén",
+            "progressLabel": "Tiến trình",
+            "buildOutputLabel": "Kết quả nén:",
+            "noLogsMessage": "Không có log..."
+        },
+        "files-and-folders": {
+            "foldersTitle": "THƯ MỤC",
+            "fileManagerTitle": "Quản lý tập tin",
+            "filesMeta": "tập tin",
+            "resetButton": "Đặt lại",
+
+            "tableName": "Tên",
+            "tableSize": "Kích thước",
+            "tableType": "Loại",
+            "tablePhysicalPath": "Đường dẫn vật lý",
+            "tableAction": "Thao tác",
+
+            "bytes": "byte"
+        },
+        "html-engine": {
+            "pagesTitle": "Trang",
+            "editorTitle": "Trình chỉnh sửa",
+            "widthLabel": "Chiều rộng",
+            "widthRange": "600px-800px",
+            "heightLabel": "Chiều cao",
+            "heightRange": "400px-600px",
+            "titleLabel": "Tiêu đề",
+            "startPageLabel": "Trang bắt đầu",
+            "alwaysOnTopLabel": "Luôn hiển thị trên cùng",
+            "previewButton": "Xem trước",
+            "resetButton": "Đặt lại",
+            "saveButton": "Lưu"
+        },
+        "prerequisites": {
+            "title": "Cấu hình phần mềm kèm theo",
+            "listTitle": "Danh sách phần mềm kèm theo",
+            "fileName": "Tên file",
+            "phase": "Giai đoạn",
+            "size": "Dung lượng",
+            "save": "Lưu"
+        },
         "productDetails": {
             "title": "Thuộc tính trình cài đặt",
             "installationLocation": "Vị trí cài đặt",
@@ -31,6 +74,12 @@
             "shortcutRunAsAdmin": "Chạy với quyền quản trị",
             "shortcutNamePlaceholder": "Tên shortcut",
             "save": "Lưu"
+        },
+        "registry": {
+            "addButton": "Thêm",
+            "defaultBadge": "Mặc định",
+            "saveButton": "Lưu",
+            "deleteButton": "Xóa"
         }
     },
 

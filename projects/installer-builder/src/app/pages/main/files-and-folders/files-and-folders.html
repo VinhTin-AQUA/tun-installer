@@ -5,7 +5,7 @@
         <div
             class="h-6 flex items-center px-4 border-b border-default font-semibold text-sm tracking-wide text-neutral"
         >
-            FOLDERS
+            {{ 'main.files-and-folders.foldersTitle' | translate }}
         </div>
 
         <!-- Scrollable Content -->
@@ -103,24 +103,29 @@
         <!-- TOOLBAR -->
         <div class="file-toolbar">
             <div class="file-toolbar__left">
-                <h2 class="file-toolbar__title">File Manager</h2>
-                <span class="file-toolbar__meta"> {{ files().length }} files </span>
+                <h2 class="file-toolbar__title">
+                    {{ 'main.files-and-folders.fileManagerTitle' | translate }}
+                </h2>
+                <span class="file-toolbar__meta">
+                    {{ files().length }} {{ 'main.files-and-folders.filesMeta' | translate }}
+                </span>
             </div>
 
             <div class="file-toolbar__right">
-                <button class="btn btn-outline" (click)="reset()">Reset</button>
+                <app-button status="warning" (buttonClick)="reset()">
+                    {{ 'main.files-and-folders.resetButton' | translate }}
+                </app-button>
             </div>
         </div>
-
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Size</th>
-                    <th>Type</th>
-                    <th>Physical Path</th>
-                    <th>Action</th>
+                    <th>{{ 'main.files-and-folders.tableName' | translate }}</th>
+                    <th>{{ 'main.files-and-folders.tableSize' | translate }}</th>
+                    <th>{{ 'main.files-and-folders.tableType' | translate }}</th>
+                    <th>{{ 'main.files-and-folders.tablePhysicalPath' | translate }}</th>
+                    <th>{{ 'main.files-and-folders.tableAction' | translate }}</th>
                 </tr>
             </thead>
 
@@ -133,7 +138,10 @@
                             </div>
                         </td>
 
-                        <td>{{ file.size | number }} bytes</td>
+                        <td>
+                            {{ file.size | number }}
+                            {{ 'main.files-and-folders.bytes' | translate }}
+                        </td>
 
                         <td>
                             <span class="type">

@@ -7,15 +7,17 @@ import { ProjectStore } from '../../../core/stores/project-store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
 import { ApiContracts } from 'api-contracts';
-import { TextInput } from "../../../shared/components/text-input/text-input";
-import { CheckBox } from "../../../shared/components/check-box/check-box";
-import { Button } from "../../../shared/components/button/button";
+import { TextInput } from '../../../shared/components/text-input/text-input';
+import { CheckBox } from '../../../shared/components/check-box/check-box';
+import { Button } from '../../../shared/components/button/button';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type WindowKey = keyof WindowInfos;
 
 @Component({
     selector: 'app-html-engine',
-    imports: [TextInput, CheckBox, Button],
+    imports: [TextInput, CheckBox, Button, CommonModule, TranslatePipe],
     templateUrl: './html-engine.html',
     styleUrl: './html-engine.css',
 })
@@ -93,12 +95,7 @@ export class HtmlEngine {
         });
     }
 
-    async ngOnInit() {
-        // this.installerPropertyStore.update({
-        //     productName: 'MyApp',
-        //     productVersion: '1.0.1',
-        // });
-    }
+    async ngOnInit() {}
 
     async ngAfterViewInit() {
         await this.loadPages();

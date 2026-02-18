@@ -13,15 +13,15 @@ export const appConfig: ApplicationConfig = {
             withInMemoryScrolling({
                 scrollPositionRestoration: 'top',
                 anchorScrolling: 'enabled',
-            })
+            }),
         ),
         provideTranslateService({
-			loader: provideTranslateHttpLoader({
-				prefix: '/i18n/',
-				suffix: '.json',
-			}),
-			fallbackLang: 'en',
-			lang: 'en',
-		}),
+            loader: provideTranslateHttpLoader({
+                prefix: '/i18n/',
+                suffix: '.json',
+            }),
+            fallbackLang: 'en',
+            lang: 'en',
+        }),
     ],
 };

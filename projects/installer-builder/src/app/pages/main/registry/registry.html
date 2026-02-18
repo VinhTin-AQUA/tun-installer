@@ -1,5 +1,4 @@
 <div class="p-6 space-y-8 bg-slate-100 min-h-screen">
-    <!-- ===== Registry Section ===== -->
     @for (section of registrySections; track $index) {
         <ng-container>
             <div class="bg-white rounded-xl shadow-md p-6">
@@ -14,12 +13,9 @@
                         </p>
                     </div>
 
-                    <button
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                        (click)="addValue(section.key)"
-                    >
-                        + Add
-                    </button>
+                    <app-button status="success" (click)="addValue(section.key)">
+                        + {{ 'main.registry.addButton' | translate }}
+                    </app-button>
                 </div>
 
                 <!-- Values List -->
@@ -30,50 +26,48 @@
                             [ngClass]="value.default ? 'bg-slate-50' : 'bg-slate-100'"
                         >
                             <!-- Name -->
-                            <input
-                                class="col-span-3 input"
+                            <app-text-input
+                                class="col-span-2"
                                 [readonly]="value.default"
                                 [(ngModel)]="value.name"
-                            />
+                            >
+                            </app-text-input>
 
                             <!-- Type -->
-                            <select
-                                class="col-span-3 input"
+                            <app-select
+                                [options]="registryTypeOptions"
+                                optionLabel="label"
+                                optionValue="value"
                                 [disabled]="value.default"
                                 [(ngModel)]="value.type"
-                            >
-                                <option *ngFor="let t of registryTypes" [value]="t">
-                                    {{ t }}
-                                </option>
-                            </select>
+                                class="col-span-2"
+                            ></app-select>
 
                             <!-- Data -->
-                            <input
-                                class="col-span-4 input"
+                            <app-text-input
                                 [readonly]="value.default"
                                 [(ngModel)]="value.data"
-                            />
+                                class="col-span-4"
+                            ></app-text-input>
 
                             <!-- Default badge -->
-                            <div class="col-span-1 text-center">
+                            <div class="col-span-3 text-center">
                                 @if (value.default) {
-                                    <span
-                                        class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full"
-                                    >
-                                        Default
-                                    </span>
+                                    <app-badge status="success">
+                                        {{ 'main.registry.defaultBadge' | translate }}
+                                    </app-badge>
                                 }
                             </div>
 
                             <!-- Actions -->
                             <div class="col-span-1 text-right">
                                 @if (!value.default) {
-                                    <button
-                                        class="text-red-500 hover:text-red-700"
-                                        (click)="removeValue(section.key, $index)"
+                                    <app-button
+                                        (buttonClick)="removeValue(section.key, $index)"
+                                        status="danger"
                                     >
-                                        🗑
-                                    </button>
+                                        🗑 {{ 'main.registry.deleteButton' | translate }}
+                                    </app-button>
                                 }
                             </div>
                         </div>
@@ -86,7 +80,7 @@
                         class="px-5 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
                         (click)="save()"
                     >
-                        💾 Save
+                        💾 {{ 'main.registry.saveButton' | translate }}
                     </button>
                 </div>
             </div>

@@ -15,6 +15,49 @@
     },
 
     "main": {
+        "build-installer": {
+            "buildButton": "Build",
+            "stopBuildButton": "Stop Build",
+            "progressLabel": "Progress",
+            "buildOutputLabel": "Build output:",
+            "noLogsMessage": "No logs yet..."
+        },
+        "files-and-folders": {
+            "foldersTitle": "FOLDERS",
+            "fileManagerTitle": "File Manager",
+            "filesMeta": "files",
+            "resetButton": "Reset",
+
+            "tableName": "Name",
+            "tableSize": "Size",
+            "tableType": "Type",
+            "tablePhysicalPath": "Physical Path",
+            "tableAction": "Action",
+
+            "bytes": "bytes"
+        },
+        "html-engine": {
+            "pagesTitle": "Pages",
+            "editorTitle": "Editor",
+            "widthLabel": "Width",
+            "widthRange": "600px-800px",
+            "heightLabel": "Height",
+            "heightRange": "400px-600px",
+            "titleLabel": "Title",
+            "startPageLabel": "Start Page",
+            "alwaysOnTopLabel": "Always On Top",
+            "previewButton": "Preview",
+            "resetButton": "Reset",
+            "saveButton": "Save"
+        },
+        "prerequisites": {
+            "title": "Prerequisite Configuration",
+            "listTitle": "Prerequisites list",
+            "fileName": "File name",
+            "phase": "Phase",
+            "size": "Size",
+            "save": "Save"
+        },
         "productDetails": {
             "title": "Installer Properties",
             "installationLocation": "Installation Location",
@@ -31,6 +74,12 @@
             "shortcutRunAsAdmin": "Run as Administrator",
             "shortcutNamePlaceholder": "Shortcut name",
             "save": "Save"
+        },
+        "registry": {
+            "addButton": "Add",
+            "defaultBadge": "Default",
+            "saveButton": "Save",
+            "deleteButton": "Delete"
         }
     },
 

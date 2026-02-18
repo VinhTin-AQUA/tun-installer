@@ -6,10 +6,12 @@ import { ProjectStore } from '../../../core/stores/project-store';
 import { ResourceFiletore } from '../../../core/stores/resource-file.store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ProjectManagerCommands, TauriCommandService } from 'service';
+import { Button } from '../../../shared/components/button/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-files-and-folders',
-    imports: [NgTemplateOutlet, DecimalPipe, CommonModule],
+    imports: [NgTemplateOutlet, DecimalPipe, CommonModule, Button, TranslatePipe],
     templateUrl: './files-and-folders.html',
     styleUrl: './files-and-folders.css',
 })
@@ -24,10 +26,6 @@ export class FilesAndFolders {
     ]);
 
     files = signal<FileItem[]>([]);
-
-    // resourceFolder: string = '';
-    // prerequisites: string = '';
-
     selectedFolderId: string = 'resources';
     openedMenuFileId?: string;
     installerProperties = inject(InstallerPropertyStore);

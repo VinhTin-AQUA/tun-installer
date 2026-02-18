@@ -18,6 +18,7 @@
             [value]="value"
             [placeholder]="placeholder | translate"
             (input)="onInputChange($event)"
+            (blur)="onBlur()"
             [disabled]="disabled"
             [readonly]="readonly"
         />

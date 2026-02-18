@@ -49,15 +49,16 @@
         </div> -->
 
         <!-- FILE INFO -->
-        @if(currentFile) {
-        <div class="file-info">
-            <span class="file-name">{{ currentFile }}</span>
-            <span class="file-status" [class.dirty]="isDirty">
-                {{ isDirty ? '● Unsaved' : 'Saved' }}
-            </span>
-        </div>
+        @if (currentFile) {
+            <div class="file-info">
+                <span class="file-name">{{ currentFile }}</span>
+                <span class="file-status" [class.dirty]="isDirty">
+                    {{ isDirty ? '● Unsaved' : 'Saved' }}
+                </span>
+            </div>
         } @else {
-        <ng-template> <span class="file-placeholder">No document opened</span> </ng-template>}
+            <ng-template> <span class="file-placeholder">No document opened</span> </ng-template>
+        }
     </div>
 
     <!-- RIGHT -->

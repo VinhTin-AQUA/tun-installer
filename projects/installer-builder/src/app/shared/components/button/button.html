@@ -2,46 +2,9 @@
     type="button"
     class="ui-btn"
     [class]="class"
-    [ngClass]="['ui-btn--' + variant, icon && !label ? 'ui-btn--icon-only' : '']"
+    [ngClass]="['ui-btn--' + status]"
     [disabled]="disabled"
     (click)="handleClick($event)"
 >
-    <!-- ICON -->
-    @if (icon) {
-        <ng-container>
-            <span class="ui-btn__icon">
-                @switch (icon) {
-                    @case ('check') {
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M20.285 6.709a1 1 0 010 1.414l-9.193 9.193a1 1 0 01-1.414 0L3.715 11.353a1 1 0 011.414-1.414l5.243 5.243 8.486-8.486a1 1 0 011.414 0z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                    }
-                    @case ('trash') {
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path d="M9 3h6l1 2h4v2H4V5h4l1-2zM6 9h12l-1 11H7L6 9z" />
-                        </svg>
-                    }
-                }
-            </span>
-        </ng-container>
-    }
-
-    <!-- LABEL -->
-    @if (label) {
-        <span class="ui-btn__label">
-            {{ label | translate}}
-        </span>
-    }
+    <ng-content></ng-content>
 </button>

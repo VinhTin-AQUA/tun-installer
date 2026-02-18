@@ -1,76 +1,78 @@
-/* Wrapper để dễ mở rộng nếu cần icon */
-.textarea-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
+@layer components {
+    /* Wrapper để dễ mở rộng nếu cần icon */
+    .textarea-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
 
-/* Label */
-.textarea-label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-neutral);
-}
+    /* Label */
+    .textarea-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-neutral);
+    }
 
-/* Base textarea */
-.textarea {
-    width: 100%;
-    padding: 10px 14px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: 1px solid var(--color-border);
-    background: var(--color-neutral-inverse);
-    color: var(--color-neutral);
-    transition: all 0.2s ease;
-    outline: none;
-}
+    /* Base textarea */
+    .textarea {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--color-border);
+        background: var(--color-neutral-inverse);
+        color: var(--color-neutral);
+        transition: all 0.2s ease;
+        outline: none;
+    }
 
-/* Placeholder */
-.textarea::placeholder {
-    color: var(--color-neutral-muted);
-}
+    /* Placeholder */
+    .textarea::placeholder {
+        color: var(--color-neutral-muted);
+    }
 
-/* Hover */
-.textarea:hover {
-    border-color: var(--color-border-strong);
-}
+    /* Hover */
+    .textarea:hover {
+        border-color: var(--color-border-strong);
+    }
 
-/* Focus */
-.textarea:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
-}
+    /* Focus */
+    .textarea:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary) / 0.15;
+    }
 
-/* Disabled */
-.textarea:disabled {
-    background: var(--color-neutral-subtle);
-    color: var(--color-neutral-muted);
-    cursor: not-allowed;
-}
+    /* Disabled */
+    .textarea:disabled {
+        background: var(--color-neutral-subtle);
+        color: var(--color-neutral-muted);
+        cursor: not-allowed;
+    }
 
-.textarea-success {
-    border-color: var(--color-success);
-}
+    .textarea-success {
+        border-color: var(--color-success);
+    }
 
-.textarea-success:focus {
-    border-color: var(--color-success-strong);
-    box-shadow: 0 0 0 3px var(--color-success) / 0.15;
-}
+    .textarea-success:focus {
+        border-color: var(--color-success-strong);
+        box-shadow: 0 0 0 3px var(--color-success) / 0.15;
+    }
 
-.textarea-error {
-    border-color: var(--color-error);
-}
+    .textarea-error {
+        border-color: var(--color-error);
+    }
 
-.textarea-error:focus {
-    border-color: var(--color-error-strong);
-    box-shadow: 0 0 0 3px var(--color-error) / 0.15;
-}
+    .textarea-error:focus {
+        border-color: var(--color-error-strong);
+        box-shadow: 0 0 0 3px var(--color-error) / 0.15;
+    }
 
-.textarea-warning {
-    border-color: var(--color-warning);
-}
+    .textarea-warning {
+        border-color: var(--color-warning);
+    }
 
-.textarea-warning:focus {
-    border-color: var(--color-warning-strong);
-    box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
+    .textarea-warning:focus {
+        border-color: var(--color-warning-strong);
+        box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
+    }
 }
