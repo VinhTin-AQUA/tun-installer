@@ -190,6 +190,10 @@ exe_template_v1.0.0.exe --status uninstall
 
 ## Upcoming Features
 
+- Supports suggestions when input metadata.
+- Select installer folder in exe template
+- Read the required storage capacity, available storage capacity, and remaining storage capacity after installation.
+- Execute custom action (.bat, powershell)
 - CLI Support (Coming Soon)
 - CI/CD Integration
 
