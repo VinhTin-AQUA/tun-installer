@@ -1,62 +1,198 @@
-# MyWorkspace
+# 🚀 Tun Installer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+<p align="center">
+  <img src="docs/logo.png" alt="WebInstaller Builder Logo" width="200"/>
+</p>
 
-## Development server
+<p align="center">
+  <strong>Modern Windows EXE Installer Builder powered by HTML & CSS UI</strong>
+</p>
 
-To start a local development server, run:
+---
+
+## 📌 Introduction
+
+**WebInstaller Builder** is a tool for generating Windows `.exe` installers with a modern approach:  
+the installer interface is built entirely using **HTML and CSS** instead of traditional native UI components.
+
+This allows developers to:
+
+- 🎨 Fully customize the installer UI
+- 🌐 Use HTML + CSS
+- 🧩 Easily extend and maintain installer layouts
+- ⚡ Build professional installers faster
+
+In addition to flexible UI customization, the tool supports all core features expected from a professional installer system.
+
+---
+
+📚 **Documentation & User Guide:**  
+For detailed usage instructions, configuration examples, and advanced guides, please visit:
+
+👉 **[Documents - User Guide](DOCUMENT.md)**
+
+---
+
+## ✨ Key Features
+
+- 🖥 Generate Windows `.exe` installer packages
+- 🎨 HTML + CSS powered installer UI
+- ⚙️ Configure application metadata:
+    - Application name
+    - Version
+    - Publisher
+    - Icon
+- 📦 Bundle application resource files
+- 🧰 Install additional prerequisites (e.g. runtime dependencies)
+- 🗂 Add or modify Windows Registry entries
+- 📁 Custom installation directory
+- 🧾 Config-based installer generation
+
+---
+
+## 🖼 Tool Interface
+
+> Add screenshots to the `docs/` folder and update paths below.
+
+<p align="center">
+  <img src="docs/app-ui/1.png" width="800"/>
+</p>
+
+The interface is designed to be intuitive, developer-friendly, and flexible for customization.
+
+---
+
+## 🏗 Architecture Overview
+
+WebInstaller Builder consists of two main layers:
+
+### 1️⃣ Installer Engine
+
+- Handles installation logic
+- Copies application files
+- Executes prerequisites
+- Writes registry entries
+- Generates final `.exe` output
+
+### 2️⃣ Web UI Layer
+
+- Built using HTML & CSS
+- Fully customizable layout and themes
+- Separate from installation logic
+- Easy to maintain and extend
+
+---
+
+## 🧪 Development Setup
+
+### ✅ Prerequisites (Required Frameworks)
+
+- Windows 10 or Windows 11 or Linux
+- [Tauri](https://v2.tauri.app/)
+- [Angular](https://angular.dev/)
+- [Node.js v24.11.0](https://nodejs.org/en)
+
+### First-time Setup
 
 ```bash
-ng serve
+git clone https://github.com/VinhTin-AQUA/tun-installer.git
+cd tun-installer
+npm install
+npm run build-all-lib
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Development Workflow
 
 ```bash
-ng generate component component-name
+# Run Installer Builder
+npm run tauri:dev:builder
+
+# Build Installer Builder
+npm run tauri:build:builder
+
+# Build Exe template
+npm run tauri:build:template
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Test Exe Template without build Exe Template
+
+- In **projects\installer-template\src-tauri\src\bootstrapper\bootstrapper.rs**, change **temp_app_dir** to tun-installer project path
+
+- In **libs\rust\helpers\src\file_helper.rs**
+  change **exe_path_buf** to compressed exe file before
+
+### Build Tun Installer
 
 ```bash
-ng generate --help
+build_window.bat
 ```
 
-## Building
+- Exe Path: tun-installer\target\release\bundle\nsis\Tun Installer_0.1.0_x64-setup.exe
 
-To build the project run:
+### Dev commands
+
+- Angular commands
+
+    ```bash
+    # create project
+    ng new my-workspace --create-application=false
+    cd my-workspace
+    ng generate application app1
+    ng generate application app2
+
+    # create lib
+    ng g library data-access --project-root=libs/angular/data-access;
+
+    # build lib
+    ng build shared-lib
+
+    # run project
+    ng s installer-template
+
+    # create component in lib
+    ng g component components/button --project=shared-lib
+    ng g s tauri-command-service --project=tauri
+    ```
+
+- Cargo commands
 
 ```bash
-ng build
+# run project
+cargo run -p installer_builder
+npm run dev:installer:builder
+
+# run project with args  -- --debug-mode --channel beta --env production
+
+# Run project with npx
+cd projects/installer-builder/src-tauri && npx tauri dev
+
+# Build tauri with npx
+cd projects/installer-builder/src-tauri && npx tauri build --no-bundle --target x86_64-pc-windows-msvc
+
+# create crate lib
+cargo new shared-lib --lib
+
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- Window scripts
 
 ```bash
-ng test
+# run exe with args
+exe_template_v1.0.0.exe --status uninstall
 ```
 
-## Running end-to-end tests
+## Other resource
 
-For end-to-end (e2e) testing, run:
+### rcedit-x64.exe
 
-```bash
-ng e2e
-```
+- Edit resource in exe file. I use it to change exe icon
+- link: https://github.com/electron/rcedit
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Upcoming Features
 
-## Additional Resources
+- CLI Support (Coming Soon)
+- CI/CD Integration
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📄 License
 
-## License
-This project is licensed under the GNU General Public License v3.0.
+GNU GENERAL PUBLIC LICENSE
