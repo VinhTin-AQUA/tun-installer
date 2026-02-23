@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { InstallerPropertyStore } from 'data-access';
-import { ProjectManagerService } from '../../../core/services/project-manager-service';
-import { ProjectStateService } from '../../../core/services/project-state-service';
 import { DialogStore } from '../../../core/stores/dialog.store';
 import { ClickOutside } from '../../directives/click-outside';
-import { FileHelper } from '../../helpers/file.helper';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { ProjectFacade } from '../../../core/facades/project-facade';
+
+type menu = 'file' | 'edit' | 'view' | 'tools' | null;
 
 @Component({
     selector: 'app-main-title-bar',
@@ -19,14 +20,14 @@ export class MainTitleBar {
 
     currentFile: string | null = null;
     isDirty = false;
-    openMenu: 'file' | 'edit' | 'view' | null = null;
+    openMenu: menu = null;
 
     installerPropertyStore = inject(InstallerPropertyStore);
     dialogStore = inject(DialogStore);
+    projectStore = inject(ProjectStore);
 
     constructor(
-        private projectManagerService: ProjectManagerService,
-        private projectSateService: ProjectStateService,
+        private projectFacade: ProjectFacade,
     ) {}
 
     async minimize() {
@@ -50,30 +51,23 @@ export class MainTitleBar {
         console.log('Open settings');
     }
 
-    toggleMenu(menu: 'file' | 'edit' | 'view', event: Event) {
+    toggleMenu(menu: menu, event: Event) {
         event.stopPropagation();
         this.openMenu = this.openMenu === menu ? null : menu;
     }
 
     async openProject() {
         this.openMenu = null;
-        const filePath = await FileHelper.selectFile([
-            { name: 'Tun Installer', extensions: ['tunins'] },
-        ]);
-
-        if (!filePath) {
-            return;
-        }
-        let project = await this.projectManagerService.openProject(filePath);
-        if (!project) {
-            return;
-        }
-        await this.projectSateService.updateProjectState(project.projectDir, '');
-        await this.projectManagerService.init();
+        await this.projectFacade.openProject();
     }
 
     openCreateNewProject() {
         this.openMenu = null;
         this.dialogStore.update({ createNewProjectDialog: true });
+    }
+
+    async refresh() {
+        this.openMenu = null;
+        this.projectFacade.refresh();
     }
 }

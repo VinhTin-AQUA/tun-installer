@@ -39,7 +39,7 @@ pub async fn load_project_state_command(
         config_file: state.config_file.clone(),
         project_file: state.project_file.clone(),
         project_dir: state.project_dir.clone(),
-        project_name: state.project_dir.clone(),
+        project_name: state.project_name.clone(),
 
         is_dirty: state.is_dirty.clone(),
     }))

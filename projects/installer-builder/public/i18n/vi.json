@@ -95,5 +95,14 @@
     },
     "product-details": {
         "input-config-file": "Input Config File Name"
+    },
+
+    "windowValidation": {
+        "titleRequired": "Tiêu đề không được để trống.",
+        "widthMin": "Chiều rộng phải lớn hơn hoặc bằng 600.",
+        "widthMax": "Chiều rộng không được vượt quá 800.",
+        "heightMin": "Chiều cao phải lớn hơn hoặc bằng 400.",
+        "heightMax": "Chiều cao không được vượt quá 600.",
+        "startPageRequired": "Trang bắt đầu không được để trống."
     }
 }

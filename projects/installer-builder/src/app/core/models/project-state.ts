@@ -10,4 +10,5 @@ export interface ProjectState {
 
     isDirty: boolean;
     projectName: string;
+    changeReload: boolean;
 }

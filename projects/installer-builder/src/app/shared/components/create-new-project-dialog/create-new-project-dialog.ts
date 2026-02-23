@@ -51,6 +51,10 @@ export class CreateNewProjectDialog {
     }
 
     async save() {
+        if(!this.data().baseDir  || !this.data().baseDir ) {
+            this.toastService.show('Please choose project location and input project name', 'error');
+            return
+        }
         const r = await this.projectManagerService.createNewProject(this.data());
         if (!r) {
             return;

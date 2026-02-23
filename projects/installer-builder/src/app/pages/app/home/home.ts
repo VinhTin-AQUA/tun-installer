@@ -3,12 +3,11 @@ import { InstallerPropertyStore } from 'data-access';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Router, RouterLink } from '@angular/router';
 import { AppRoutes, MainRoutes } from '../../../core/enums/routes.enum';
-import { ProjectManagerService } from '../../../core/services/project-manager-service';
-import { ProjectStateService } from '../../../core/services/project-state-service';
 import { DialogStore } from '../../../core/stores/dialog.store';
-import { FileHelper } from '../../../shared/helpers/file.helper';
-import { Command, open } from '@tauri-apps/plugin-shell';
+import { open } from '@tauri-apps/plugin-shell';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ProjectStore } from '../../../core/stores/project-store';
+import { ProjectFacade } from '../../../core/facades/project-facade';
 
 @Component({
     selector: 'app-home',
@@ -26,14 +25,14 @@ export class Home {
 
     installerPropertyStore = inject(InstallerPropertyStore);
     dialogStore = inject(DialogStore);
+    projectStore = inject(ProjectStore);
 
     //routes
     settingRoute = `/${AppRoutes.App}/${AppRoutes.Settings}`;
 
     constructor(
-        private projectManagerService: ProjectManagerService,
-        private projectSateService: ProjectStateService,
         private router: Router,
+        private projectFacade: ProjectFacade,
     ) {}
 
     async minimize() {
@@ -64,19 +63,7 @@ export class Home {
 
     async openProject() {
         this.openMenu = null;
-        const filePath = await FileHelper.selectFile([
-            { name: 'Tun Installer', extensions: ['tunins'] },
-        ]);
-
-        if (!filePath) {
-            return;
-        }
-        let project = await this.projectManagerService.openProject(filePath);
-        if (!project) {
-            return;
-        }
-        await this.projectSateService.updateProjectState(project.projectDir, '');
-        await this.projectManagerService.init();
+        await this.projectFacade.openProject();
         this.router.navigateByUrl(`${MainRoutes.Main}/${MainRoutes.ProductDetails}`);
     }
 

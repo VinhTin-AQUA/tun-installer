@@ -18,7 +18,7 @@ import { ProjectStateService } from '../../../core/services/project-state-servic
 export class MainLayout {
     isDrawerOpen = false;
     navItems: NavItem[] = [];
-    installerDocumentStore = inject(ProjectStore);
+    projectStore = inject(ProjectStore);
     isLoading = signal(true);
 
     constructor(

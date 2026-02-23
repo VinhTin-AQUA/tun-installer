@@ -10,6 +10,8 @@ import { TextInput } from '../../../shared/components/text-input/text-input';
 import { TextArea } from '../../../shared/components/text-area/text-area';
 import { CheckBox } from '../../../shared/components/check-box/check-box';
 import { Button } from '../../../shared/components/button/button';
+import { Option } from '../../../core/models/option';
+import { ProjectStore } from '../../../core/stores/project-store';
 
 @Component({
     selector: 'app-product-details',
@@ -19,17 +21,22 @@ import { Button } from '../../../shared/components/button/button';
 })
 export class ProductDetails {
     projectManagerService = inject(ProjectManagerService);
-    workingConfigFileStore = this.projectManagerService.projectStore;
+    projectStore = this.projectManagerService.projectStore;
     installerPropertyStore = this.projectManagerService.installerPropertyStore;
     installerPropertyDataModel = this.projectManagerService.installerPropertyDataModel;
     installerPropertyDataForm = this.projectManagerService.installerPropertyDataForm;
 
     dialogStore = inject(DialogStore);
     resourceFiletore = inject(ResourceFiletore);
-
+    resourceFileOptions: Option[] = [];
+    
     constructor(private toastService: ToastService) {}
 
-    async ngOnInit() {}
+    async ngOnInit() {
+        this.resourceFileOptions = this.resourceFiletore
+            .getAll()
+            .map((x) => ({ label: x.name, value: x.name }));
+    }
 
     async onSaveInstallerConfig() {
         const formValid = this.projectManagerService.validateInstallerPropertyDataForm();
@@ -37,7 +44,7 @@ export class ProductDetails {
             return;
         }
 
-        if (!this.workingConfigFileStore.projectFile()) {
+        if (!this.projectStore.projectFile()) {
             this.dialogStore.update({
                 createNewProjectDialog: true,
             });

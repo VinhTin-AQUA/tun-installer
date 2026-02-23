@@ -5,6 +5,8 @@
         flex-direction: column;
         gap: 1px;
         margin-bottom: 10px;
+        position: relative;
+        width: 100%;
     }
 
     /* Label */
@@ -75,5 +77,47 @@
     .input-warning:focus {
         border-color: var(--color-warning-strong);
         box-shadow: 0 0 0 3px var(--color-warning) / 0.15;
+    }
+
+    /* ====== Autocomplete ====== */
+
+    .autocomplete-dropdown {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow:
+            0 4px 6px rgba(0, 0, 0, 0.05),
+            0 10px 20px rgba(0, 0, 0, 0.08);
+        max-height: 240px;
+        overflow-y: auto;
+        padding: 6px 0;
+        animation: zoomIn 0.15s ease-out;
+       z-index: 999999 !important;
+    }
+
+    /* Hiển thị bên dưới input */
+    .autocomplete-dropdown.below {
+        top: calc(100% + 2px);
+    }
+
+    /* Hiển thị bên trên input */
+    .autocomplete-dropdown.above {
+        bottom: calc(100% + 2px);
+    }
+
+    /* ===== Item ===== */
+    .autocomplete-item {
+        padding: 10px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        user-select: none;
+    }
+
+    .autocomplete-item:hover {
+        background-color: #f3f4f6;
     }
 }

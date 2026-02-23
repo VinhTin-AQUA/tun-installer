@@ -40,7 +40,9 @@
             <!-- Main content (KHÔNG SCROLL) -->
             <main class="flex-1 min-h-0 h-[calc(100vh-50px)] overflow-hidden p-2">
                 <div class="p-6 overflow-y-scroll w-full h-full">
-                    <router-outlet></router-outlet>
+                    @if (projectStore.changeReload() === false) {
+                        <router-outlet></router-outlet>
+                    }
                 </div>
             </main>
         </div>

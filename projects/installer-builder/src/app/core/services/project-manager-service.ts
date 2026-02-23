@@ -9,6 +9,7 @@ import {
     RegistryKeyStore,
     RegistryValue,
     RegistryValueType,
+    WindowInfo,
     WindowInfoStore,
 } from 'data-access';
 import { ProjectManagerCommands, TauriCommandService, ToastService } from 'service';
@@ -242,6 +243,48 @@ export class ProjectManagerService {
                 this.toastService.show(messages, 'error');
                 return false;
             }
+        }
+
+        // windowInfoStore
+        const installerWindowValid = this.validateWindowInfo(
+            this.windowInfoStore.getData().installerWindow,
+        );
+        const uninstallerWindowValid = this.validateWindowInfo(
+            this.windowInfoStore.getData().uninstallerWindow,
+        );
+
+        return true && installerWindowValid && uninstallerWindowValid;
+    }
+
+    validateWindowInfo(info: WindowInfo): boolean {
+        if (!info.title || info.title.trim() === '') {
+            this.toastService.show('windowValidation.titleRequired', 'error');
+            return false;
+        }
+
+        if (info.width < 600) {
+            this.toastService.show('windowValidation.widthMin', 'error');
+            return false;
+        }
+
+        if (info.width > 800) {
+            this.toastService.show('windowValidation.widthMax', 'error');
+            return false;
+        }
+
+        if (info.height < 400) {
+            this.toastService.show('windowValidation.heightMin', 'error');
+            return false;
+        }
+
+        if (info.height > 600) {
+            this.toastService.show('windowValidation.heightMax', 'error');
+            return false;
+        }
+
+        if (!info.startPage || info.startPage.trim() === '') {
+            this.toastService.show('windowValidation.startPageRequired', 'error');
+            return false;
         }
 
         return true;

@@ -95,5 +95,13 @@
     },
     "product-details": {
         "input-config-file": "Input Config File Name"
+    },
+    "windowValidation": {
+        "titleRequired": "Title must not be empty.",
+        "widthMin": "Width must be at least 600.",
+        "widthMax": "Width must not exceed 800.",
+        "heightMin": "Height must be at least 400.",
+        "heightMax": "Height must not exceed 600.",
+        "startPageRequired": "Start page must not be empty."
     }
 }

@@ -13,13 +13,14 @@
         "windows": [
             {
                 "title": "Tun Installer",
-                "width": 600,
-                "height": 400,
+                "width": 800,
+                "height": 600,
                 "resizable": true,
                 "fullscreen": false,
                 "center": true,
                 "maximized": false,
-                "decorations": false
+                "decorations": false,
+                "incognito": true
             }
         ],
         "security": {

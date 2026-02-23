@@ -12,6 +12,7 @@ const initialState: ProjectState = {
     prerequisiteDir: '',
     resourceDir: '',
     projectName: '',
+    changeReload: false,
 };
 
 export const ProjectStore = signalStore(
@@ -22,14 +23,14 @@ export const ProjectStore = signalStore(
     withMethods((store) => {
         function updateDir(baseDir: string, projectName: string) {
             patchState(store, (currentState) => ({
-                configDir: `${baseDir}/${projectName}/${ProjectFolders.configs}`,
-                pageDir: `${baseDir}/${projectName}/${ProjectFolders.pages}`,
-                prerequisiteDir: `${baseDir}/${projectName}/${ProjectFolders.prerequisites}`,
-                resourceDir: `${baseDir}/${projectName}/${ProjectFolders.resources}`,
+                configDir: `${baseDir}/${ProjectFolders.configs}`,
+                pageDir: `${baseDir}/${ProjectFolders.pages}`,
+                prerequisiteDir: `${baseDir}/${ProjectFolders.prerequisites}`,
+                resourceDir: `${baseDir}/${ProjectFolders.resources}`,
 
-                projectDir: `${baseDir}/${projectName}`,
-                configFile: `${baseDir}/${projectName}/${ProjectFolders.configs}/config.json`,
-                projectFile: `${baseDir}/${projectName}/${projectName}.tunins`,
+                projectDir: `${baseDir}`,
+                configFile: `${baseDir}/${ProjectFolders.configs}/config.json`,
+                projectFile: `${baseDir}/${projectName}.tunins`,
                 projectName: projectName,
                 isDirty: false,
             }));
@@ -52,6 +53,7 @@ export const ProjectStore = signalStore(
                 prerequisiteDir: store.prerequisiteDir(),
                 resourceDir: store.resourceDir(),
                 projectName: store.projectName(),
+                changeReload: store.changeReload(),
             };
             return data;
         }

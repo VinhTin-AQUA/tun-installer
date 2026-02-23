@@ -1,11 +1,11 @@
 {
   "properties": {
-    "installationLocation": "C:\\Program Files\\Newtun\\First App",
-    "productName": "First App",
+    "installationLocation": "C:\\Program Files\\Newtun\\First ",
+    "productName": "First ",
     "icon": "icon.ico",
     "productVersion": "1.0.0",
     "publisher": "Newtun",
-    "supportLink": "z",
+    "supportLink": "https://example.com",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
     "launchFile": "FirstApp.exe",
@@ -19,12 +19,12 @@
   },
   "registryKeys": {
     "configRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtun\\First App",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtun\\First ",
       "values": [
         {
           "name": "InstallPath",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First App",
+          "data": "C:\\Program Files\\Newtun\\First ",
           "default": true
         },
         {
@@ -36,18 +36,18 @@
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "First App",
+          "data": "First ",
           "default": true
         }
       ]
     },
     "uninstallRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First App",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First ",
       "values": [
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "First App",
+          "data": "First ",
           "default": true
         },
         {
@@ -65,7 +65,7 @@
         {
           "name": "UninstallString",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First App\\uninstall.exe  --status uninstall",
+          "data": "C:\\Program Files\\Newtun\\First \\uninstall.exe  --status uninstall",
           "default": true
         },
         {
@@ -83,13 +83,13 @@
       "width": 650.0,
       "height": 500.0,
       "startPage": "1_welcome.html",
-      "alwaysOnTop": false
+      "alwaysOnTop": true
     },
     "uninstallerWindow": {
       "title": "verify uninstall",
       "width": 600.0,
       "height": 450.0,
-      "startPage": "verify_uninstall.html",
+      "startPage": "finish.html",
       "alwaysOnTop": true
     }
   },

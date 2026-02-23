@@ -227,12 +227,6 @@ body {
             border-bottom: none;
         }
     }
-
-    /* ================================ button ================================ */
-
-    /* ================================ select box ================================ */
-
-    /* ================================ context menu ================================ */
 }
 
 @layer utilities {
@@ -273,6 +267,19 @@ body {
     }
     .border-muted {
         border-color: var(--color-border-muted);
+    }
+}
+
+/* animation */
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
     }
 }
 

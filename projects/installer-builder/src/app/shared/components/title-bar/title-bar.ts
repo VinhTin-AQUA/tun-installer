@@ -7,6 +7,8 @@ import { FileHelper } from '../../helpers/file.helper';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { ProjectStateService } from '../../../core/services/project-state-service';
 
+type menu = 'file' | 'edit' | 'view' | 'tools' | null;
+
 @Component({
     selector: 'app-title-bar',
     imports: [ClickOutside],
@@ -19,7 +21,7 @@ export class TitleBar {
 
     currentFile: string | null = null;
     isDirty = false;
-    openMenu: 'file' | 'edit' | 'view' | null = null;
+    openMenu: menu = null;
 
     installerPropertyStore = inject(InstallerPropertyStore);
     dialogStore = inject(DialogStore);
@@ -50,7 +52,7 @@ export class TitleBar {
         console.log('Open settings');
     }
 
-    toggleMenu(menu: 'file' | 'edit' | 'view', event: Event) {
+    toggleMenu(menu: menu, event: Event) {
         event.stopPropagation();
         this.openMenu = this.openMenu === menu ? null : menu;
     }
@@ -68,7 +70,7 @@ export class TitleBar {
         if (!project) {
             return;
         }
-        await this.projectSateService.updateProjectState(project.projectDir, '');
+        await this.projectSateService.updateProjectState(project.projectDir, project.name);
         await this.projectManagerService.init();
     }
 

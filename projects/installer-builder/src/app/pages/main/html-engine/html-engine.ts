@@ -12,6 +12,7 @@ import { CheckBox } from '../../../shared/components/check-box/check-box';
 import { Button } from '../../../shared/components/button/button';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Option } from '../../../core/models/option';
 
 type WindowKey = keyof WindowInfos;
 
@@ -65,6 +66,7 @@ export class HtmlEngine {
 
     activeSection: PageType | '' = 'firstInstall';
     activePageType = signal<PageType>('firstInstall');
+    pageOptions: Option[] = [];
 
     PAGE_TO_WINDOW_KEY: Record<PageType, WindowKey> = {
         firstInstall: 'installerWindow',
@@ -80,7 +82,6 @@ export class HtmlEngine {
     }
 
     // test
-
     private intervalId: any;
 
     constructor(
@@ -90,7 +91,6 @@ export class HtmlEngine {
     ) {
         effect(() => {
             const progress = this.progress();
-
             this.data.progress = progress;
         });
     }
@@ -105,6 +105,18 @@ export class HtmlEngine {
 
     toggleSection(id: PageType) {
         this.activeSection = this.activeSection === id ? '' : id;
+
+        if (this.activeSection === 'firstInstall') {
+            this.pageOptions = this.firstInstallPages().map((x) => ({
+                label: x.name,
+                value: x.name,
+            }));
+        } else if (this.activeSection === 'maintenance') {
+            this.pageOptions = this.maintenancePages().map((x) => ({
+                label: x.name,
+                value: x.name,
+            }));
+        }
     }
 
     /* ================ load pages ================= */
@@ -119,6 +131,11 @@ export class HtmlEngine {
         if (!pages || pages.length == 0) {
             return;
         }
+
+        this.pageOptions = pages.map((x) => ({
+            label: x.name,
+            value: x.name,
+        }));
 
         this.firstInstallPages.set(pages);
         this.loadPage(pages[0].name, 'firstInstall');
@@ -262,12 +279,12 @@ export class HtmlEngine {
         this.windowInfoStore.updateWindow(this.activeWindowKey, { height: Number(value) });
     }
 
-    updateWindowTitle(event: any) {
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { title: event.target.value });
+    updateWindowTitle(value: any) {
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { title: value });
     }
 
-    updateStartPage(event: any) {
-        this.windowInfoStore.updateWindow(this.activeWindowKey, { startPage: event.target.value });
+    updateStartPage(value: any) {
+        this.windowInfoStore.updateWindow(this.activeWindowKey, { startPage: value });
     }
 
     updateAlwaysOnTop(event: any) {

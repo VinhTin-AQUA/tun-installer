@@ -6,7 +6,7 @@
             [class.toast-enter]="!toast.closing"
             [class.toast-leave]="toast.closing"
         >
-            <span class="message">{{ toast.message }}</span>
+            <span class="message">{{ toast.message | translate}}</span>
 
             <button class="close-btn" (click)="toastService.remove(toast.id)">×</button>
         </div>

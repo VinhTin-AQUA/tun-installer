@@ -1,0 +1,91 @@
+{
+  "properties": {
+    "installationLocation": "C:\\Program Files\\Your App",
+    "productName": "Your App",
+    "icon": "",
+    "productVersion": "1.0.0",
+    "publisher": "My Company",
+    "supportLink": "https://support.mycompany.com",
+    "supportEmail": "support@mycompany.com",
+    "comment": "Default installer comment",
+    "launchFile": "",
+    "runAsAdmin": false,
+    "launchApp": true,
+    "shortcutInDesktop": {
+      "isCreated": true,
+      "runAsAdmin": false,
+      "shortcutName": "Your App"
+    }
+  },
+  "registryKeys": {
+    "configRegistry": {
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\MyCompany\\Your App",
+      "values": [
+        {
+          "name": "InstallPath",
+          "type": "REG_SZ",
+          "data": "C:\\Program Files\\MyCompany\\Your App",
+          "default": true
+        },
+        {
+          "name": "Version",
+          "type": "REG_SZ",
+          "data": "1.0.0",
+          "default": true
+        },
+        {
+          "name": "DisplayName",
+          "type": "REG_SZ",
+          "data": "Your App",
+          "default": true
+        }
+      ]
+    },
+    "uninstallRegistry": {
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Your App",
+      "values": [
+        {
+          "name": "DisplayName",
+          "type": "REG_SZ",
+          "data": "My Application",
+          "default": true
+        },
+        {
+          "name": "Publisher",
+          "type": "REG_SZ",
+          "data": "My Company",
+          "default": true
+        },
+        {
+          "name": "DisplayVersion",
+          "type": "REG_SZ",
+          "data": "1.0.0",
+          "default": true
+        },
+        {
+          "name": "UninstallString",
+          "type": "REG_SZ",
+          "data": "C:\\Program Files\\MyCompany\\Your App\\uninstall.exe --status uninstall",
+          "default": true
+        }
+      ]
+    }
+  },
+  "windowInfos": {
+    "installerWindow": {
+      "title": "Your App Installer",
+      "width": 800.0,
+      "height": 600.0,
+      "startPage": "",
+      "alwaysOnTop": false
+    },
+    "uninstallerWindow": {
+      "title": "Your App Installer",
+      "width": 800.0,
+      "height": 600.0,
+      "startPage": "",
+      "alwaysOnTop": false
+    }
+  },
+  "prerequisites": []
+}

@@ -25,6 +25,7 @@
                 [label]="'main.productDetails.icon'"
                 [formField]="installerPropertyDataForm.icon"
                 placeholder="icon.ico"
+                [options]="resourceFileOptions"
             ></app-text-input>
 
             <app-text-input
@@ -55,6 +56,7 @@
                 [label]="'main.productDetails.launchFile'"
                 [formField]="installerPropertyDataForm.launchFile"
                 placeholder="yourapp.exe"
+                [options]="resourceFileOptions"
             ></app-text-input>
         </div>
 
@@ -92,13 +94,15 @@
                                     installerPropertyDataForm.shortcutInDesktop.shortcutName
                                 "
                                 [placeholder]="'main.productDetails.shortcutNamePlaceholder'"
+
+                                 
                             ></app-text-input>
 
-                            <datalist id="listFiles">
+                            <!-- <datalist id="listFiles">
                                 @for (n of resourceFiletore.getAll(); track $index) {
                                     <option [value]="n.name">{{ n.name }}</option>
                                 }
-                            </datalist>
+                            </datalist> -->
                         </div>
                     </div>
                 }

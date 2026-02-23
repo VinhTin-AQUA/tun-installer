@@ -19,8 +19,8 @@ pub struct InstallerDocument {
 pub fn create_default_installer_document() -> InstallerDocument {
     InstallerDocument {
         properties: InstallerProperties {
-            installation_location: "C:\\Program Files\\MyApp".into(),
-            product_name: "My Application".into(),
+            installation_location: "C:\\Program Files\\Your App".into(),
+            product_name: "Your App".into(),
             icon: "".into(),
             product_version: "1.0.0".into(),
             publisher: "My Company".into(),
@@ -33,18 +33,18 @@ pub fn create_default_installer_document() -> InstallerDocument {
             shortcut_in_desktop: ShortcutInDesktop {
                 is_created: true,
                 run_as_admin: false,
-                shortcut_name: "My Application".into(),
+                shortcut_name: "Your App".into(),
             },
         },
 
         registry_keys: RegistryKeys {
             config_registry: RegistryKey {
-                path: "HKEY_LOCAL_MACHINE\\SOFTWARE\\MyCompany\\MyApp".into(),
+                path: "HKEY_LOCAL_MACHINE\\SOFTWARE\\MyCompany\\Your App".into(),
                 values: vec![
                     RegistryValue {
                         name: "InstallPath".into(),
                         value_type: RegistryValueType::Sz,
-                        data: "C:\\Program Files\\MyCompany\\MyApp".into(),
+                        data: "C:\\Program Files\\MyCompany\\Your App".into(),
                         default: true,
                     },
                     RegistryValue {
@@ -56,13 +56,13 @@ pub fn create_default_installer_document() -> InstallerDocument {
                      RegistryValue {
                         name: "DisplayName".into(),
                         value_type: RegistryValueType::Sz,
-                        data: "MyApp".into(),
+                        data: "Your App".into(),
                         default: true,
                     },
                 ],
             },
             uninstall_registry: RegistryKey {
-                path: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\MyApp".into(),
+                path: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Your App".into(),
                 values: vec![
                     RegistryValue {
                         name: "DisplayName".into(),
@@ -87,7 +87,7 @@ pub fn create_default_installer_document() -> InstallerDocument {
                        RegistryValue {
                         name: "UninstallString".into(),
                         value_type: RegistryValueType::Sz,
-                        data: "C:\\Program Files\\MyCompany\\MyApp\\uninstall.exe --status uninstall".into(),
+                        data: "C:\\Program Files\\MyCompany\\Your App\\uninstall.exe --status uninstall".into(),
                         default: true,
                     },
                 ],
@@ -96,17 +96,17 @@ pub fn create_default_installer_document() -> InstallerDocument {
 
         window_infos: WindowInfos {
             installer_window: WindowInfo {
-                title: "My Application Installer".into(),
+                title: "Your App Installer".into(),
                 width: 800.0,
                 height: 600.0,
-                start_page: "welcome.html".into(),
+                start_page: "".into(),
                 always_on_top: false,
             },
             uninstaller_window: WindowInfo {
-                title: "My Application Installer".into(),
+                title: "Your App Installer".into(),
                 width: 800.0,
                 height: 600.0,
-                start_page: "verify_uninstall.html".into(),
+                start_page: "".into(),
                 always_on_top: false,
             }
         },

@@ -48,6 +48,16 @@
             }
         </div>
 
+        <div class="menu-wrapper">
+            <button class="tb-btn ghost" (click)="toggleMenu('tools', $event)">Tools</button>
+
+            @if (openMenu === 'tools') {
+                <div class="menu" (appClickOutside)="openMenu = null">
+                    <div class="menu-item" (click)="refresh()">Refresh</div>
+                </div>
+            }
+        </div>
+
         <!-- FILE INFO -->
         @if (currentFile) {
             <div class="file-info">
