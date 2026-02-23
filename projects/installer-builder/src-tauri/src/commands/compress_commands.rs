@@ -5,7 +5,7 @@ use crate::{
 };
 use domain::RESOURCES_DIR;
 use helpers::{copy_file_to_dir, set_exe_icon};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use tauri::{command, AppHandle, State};
 use tokio::sync::Mutex;
 
@@ -71,7 +71,10 @@ pub async fn compress_installer_command(
         .join(RESOURCES_DIR)
         .join(installer_config.properties.icon);
 
-    set_exe_icon(&rcedit_path, &exe_path, &icon_path).map_err(|e| e.to_string())?;
+    if Path::new(&icon_path).exists() {
+        set_exe_icon(&rcedit_path, &exe_path, &icon_path).map_err(|e| e.to_string())?;
+    } else {
+    }
 
     println!(
         "Size after set icon: {:?}",
@@ -88,13 +91,8 @@ pub async fn compress_installer_command(
     .map_err(|e| e.to_string())?
     .map_err(|e| e.to_string())?;
 
-    // 🔥 Windows có thể giữ handle một chút
+    //
     tokio::time::sleep(std::time::Duration::from_millis(200)).await;
-
-    println!(
-        "Size after compress: {:?}",
-        std::fs::metadata(&exe_path).map(|m| m.len()).unwrap_or(0)
-    );
 
     // ---- Rename LAST ----
     let new_name = format!("{}.exe", installer_config.properties.product_name);

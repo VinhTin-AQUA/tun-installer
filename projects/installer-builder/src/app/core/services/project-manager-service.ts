@@ -332,6 +332,11 @@ export class ProjectManagerService {
                 registryKeys: this.registryKeyStore.getData(),
                 windowInfos: this.windowInfoStore.getData(),
                 prerequisites: this.prerequisiteStore.getData(),
+                memorySpace: {
+                    volumeSpaceAvailable: '0MB',
+                    volumeSpaceRemaining: '0MB',
+                    volumeSpaceRequired: '0MB',
+                },
             },
         };
 

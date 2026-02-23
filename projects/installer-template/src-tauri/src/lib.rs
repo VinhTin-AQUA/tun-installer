@@ -99,6 +99,7 @@ fn run_inner() {
                 registry_keys: installer_document.registry_keys.clone(),
                 window_infos: installer_document.window_infos.clone(),
                 prerequisites: installer_document.prerequisites.clone(),
+                memory_space: installer_document.memory_space.clone(),
             }));
 
             let project_state = init_project_state(&app_state)?;

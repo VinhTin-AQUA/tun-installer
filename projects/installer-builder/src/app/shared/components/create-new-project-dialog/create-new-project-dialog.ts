@@ -9,6 +9,7 @@ import { ProjectStateService } from '../../../core/services/project-state-servic
 import { ToastService } from 'service';
 import { Router } from '@angular/router';
 import { MainRoutes } from '../../../core/enums/routes.enum';
+import { join } from '@tauri-apps/api/path';
 
 @Component({
     selector: 'app-create-new-project-dialog',
@@ -29,7 +30,7 @@ export class CreateNewProjectDialog {
         required(f.projectName, { message: 'Project Name is required' });
     });
 
-    workingConfigFileStore = inject(ProjectStore);
+    projectStore = inject(ProjectStore);
 
     constructor(
         private toastService: ToastService,
@@ -51,9 +52,12 @@ export class CreateNewProjectDialog {
     }
 
     async save() {
-        if(!this.data().baseDir  || !this.data().baseDir ) {
-            this.toastService.show('Please choose project location and input project name', 'error');
-            return
+        if (!this.data().baseDir || !this.data().baseDir) {
+            this.toastService.show(
+                'Please choose project location and input project name',
+                'error',
+            );
+            return;
         }
         const r = await this.projectManagerService.createNewProject(this.data());
         if (!r) {
@@ -61,10 +65,8 @@ export class CreateNewProjectDialog {
         }
         this.toastService.show('Success', 'success');
 
-        await this.projectStateService.updateProjectState(
-            this.data().baseDir,
-            this.data().projectName,
-        );
+        const baseDir = await join(this.data().baseDir, this.data().projectName);
+        await this.projectStateService.updateProjectState(baseDir, this.data().projectName);
 
         // await this.projectManagerService.saveInstallerDocument();
         await this.projectManagerService.init();
@@ -76,6 +78,9 @@ export class CreateNewProjectDialog {
             baseDir: '',
             projectName: '',
         });
+
+        console.log(this.projectStore.getData());
+
         this.router.navigateByUrl(`${MainRoutes.Main}/${MainRoutes.ProductDetails}`);
     }
 }

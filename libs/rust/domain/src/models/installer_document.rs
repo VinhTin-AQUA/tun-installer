@@ -1,5 +1,5 @@
 use crate::{
-    WindowInfo,
+    MemorySpace, WindowInfo,
     models::{
         InstallerProperties, Prerequisite, RegistryKey, RegistryKeys, RegistryValue,
         RegistryValueType, ShortcutInDesktop, WindowInfos,
@@ -14,6 +14,7 @@ pub struct InstallerDocument {
     pub registry_keys: RegistryKeys,
     pub window_infos: WindowInfos,
     pub prerequisites: Vec<Prerequisite>,
+    pub memory_space: MemorySpace,
 }
 
 pub fn create_default_installer_document() -> InstallerDocument {
@@ -112,5 +113,10 @@ pub fn create_default_installer_document() -> InstallerDocument {
         },
 
         prerequisites: vec![],
+        memory_space: MemorySpace { 
+            volume_space_required: "0 MB".to_string(), 
+            volume_space_available: "0 MB".to_string(),
+            volume_space_remaining: "0 MB".to_string() 
+        }
     }
 }

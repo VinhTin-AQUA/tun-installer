@@ -18,3 +18,6 @@ pub use resource_folder::*;
 
 pub mod window_info;
 pub use window_info::*;
+
+pub mod memory_space;
+pub use memory_space::*;

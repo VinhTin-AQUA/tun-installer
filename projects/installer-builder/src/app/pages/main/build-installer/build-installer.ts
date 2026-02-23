@@ -7,6 +7,7 @@ import { ProjectManagerService } from '../../../core/services/project-manager-se
 import { Button } from '../../../shared/components/button/button';
 import { ClickOutside } from '../../../shared/directives/click-outside';
 import { TranslatePipe } from '@ngx-translate/core';
+import { join } from '@tauri-apps/api/path';
 
 @Component({
     selector: 'app-build-installer',
@@ -43,7 +44,8 @@ export class BuildInstaller {
         this.isCompleted.set(false);
         this.logs.set([]);
         this.progress.set(0);
-        this.outputPath.set(`${this.projectStore.projectDir()}output`.replace(/\\/g, '/'));
+        const ouputPath = await join(`${this.projectStore.projectDir()}`, 'output');
+        this.outputPath.set(ouputPath.replace(/\\/g, '/'));
 
         this.logs.update((x) => {
             return [...x, '🚀 Build started...'];
