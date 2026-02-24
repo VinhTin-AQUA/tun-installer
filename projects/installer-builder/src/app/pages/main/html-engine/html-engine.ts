@@ -1,18 +1,25 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { HtmlPage } from '../../../core/models/html-page';
-import { InstallerPropertyStore, PageType, WindowInfos, WindowInfoStore } from 'data-access';
+import {
+    InstallerPropertyStore,
+    MemorySpaceStore,
+    PageType,
+    WindowInfos,
+    WindowInfoStore,
+} from 'data-access';
 import { LoadHtmlPage } from '../../../core/models/tauri-payloads/load-html-pages';
 import { ToastService } from 'service';
 import { ProjectStore } from '../../../core/stores/project-store';
 import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
-import { ApiContracts } from 'api-contracts';
+import { ApiContracts, InstallerData } from 'api-contracts';
 import { TextInput } from '../../../shared/components/text-input/text-input';
 import { CheckBox } from '../../../shared/components/check-box/check-box';
 import { Button } from '../../../shared/components/button/button';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Option } from '../../../core/models/option';
+import { ProjectFacade } from '../../../core/facades/project-facade';
 
 type WindowKey = keyof WindowInfos;
 
@@ -27,8 +34,10 @@ export class HtmlEngine {
 
     index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
+    memorySpaceStore = inject(MemorySpaceStore);
     progress = signal<number>(0);
-    data = {
+
+    data: InstallerData = {
         installationLocation: this.installerPropertyStore.installationLocation(),
         productName: this.installerPropertyStore.productName(),
         icon: this.installerPropertyStore.icon(),
@@ -41,6 +50,10 @@ export class HtmlEngine {
         runAsAdmin: this.installerPropertyStore.runAsAdmin(),
         launchApp: this.installerPropertyStore.launchApp(),
         progress: this.progress(),
+        message: '',
+        volumeSpaceAvailable: this.memorySpaceStore.getData().volumeSpaceAvailable,
+        volumeSpaceRemaining: this.memorySpaceStore.getData().volumeSpaceRemaining,
+        volumeSpaceRequired: this.memorySpaceStore.getData().volumeSpaceRequired,
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
@@ -86,8 +99,7 @@ export class HtmlEngine {
 
     constructor(
         private tauriCommandService: TauriCommandService,
-        private toastService: ToastService,
-        private projectManagerService: ProjectManagerService,
+        private projectFacade: ProjectFacade,
     ) {
         effect(() => {
             const progress = this.progress();
@@ -299,13 +311,7 @@ export class HtmlEngine {
     }
 
     async save() {
-        const r = await this.projectManagerService.saveInstallerDocument();
-        if (!r) {
-            this.toastService.show('Something error', 'error');
-            return;
-        }
-
-        this.toastService.show('Save', 'success');
+        await this.projectFacade.saveInstallerDocument();
     }
 
     ngOnDestroy() {

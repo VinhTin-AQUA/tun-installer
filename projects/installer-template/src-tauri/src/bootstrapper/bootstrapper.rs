@@ -1,6 +1,6 @@
-use domain::{InstallerDocument, CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
-use helpers::get_current_exe;
-use std::{env};
+use domain::{InstallerDocumentConfig, CONFIG_DIR, HTML_PAGE_DIR, PREREQUISITE_DIR, RESOURCES_DIR};
+use helpers::{get_current_exe, get_free_space_bytes};
+use std::{env, path::Path};
 
 use crate::{
     enums::InstallerStatus,
@@ -10,7 +10,7 @@ use crate::{
 pub fn extract_data_inner(
     app_state: &AppState,
     installer_args: &InstallerArgs,
-) -> Result<InstallerDocument, String> {
+) -> Result<InstallerDocumentConfig, String> {
     let installer_document = if installer_args.status == InstallerStatus::Install {
         extract_installer_res(app_state).unwrap()
     } else {
@@ -22,18 +22,17 @@ pub fn extract_data_inner(
 pub fn init_project_state(app_state: &AppState) -> Result<ProjectState, String> {
     let compressor = app_state.compressor.clone();
     let exe_path_buf = get_current_exe();
-    let installer_document: InstallerDocument = compressor
+    let installer_document: InstallerDocumentConfig = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
             let s = String::from_utf8(data)?;
             Ok(serde_json::from_str(&s)?)
         })
         .map_err(|e| e.to_string())?;
     let temp_app_dir = env::temp_dir().join(installer_document.properties.product_name.clone());
-    
-    /* redirect to project to test */ 
+
+    /* redirect to project to test */
     // let temp_app_dir = PathBuf::from("C:/Users/tinhv/Desktop/f/tun-installer/examples/first-app");
     // println!("temp_app_dir = {:?}", temp_app_dir);
-
 
     let r = ProjectState {
         project_dir: temp_app_dir.to_string_lossy().to_string(),
@@ -65,11 +64,11 @@ pub fn init_project_state(app_state: &AppState) -> Result<ProjectState, String> 
 
 //=================================================
 
-fn extract_installer_res(app_state: &AppState) -> Result<InstallerDocument, String> {
+fn extract_installer_res(app_state: &AppState) -> Result<InstallerDocumentConfig, String> {
     let compressor = app_state.compressor.clone();
     let exe_path_buf = get_current_exe();
 
-    let installer_document: InstallerDocument = compressor
+    let mut installer_document: InstallerDocumentConfig = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
             let s = String::from_utf8(data)?;
             Ok(serde_json::from_str(&s)?)
@@ -88,17 +87,22 @@ fn extract_installer_res(app_state: &AppState) -> Result<InstallerDocument, Stri
 
     // let config_path = temp_app_dir.join("configs").join("config.json");
     // let config_str = std::fs::read_to_string(config_path).map_err(|e| e.to_string())?;
-    // let installer_document: InstallerDocument =
+    // let installer_document: InstallerDocumentConfig =
     //     serde_json::from_str(&config_str).map_err(|e| e.to_string())?;
+
+    let available = get_free_space_bytes(Path::new("C:\\")).unwrap_or(0);
+    let remaining = available.saturating_sub(installer_document.memory_space.volume_space_required);
+    installer_document.memory_space.volume_space_available = available;
+    installer_document.memory_space.volume_space_remaining = remaining;
 
     Ok(installer_document)
 }
 
-fn extract_uninstaller_res(app_state: &AppState) -> Result<InstallerDocument, String> {
+fn extract_uninstaller_res(app_state: &AppState) -> Result<InstallerDocumentConfig, String> {
     let compressor = app_state.compressor.clone();
     let exe_path_buf = get_current_exe();
 
-    let installer_document: InstallerDocument = compressor
+    let mut installer_document: InstallerDocumentConfig = compressor
         .read_data_from_installer(&exe_path_buf, CONFIG_DIR, "config.json", |data| {
             let s = String::from_utf8(data)?;
             Ok(serde_json::from_str(&s)?)
@@ -115,6 +119,10 @@ fn extract_uninstaller_res(app_state: &AppState) -> Result<InstallerDocument, St
         )
         .map_err(|e| e.to_string())?;
 
+    let available = get_free_space_bytes(Path::new("C:\\")).unwrap_or(0);
+    let remaining = available.saturating_sub(installer_document.memory_space.volume_space_required);
+    installer_document.memory_space.volume_space_available = available;
+    installer_document.memory_space.volume_space_remaining = remaining;
+
     Ok(installer_document)
 }
-

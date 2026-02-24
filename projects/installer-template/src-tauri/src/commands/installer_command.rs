@@ -1,4 +1,4 @@
-use domain::{event_consts, InstallerDocument, PREREQUISITE_DIR, RESOURCES_DIR};
+use domain::{event_consts, InstallerDocumentConfig, PREREQUISITE_DIR, RESOURCES_DIR};
 use helpers::{copy_file_to_dir, get_current_exe};
 use service::Progress;
 use std::{env, path::PathBuf};
@@ -16,7 +16,7 @@ use crate::{
 pub async fn install(
     app: AppHandle,
     app_state: State<'_, AppState>,
-    installer_document_state: State<'_, Mutex<InstallerDocument>>,
+    installer_document_state: State<'_, Mutex<InstallerDocumentConfig>>,
     folders: Vec<String>,
 ) -> Result<bool, String> {
     let installer_document = installer_document_state.lock().await;
@@ -114,7 +114,7 @@ pub async fn install(
 
 #[command]
 pub async fn launch_app_now(
-    installer_document_state: State<'_, Mutex<InstallerDocument>>,
+    installer_document_state: State<'_, Mutex<InstallerDocumentConfig>>,
 ) -> Result<bool, String> {
     let installer_document = installer_document_state.lock().await;
     let run_app_path = PathBuf::from(installer_document.properties.installation_location.clone())

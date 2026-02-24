@@ -9,7 +9,7 @@ mod states;
 
 use clap::Parser;
 use commands::*;
-use domain::InstallerDocument;
+use domain::InstallerDocumentConfig;
 use ::helpers::get_current_exe;
 use service::Compressor;
 use std::{fs::OpenOptions, io::Write, panic, path::PathBuf, sync::Arc};
@@ -94,7 +94,7 @@ fn run_inner() {
             let installer_document = extract_data_inner(&app_state, &installer_args)?;
 
             //
-            app.manage(Mutex::new(InstallerDocument {
+            app.manage(Mutex::new(InstallerDocumentConfig {
                 properties: installer_document.properties.clone(),
                 registry_keys: installer_document.registry_keys.clone(),
                 window_infos: installer_document.window_infos.clone(),

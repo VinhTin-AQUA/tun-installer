@@ -39,9 +39,11 @@
         >
             <!-- Header -->
             <div>
-                <h1 style="margin: 0; font-size: 36px; color: #111827">{{productName}}</h1>
+                <h1 id="product-name" style="margin: 0; font-size: 36px; color: #111827">
+                    Product Name
+                </h1>
 
-                <p style="margin-top: 8px; font-size: 16px; color: #6b7280">Version {{productVersion}}</p>
+                <p id="version" style="margin-top: 8px; font-size: 16px; color: #6b7280">Version</p>
             </div>
 
             <!-- Welcome Text -->
@@ -77,6 +79,12 @@
         </div>
 
         <script>
+            // get init value
+            window.initApp = function () {
+                document.getElementById('product-name').innerText = window.App.data.productName;
+                document.getElementById('version').innerText = window.App.data.productVersion;
+            };
+
             function navigateToFolderDialog() {
                 window.App.navigateTo('2_folder-dialog.html', 'firstInstall');
             }

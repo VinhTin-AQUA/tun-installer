@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use domain::{event_consts, InstallerDocument};
+use domain::{event_consts, InstallerDocumentConfig};
 use service::Progress;
 use std::env;
 use tauri::{AppHandle, State, command};
@@ -16,7 +16,7 @@ use crate::{
 #[command]
 pub async fn uninstall_command(
     app: AppHandle,
-    installer_document_state: State<'_, Mutex<InstallerDocument>>,
+    installer_document_state: State<'_, Mutex<InstallerDocumentConfig>>,
 ) -> Result<bool, String> {
     let installer_document = installer_document_state.lock().await;
     let app_dir = installer_document.clone().properties.installation_location;
@@ -115,7 +115,7 @@ pub async fn uninstall_command(
 
 #[command]
 pub async fn clean_uninstall_command(
-    installer_document_state: State<'_, Mutex<InstallerDocument>>,
+    installer_document_state: State<'_, Mutex<InstallerDocumentConfig>>,
 ) -> Result<bool, String> {
     let installer_document = installer_document_state.lock().await;
     let app_dir = installer_document.clone().properties.installation_location;

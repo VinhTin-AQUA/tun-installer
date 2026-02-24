@@ -61,6 +61,11 @@ export class MainTitleBar {
         await this.projectFacade.openProject();
     }
 
+    async saveProject() {
+        this.openMenu = null;
+        await this.projectFacade.saveInstallerDocument();
+    }
+
     openCreateNewProject() {
         this.openMenu = null;
         this.dialogStore.update({ createNewProjectDialog: true });
@@ -70,4 +75,6 @@ export class MainTitleBar {
         this.openMenu = null;
         this.projectFacade.refresh();
     }
+
+
 }

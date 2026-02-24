@@ -1,9 +1,9 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore, PageType, WindowInfoStore } from 'data-access';
+import { InstallerPropertyStore, MemorySpaceStore, PageType, WindowInfoStore } from 'data-access';
 import { HtmlPage } from '../../../core/models/html-page';
 import { ProjectStore } from '../../../core/stores/project-store';
 import { LoadHtmlPage } from '../../../core/models/tauri-payloads/load-html-pages';
-import { ApiContracts } from 'api-contracts';
+import { ApiContracts, InstallerData } from 'api-contracts';
 import { ToastService, WindowService } from 'service';
 import { ActivatedRoute } from '@angular/router';
 import { HtmlEngineCommands, TauriCommandService } from 'service';
@@ -23,10 +23,11 @@ export class PreviewInstallerUi {
     // index = 0;
     installerPropertyStore = inject(InstallerPropertyStore);
     windowInfoStore = inject(WindowInfoStore);
+    memorySpaceStore = inject(MemorySpaceStore);
 
     progress = signal<number>(0);
 
-    data = {
+    data: InstallerData = {
         installationLocation: this.installerPropertyStore.installationLocation(),
         productName: this.installerPropertyStore.productName(),
         icon: this.installerPropertyStore.icon(),
@@ -39,6 +40,10 @@ export class PreviewInstallerUi {
         runAsAdmin: this.installerPropertyStore.runAsAdmin(),
         launchApp: this.installerPropertyStore.launchApp(),
         progress: this.progress(),
+        message: '',
+        volumeSpaceAvailable: this.memorySpaceStore.getData().volumeSpaceAvailable,
+        volumeSpaceRemaining: this.memorySpaceStore.getData().volumeSpaceRemaining,
+        volumeSpaceRequired: this.memorySpaceStore.getData().volumeSpaceRequired,
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
@@ -73,13 +78,30 @@ export class PreviewInstallerUi {
             await this.init();
             await this.loadPages();
         });
-
-        await this.init();
     }
 
     private async init() {
         await this.projectStateService.getProjectState();
         await this.projectManagerService.init();
+
+        this.data = {
+            installationLocation: this.installerPropertyStore.installationLocation(),
+            productName: this.installerPropertyStore.productName(),
+            icon: this.installerPropertyStore.icon(),
+            productVersion: this.installerPropertyStore.productVersion(),
+            publisher: this.installerPropertyStore.publisher(),
+            supportLink: this.installerPropertyStore.supportLink(),
+            supportEmail: this.installerPropertyStore.supportEmail(),
+            comment: this.installerPropertyStore.comment(),
+            launchFile: this.installerPropertyStore.launchFile(),
+            runAsAdmin: this.installerPropertyStore.runAsAdmin(),
+            launchApp: this.installerPropertyStore.launchApp(),
+            progress: this.progress(),
+            message: '',
+            volumeSpaceAvailable: this.memorySpaceStore.getData().volumeSpaceAvailable,
+            volumeSpaceRemaining: this.memorySpaceStore.getData().volumeSpaceRemaining,
+            volumeSpaceRequired: this.memorySpaceStore.getData().volumeSpaceRequired,
+        };
     }
 
     private async loadFirstInstallPages() {
@@ -162,6 +184,11 @@ export class PreviewInstallerUi {
     }
 
     async install(afterInstallPage: string | null) {
+        if (this.data.volumeSpaceRemaining < 1024 * 10) {
+            this.toastService.show('Out of memory');
+            return;
+        }
+
         this.intervalId = setInterval(() => {
             this.progress.update((x) => x + 5);
             if (this.progress() > 100) {
@@ -203,35 +230,6 @@ export class PreviewInstallerUi {
     }
 
     /* ================================= */
-
-    async preview() {
-        await this.tauriCommandService.invokeCommand(
-            HtmlEngineCommands.PREVIEW_INSTALLER_UI_COMMAND,
-            {
-                width: this.iframeWidth() + 72,
-                height: this.iframeHeight() + 54,
-            },
-        );
-    }
-
-    updateFrameWidth(event: any) {
-        const value =
-            event.target.value < 600 ? 600 : event.target.value > 800 ? 800 : event.target.value;
-
-        this.iframeWidth.set(Number(value));
-    }
-
-    updateFrameHeight(event: any) {
-        const value =
-            event.target.value < 420 ? 420 : event.target.value > 600 ? 600 : event.target.value;
-
-        this.iframeHeight.set(Number(value));
-    }
-
-    reset() {
-        this.loadPages();
-        this.ngOnDestroy();
-    }
 
     ngOnDestroy() {
         this.progress.set(0);

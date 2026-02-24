@@ -1,5 +1,5 @@
 export interface MemorySpace {
-    volumeSpaceRequired: string;
-    volumeSpaceAvailable: string;
-    volumeSpaceRemaining: string;
+    volumeSpaceRequired: number;
+    volumeSpaceAvailable: number;
+    volumeSpaceRemaining: number;
 }

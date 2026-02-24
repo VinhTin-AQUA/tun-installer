@@ -8,7 +8,7 @@ import { InstallerService } from '../../core/services/installer-service';
 import { Events as EventSystemConsts } from '../../core/consts/event.const';
 import { HtmlEngineCommands, TauriCommandService, TauriEventService } from 'service';
 import { ToastService, WindowService } from 'service';
-import { ApiContracts } from 'api-contracts';
+import { ApiContracts, InstallerData } from 'api-contracts';
 import { InstallerArgsService } from '../../core/services/installer-args-service';
 import { InstallerArgs, InstallerStatus } from '../../core/models/installer-args';
 import { UninstallerService } from '../../core/services/uninstaller-service';
@@ -26,7 +26,7 @@ export class HtmlEngine {
     windowInfoStore = inject(WindowInfoStore);
     progress = signal<number>(0);
 
-    data = {
+    data: InstallerData = {
         installationLocation: this.installerPropertyStore.installationLocation(),
         productName: this.installerPropertyStore.productName(),
         icon: this.installerPropertyStore.icon(),
@@ -40,6 +40,9 @@ export class HtmlEngine {
         launchApp: this.installerPropertyStore.launchApp(),
         progress: this.progress(),
         message: '',
+        volumeSpaceAvailable: 0,
+        volumeSpaceRemaining: 0,
+        volumeSpaceRequired: 0,
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);

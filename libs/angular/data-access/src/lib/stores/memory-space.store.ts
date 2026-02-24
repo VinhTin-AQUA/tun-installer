@@ -2,9 +2,9 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { MemorySpace } from '../models/memory-space';
 
 const initialState: MemorySpace = {
-    volumeSpaceAvailable: '0MB',
-    volumeSpaceRemaining: '0MB',
-    volumeSpaceRequired: '0MB',
+    volumeSpaceAvailable: 0,
+    volumeSpaceRemaining: 0,
+    volumeSpaceRequired: 0,
 };
 
 export const MemorySpaceStore = signalStore(
@@ -13,6 +13,12 @@ export const MemorySpaceStore = signalStore(
     },
     withState(initialState),
     withMethods((store) => {
+        function setMemorySpace(model: MemorySpace) {
+            patchState(store, (currentState) => ({
+                ...model,
+            }));
+        }
+
         function update(updates: Partial<MemorySpace>) {
             patchState(store, (currentState) => ({
                 ...updates,
@@ -29,9 +35,6 @@ export const MemorySpaceStore = signalStore(
             return data;
         }
 
-        return {
-            update,
-            getData,
-        };
+        return { setMemorySpace, update, getData };
     }),
 );

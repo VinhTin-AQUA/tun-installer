@@ -42,7 +42,7 @@
                 <!-- Logo -->
                 <div
                     style="
-                        width: 64px;
+                        width: 100%;
                         height: 64px;
                         border-radius: 14px;
                         background: #4f46e5;
@@ -55,49 +55,7 @@
                         margin-right: 20px;
                     "
                 >
-                    TI
-                </div>
-
-                <div>
-                    <h1 style="margin: 0; font-size: 28px; color: #111827">
-                        Choose Install Location
-                    </h1>
-                    <p style="margin: 6px 0 0; color: #6b7280">Test Installer 1.0.0</p>
-                </div>
-            </div>
-
-            <!-- Folder Input -->
-            <div>
-                <p style="font-size: 16px; color: #374151; margin-bottom: 10px">
-                    Select the folder where Test Installer will be installed:
-                </p>
-
-                <div style="display: flex; gap: 10px">
-                    <input
-                        type="text"
-                        value="C:\Program Files\Test Installer"
-                        style="
-                            flex: 1;
-                            padding: 12px;
-                            font-size: 15px;
-                            border-radius: 8px;
-                            border: 1px solid #d1d5db;
-                            outline: none;
-                        "
-                    />
-
-                    <button
-                        style="
-                            padding: 12px 18px;
-                            font-size: 15px;
-                            border-radius: 8px;
-                            border: 1px solid #d1d5db;
-                            background: #f3f4f6;
-                            cursor: pointer;
-                        "
-                    >
-                        Browse…
-                    </button>
+                    Tun Installer
                 </div>
             </div>
 
@@ -112,17 +70,17 @@
             >
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
                     <span style="color: #374151">Available disk space:</span>
-                    <strong>12.5 GB</strong>
+                    <strong id="volume-space-available">12.5 GB</strong>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
                     <span style="color: #374151">Required disk space:</span>
-                    <strong>500 MB</strong>
+                    <strong id="volume-space-required">500 MB</strong>
                 </div>
 
                 <div style="display: flex; justify-content: space-between">
                     <span style="color: #374151">Remaining after installation:</span>
-                    <strong>12.0 GB</strong>
+                    <strong id="volume-space-remaining">12.0 GB</strong>
                 </div>
             </div>
 
@@ -149,8 +107,39 @@
         </div>
 
         <script>
+            window.initApp = function () {
+                document.getElementById('volume-space-available').innerText = formatBytes(
+                    window.App.data.volumeSpaceAvailable,
+                );
+                document.getElementById('volume-space-required').innerText = formatBytes(
+                    window.App.data.volumeSpaceRequired,
+                );
+                document.getElementById('volume-space-remaining').innerText = formatBytes(
+                    window.App.data.volumeSpaceRemaining,
+                );
+            };
+
             function navigateToVerifyDialog() {
                 window.App.navigateTo('3_verify-dialog.html', 'firstInstall');
+            }
+
+            function formatBytes(bytes) {
+                const KB = 1024;
+                const MB = 1024 * 1024;
+                const GB = 1024 * 1024 * 1024;
+                const TB = 1024 * 1024 * 1024 * 1024;
+
+                if (bytes >= TB) {
+                    return (bytes / TB).toFixed(2) + ' TB';
+                } else if (bytes >= GB) {
+                    return (bytes / GB).toFixed(2) + ' GB';
+                } else if (bytes >= MB) {
+                    return (bytes / MB).toFixed(2) + ' MB';
+                } else if (bytes >= KB) {
+                    return (bytes / KB).toFixed(2) + ' KB';
+                } else {
+                    return bytes + ' B';
+                }
             }
         </script>
     </body>

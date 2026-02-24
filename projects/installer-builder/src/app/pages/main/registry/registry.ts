@@ -3,13 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { RegistryKey, RegistryKeyStore, RegistryValueType } from 'data-access';
 import { ToastService } from 'service';
 import { CommonModule } from '@angular/common';
-import { ProjectManagerService } from '../../../core/services/project-manager-service';
 import { Button } from '../../../shared/components/button/button';
 import { TextInput } from '../../../shared/components/text-input/text-input';
 import { Select } from '../../../shared/components/select/select';
 import { Option } from '../../../core/models/option';
 import { Badge } from '../../../shared/components/badge/badge';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ProjectFacade } from '../../../core/facades/project-facade';
 
 @Component({
     selector: 'app-registry',
@@ -36,7 +36,7 @@ export class Registry {
 
     constructor(
         private toastService: ToastService,
-        private projectManagerService: ProjectManagerService,
+        private projectFacade: ProjectFacade,
     ) {}
 
     addValue(key: RegistryKey) {
@@ -72,9 +72,6 @@ export class Registry {
         this.registryKeyStore.addValues('configRegistry', this.registrySections[0].key.values);
         this.registryKeyStore.addValues('uninstallRegistry', this.registrySections[1].key.values);
 
-        const r = await this.projectManagerService.saveInstallerDocument();
-        if (r) {
-            this.toastService.show('Success', 'success');
-        }
+        await this.projectFacade.saveInstallerDocument();
     }
 }

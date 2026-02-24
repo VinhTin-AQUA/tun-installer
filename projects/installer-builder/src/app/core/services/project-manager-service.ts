@@ -1,8 +1,10 @@
 import { effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { ProjectStore } from '../stores/project-store';
 import {
+    InstallerDocumentConfig,
     InstallerProperties,
     InstallerPropertyStore,
+    MemorySpaceStore,
     Prerequisite,
     PrerequisiteStore,
     RegistryKeys,
@@ -14,10 +16,7 @@ import {
 } from 'data-access';
 import { ProjectManagerCommands, TauriCommandService, ToastService } from 'service';
 import { form, readonly, required } from '@angular/forms/signals';
-import {
-    InstallerConfig,
-    SaveInstallerConfig,
-} from '../models/tauri-payloads/save-Installer-document';
+import { SaveInstallerConfig } from '../models/tauri-payloads/save-Installer-document';
 import { CreateTunInstallerProject } from '../models/tauri-payloads/create-tuninstaller-project';
 import { TunInstallerProject } from '../models/tun-installer-project';
 import { ResourceFiletore } from '../stores/resource-file.store';
@@ -34,6 +33,7 @@ export class ProjectManagerService {
     resourceFiletore = inject(ResourceFiletore);
     windowInfoStore = inject(WindowInfoStore);
     prerequisiteStore = inject(PrerequisiteStore);
+    memorySpaceStore = inject(MemorySpaceStore);
 
     installerPropertyDataForm = form(this.installerPropertyDataModel, (f) => {
         required(f.installationLocation, { message: 'Installation Location is required' });
@@ -221,6 +221,10 @@ export class ProjectManagerService {
 
         this.windowInfoStore.setWindows(installerDocumentConfig.windowInfos);
         this.prerequisiteStore.setList(installerDocumentConfig.prerequisites);
+        this.memorySpaceStore.setMemorySpace(installerDocumentConfig.memorySpace);
+
+        console.log(installerDocumentConfig.memorySpace);
+        
 
         /* =========== get files in resources ==============  */
         await this.getResourceFiles();
@@ -294,7 +298,7 @@ export class ProjectManagerService {
 
     async createNewProject(data: CreateTunInstallerProject) {
         const r = await this.tauriCommandService.invokeCommand<boolean, CreateTunInstallerProject>(
-            ProjectManagerCommands.CREATE_TUNINSTALLER_PROJECT_COMMAND,
+            ProjectManagerCommands.CREATE_INSTALLER_PROJECT_COMMAND,
             data,
         );
         return r;
@@ -302,7 +306,7 @@ export class ProjectManagerService {
 
     async openProject(projectPath: string) {
         const r = await this.tauriCommandService.invokeCommand<TunInstallerProject, object>(
-            ProjectManagerCommands.OPEN_TUNINSTALLER_PROJECT_COMMAND,
+            ProjectManagerCommands.OPEN_INSTALLER_PROJECT_COMMAND,
             {
                 projectPath: projectPath,
             },
@@ -333,15 +337,15 @@ export class ProjectManagerService {
                 windowInfos: this.windowInfoStore.getData(),
                 prerequisites: this.prerequisiteStore.getData(),
                 memorySpace: {
-                    volumeSpaceAvailable: '0MB',
-                    volumeSpaceRemaining: '0MB',
-                    volumeSpaceRequired: '0MB',
+                    volumeSpaceAvailable: 0,
+                    volumeSpaceRemaining: 0,
+                    volumeSpaceRequired: 0,
                 },
             },
         };
 
         const r = await this.tauriCommandService.invokeCommand<boolean, SaveInstallerConfig>(
-            ProjectManagerCommands.SAVE_INSTALLER_CONFIG_COMMAND,
+            ProjectManagerCommands.SAVE_INSTALLER_DOCUMENT_CONFIG_COMMAND,
             data,
         );
 
@@ -396,7 +400,7 @@ export class ProjectManagerService {
     //========== private ============
 
     private async loadInstallerDocumentConfig(filePath: string) {
-        const r = await this.tauriCommandService.invokeCommand<InstallerConfig, object>(
+        const r = await this.tauriCommandService.invokeCommand<InstallerDocumentConfig, object>(
             ProjectManagerCommands.LOAD_INSTALLER_DOCUMENT_CONFIG_COMMAND,
             { filePath: filePath },
         );

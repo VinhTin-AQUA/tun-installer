@@ -44,7 +44,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             preview_installer_ui_command,
-            save_installer_config_command,
+            save_installer_document_config_command,
             update_project_state_command,
             load_project_state_command,
             load_installer_document_config_command,
@@ -52,8 +52,8 @@ pub fn run() {
             load_html_maintenance_pages_command,
             read_subfolders_command,
             read_files_in_folder_command,
-            create_tuninstaller_project_command,
-            open_tuninstaller_project_command,
+            create_installer_project_command,
+            open_installer_project_command,
             compress_installer_command,
             extract_installer_command,
             cancel_compress_command,

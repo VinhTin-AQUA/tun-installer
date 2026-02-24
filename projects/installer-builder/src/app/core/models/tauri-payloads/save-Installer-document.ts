@@ -1,14 +1,6 @@
-import { InstallerProperties, MemorySpace, Prerequisite, RegistryKeys, WindowInfos } from 'data-access';
-
-export interface InstallerConfig {
-    properties: InstallerProperties;
-    registryKeys: RegistryKeys;
-    windowInfos: WindowInfos;
-    prerequisites: Prerequisite[];
-    memorySpace: MemorySpace
-}
+import { InstallerDocumentConfig } from 'data-access';
 
 export interface SaveInstallerConfig {
-    payload: InstallerConfig;
+    payload: InstallerDocumentConfig;
     filePath: string;
 }

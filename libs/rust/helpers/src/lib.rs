@@ -4,6 +4,9 @@ pub use file_helper::*;
 mod xml_helper;
 pub use xml_helper::*;
 
+mod sysinfo_helper;
+pub use sysinfo_helper::*;
+
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }

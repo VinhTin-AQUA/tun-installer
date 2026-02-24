@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct InstallerDocument {
+pub struct InstallerDocumentConfig {
     pub properties: InstallerProperties,
     pub registry_keys: RegistryKeys,
     pub window_infos: WindowInfos,
@@ -17,8 +17,8 @@ pub struct InstallerDocument {
     pub memory_space: MemorySpace,
 }
 
-pub fn create_default_installer_document() -> InstallerDocument {
-    InstallerDocument {
+pub fn create_default_installer_document() -> InstallerDocumentConfig {
+    InstallerDocumentConfig {
         properties: InstallerProperties {
             installation_location: "C:\\Program Files\\Your App".into(),
             product_name: "Your App".into(),
@@ -114,9 +114,9 @@ pub fn create_default_installer_document() -> InstallerDocument {
 
         prerequisites: vec![],
         memory_space: MemorySpace { 
-            volume_space_required: "0 MB".to_string(), 
-            volume_space_available: "0 MB".to_string(),
-            volume_space_remaining: "0 MB".to_string() 
+            volume_space_required: 0, 
+            volume_space_available: 0,
+            volume_space_remaining: 0 
         }
     }
 }

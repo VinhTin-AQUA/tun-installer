@@ -1,15 +1,15 @@
 import { inject, Injectable } from '@angular/core';
-import { InstallerDocument } from '../models/installer-document';
-import { InstallerPropertyStore, RegistryKeyStore, WindowInfoStore } from 'data-access';
+import { InstallerDocument, InstallerPropertyStore, MemorySpaceStore, RegistryKeyStore, WindowInfoStore } from 'data-access';
 import { InstallerDocumentCommands, TauriCommandService } from 'service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class InstallerDocumentService {
-    installerPropertyStore = inject(InstallerPropertyStore)
-    registryKeyStore = inject(RegistryKeyStore)
-    windowInfoStore = inject(WindowInfoStore)
+    installerPropertyStore = inject(InstallerPropertyStore);
+    registryKeyStore = inject(RegistryKeyStore);
+    windowInfoStore = inject(WindowInfoStore);
+    memorySpaceStore = inject(MemorySpaceStore);
 
     constructor(private TauriCommandService: TauriCommandService) {}
 
@@ -19,13 +19,14 @@ export class InstallerDocumentService {
             undefined,
         );
 
-        if(r) {
+        if (r) {
             this.installerPropertyStore.update(r.properties);
             this.registryKeyStore.setRegistry({
                 configRegistry: r.registryKeys.configRegistry,
-                uninstallRegistry: r.registryKeys.uninstallRegistry
+                uninstallRegistry: r.registryKeys.uninstallRegistry,
             });
             this.windowInfoStore.setWindows(r.windowInfos);
+            this.memorySpaceStore.setMemorySpace(r.memorySpace);
         }
     }
 }

@@ -1,14 +1,14 @@
 {
   "properties": {
-    "installationLocation": "C:\\Program Files\\Newtun\\First ",
-    "productName": "First ",
+    "installationLocation": "C:\\Program Files\\Newtun\\First App",
+    "productName": "First App",
     "icon": "icon.ico",
     "productVersion": "1.0.0",
     "publisher": "Newtun",
     "supportLink": "https://example.com",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
-    "launchFile": "FirstApp.exe",
+    "launchFile": "start.txt",
     "runAsAdmin": false,
     "launchApp": true,
     "shortcutInDesktop": {
@@ -19,12 +19,12 @@
   },
   "registryKeys": {
     "configRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtun\\First ",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Newtun\\First App",
       "values": [
         {
           "name": "InstallPath",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First ",
+          "data": "C:\\Program Files\\Newtun\\First App",
           "default": true
         },
         {
@@ -36,18 +36,18 @@
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "First ",
+          "data": "First App",
           "default": true
         }
       ]
     },
     "uninstallRegistry": {
-      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First ",
+      "path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\First App",
       "values": [
         {
           "name": "DisplayName",
           "type": "REG_SZ",
-          "data": "First ",
+          "data": "First App",
           "default": true
         },
         {
@@ -65,7 +65,7 @@
         {
           "name": "UninstallString",
           "type": "REG_SZ",
-          "data": "C:\\Program Files\\Newtun\\First \\uninstall.exe  --status uninstall",
+          "data": "C:\\Program Files\\Newtun\\First App\\uninstall.exe  --status uninstall",
           "default": true
         },
         {
@@ -83,13 +83,13 @@
       "width": 650.0,
       "height": 500.0,
       "startPage": "1_welcome.html",
-      "alwaysOnTop": true
+      "alwaysOnTop": false
     },
     "uninstallerWindow": {
       "title": "verify uninstall",
       "width": 600.0,
       "height": 450.0,
-      "startPage": "finish.html",
+      "startPage": "verify_uninstall.html",
       "alwaysOnTop": true
     }
   },
@@ -106,5 +106,10 @@
       "installPhase": "Before",
       "size": 0.0
     }
-  ]
+  ],
+  "memorySpace": {
+    "volumeSpaceRequired": 460248801,
+    "volumeSpaceAvailable": 0,
+    "volumeSpaceRemaining": 0
+  }
 }
