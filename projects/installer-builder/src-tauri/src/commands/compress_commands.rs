@@ -30,10 +30,10 @@ pub async fn compress_installer_command(
 
     // ---- Prepare paths ----
     let paths: Vec<PathBuf> = vec![
-        PathBuf::from(config_dir.clone()),
-        PathBuf::from(page_dir),
         PathBuf::from(prerequisite_dir),
         PathBuf::from(resource_dir),
+        PathBuf::from(page_dir),
+        PathBuf::from(config_dir.clone()),
     ];
 
     // ---- Copy template exe ----

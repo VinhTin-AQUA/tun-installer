@@ -1,5 +1,11 @@
 import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { InstallerPropertyStore, PageType, ProjectFolders, WindowInfoStore } from 'data-access';
+import {
+    InstallerPropertyStore,
+    MemorySpaceStore,
+    PageType,
+    ProjectFolders,
+    WindowInfoStore,
+} from 'data-access';
 import { HtmlPage } from '../../core/models/html-page';
 import { ProjectStore } from '../../core/store/project-store';
 import { LoadHtmlPage } from '../../core/models/load-html-pages';
@@ -24,6 +30,7 @@ export class HtmlEngine {
 
     installerPropertyStore = inject(InstallerPropertyStore);
     windowInfoStore = inject(WindowInfoStore);
+    memorySpaceStore = inject(MemorySpaceStore);
     progress = signal<number>(0);
 
     data: InstallerData = {
@@ -40,9 +47,9 @@ export class HtmlEngine {
         launchApp: this.installerPropertyStore.launchApp(),
         progress: this.progress(),
         message: '',
-        volumeSpaceAvailable: 0,
-        volumeSpaceRemaining: 0,
-        volumeSpaceRequired: 0,
+        volumeSpaceAvailable: this.memorySpaceStore.getData().volumeSpaceAvailable,
+        volumeSpaceRemaining: this.memorySpaceStore.getData().volumeSpaceRemaining,
+        volumeSpaceRequired: this.memorySpaceStore.getData().volumeSpaceRequired,
     };
     firstInstallPages = signal<HtmlPage[]>([]);
     maintenancePages = signal<HtmlPage[]>([]);
@@ -178,6 +185,11 @@ export class HtmlEngine {
     }
 
     async install(afterInstallPage: string | null) {
+        if (this.data.volumeSpaceRemaining < 1024 * 100) {
+            this.toastService.show('Out of memory');
+            return;
+        }
+
         this.unlisten = await this.tauriEventService.listenEvent<Progress>(
             EventSystemConsts.install,
             (event) => {

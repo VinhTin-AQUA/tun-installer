@@ -8,12 +8,12 @@
     "supportLink": "https://example.com",
     "supportEmail": "support@mycompany.com",
     "comment": "Default installer comment",
-    "launchFile": "start.txt",
+    "launchFile": "FirstApp.exe",
     "runAsAdmin": false,
     "launchApp": true,
     "shortcutInDesktop": {
       "isCreated": true,
-      "runAsAdmin": false,
+      "runAsAdmin": true,
       "shortcutName": "First App"
     }
   },
@@ -108,7 +108,7 @@
     }
   ],
   "memorySpace": {
-    "volumeSpaceRequired": 460248801,
+    "volumeSpaceRequired": 790741250,
     "volumeSpaceAvailable": 0,
     "volumeSpaceRemaining": 0
   }

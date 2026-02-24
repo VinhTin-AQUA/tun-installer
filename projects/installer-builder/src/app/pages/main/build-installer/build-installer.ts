@@ -8,6 +8,7 @@ import { Button } from '../../../shared/components/button/button';
 import { ClickOutside } from '../../../shared/directives/click-outside';
 import { TranslatePipe } from '@ngx-translate/core';
 import { join } from '@tauri-apps/api/path';
+import { ProjectFacade } from '../../../core/facades/project-facade';
 
 @Component({
     selector: 'app-build-installer',
@@ -29,11 +30,13 @@ export class BuildInstaller {
         private tauriCommandService: TauriCommandService,
         private toastService: ToastService,
         private projectManagerService: ProjectManagerService,
+        private projectFacade: ProjectFacade
     ) {}
 
     ngOnInit() {}
 
     async startBuild() {
+        await this.projectFacade.saveInstallerDocument();
         const formValid = this.projectManagerService.validateInstallerPropertyDataForm();
 
         if (!formValid) {

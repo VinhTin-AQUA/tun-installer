@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { InstallerDocument, InstallerPropertyStore, MemorySpaceStore, RegistryKeyStore, WindowInfoStore } from 'data-access';
+import { InstallerDocumentConfig, InstallerPropertyStore, MemorySpaceStore, RegistryKeyStore, WindowInfoStore } from 'data-access';
 import { InstallerDocumentCommands, TauriCommandService } from 'service';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class InstallerDocumentService {
     constructor(private TauriCommandService: TauriCommandService) {}
 
     async getInstallerDocument() {
-        const r = await this.TauriCommandService.invokeCommand<InstallerDocument, undefined>(
+        const r = await this.TauriCommandService.invokeCommand<InstallerDocumentConfig, undefined>(
             InstallerDocumentCommands.GET_INSTALLER_DOCUMENT_COMMAND,
             undefined,
         );

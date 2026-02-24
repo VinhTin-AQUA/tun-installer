@@ -95,20 +95,23 @@ project-name/
 
 - Properties
 
-    | Property       | Description                                                                                    |
-    | -------------- | ---------------------------------------------------------------------------------------------- |
-    | appDir         | Directory containing the main application after build or installation.                         |
-    | productName    | The display name of the application.                                                           |
-    | icon           | Path to the application icon file.                                                             |
-    | productVersion | Current version of the application.                                                            |
-    | publisher      | Name of the application publisher.                                                             |
-    | supportLink    | URL to the support website or help page.                                                       |
-    | supportEmail   | Support contact email address.                                                                 |
-    | comment        | Additional notes or description for the build/configuration.                                   |
-    | buildDir       | Directory where build output files are generated.                                              |
-    | fileToRun      | Main executable file of the application.                                                       |
-    | runAsAdmin     | Indicates whether the application requires Administrator privileges (true/false).              |
-    | lauchApp       | Indicates whether the application should automatically launch after installation (true/false). |
+    | Property             | Description                                                                                    |
+    | -------------------- | ---------------------------------------------------------------------------------------------- |
+    | appDir               | Directory containing the main application after build or installation.                         |
+    | productName          | The display name of the application.                                                           |
+    | icon                 | Path to the application icon file.                                                             |
+    | productVersion       | Current version of the application.                                                            |
+    | publisher            | Name of the application publisher.                                                             |
+    | supportLink          | URL to the support website or help page.                                                       |
+    | supportEmail         | Support contact email address.                                                                 |
+    | comment              | Additional notes or description for the build/configuration.                                   |
+    | buildDir             | Directory where build output files are generated.                                              |
+    | fileToRun            | Main executable file of the application.                                                       |
+    | runAsAdmin           | Indicates whether the application requires Administrator privileges (true/false).              |
+    | lauchApp             | Indicates whether the application should automatically launch after installation (true/false). |
+    | volumeSpaceRequired  | The total amount of storage space needed for the operation or data (Byte).                     |
+    | volumeSpaceAvailable | The current amount of storage space that is available for use (byte).                          |
+    | volumeSpaceRemaining | amount of storage space left after the required space has been allocated or used (byte).       |
 
 - Object to send to client
 
@@ -126,7 +129,10 @@ project-name/
     "runAsAdmin": false,
     "launchApp": true,
     "progress": 97.08,
-    "message": "Delete app folder after exit..."
+    "message": "Delete app folder after exit...",
+    "volumeSpaceRequired": 460248801,
+    "volumeSpaceAvailable": 0,
+    "volumeSpaceRemaining": 0
 }
 ```
 
