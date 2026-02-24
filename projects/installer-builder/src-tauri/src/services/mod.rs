@@ -9,3 +9,6 @@ pub use project_mananager_service::*;
 
 pub mod prerequisite_services;
 pub use prerequisite_services::*;
+
+pub mod compress_installer_service;
+pub use compress_installer_service::*;

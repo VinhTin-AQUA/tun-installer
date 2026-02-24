@@ -16,3 +16,19 @@ impl CompressProgressReporter for TauriProgressReporter {
         let _ = self.app.emit("compress-progress", percent);
     }
 }
+
+/*=============== for cli =============*/ 
+
+pub struct CLIProgressReporter {}
+
+impl CLIProgressReporter {
+    pub fn new() -> Self {
+        Self {}
+    }
+}
+
+impl CompressProgressReporter for CLIProgressReporter {
+    fn report(&self, percent: Progress) {
+        println!("{:?}", percent);
+    }
+}

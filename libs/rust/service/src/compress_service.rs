@@ -28,7 +28,7 @@ pub struct ArchiveIndex {
 }
 
 // compress lib
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Debug)]
 pub struct Progress {
     pub percent: f64,
     pub message: String,
